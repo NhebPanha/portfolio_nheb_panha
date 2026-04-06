@@ -18,3 +18,21 @@
     background: linear-gradient(90deg, #811cd9, #00fbfb);
   }
 }
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+}
+
+.dark {
+  --bg: #0a0a0a;
+  --text: #f5f5f5;
+}
+
+/* Apply variables */
+.bg-background {
+  background-color: var(--bg);
+}
+
+.text-on-background {
+  color: var(--text);
+}

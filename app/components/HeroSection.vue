@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-background text-on-background font-body min-h-screen">
+  <div class="bg-background text-on-background font-body min-h-screen transition-colors duration-500">
     <!-- Hero Section -->
     <main class="relative min-h-screen flex items-center overflow-hidden bg-grid-pattern pt-20">
 
@@ -12,7 +12,7 @@
       <div class="particles"></div>
 
       <!-- Content -->
-      <div class="max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center color-black">
 
         <!-- Hero Content -->
         <div class="lg:col-span-7 z-10">
@@ -21,13 +21,13 @@
             Digital Craftsman // v2.0
           </div>
 
-          <h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
-            NHEB Panha <br />
-            <span
-              class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-container to-secondary">
-              VOYNICH
+          <h1 class="text-6xl md:text-8xl font-black leading-[0.9] mb-8">
+            NHEB
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">
+              Panha
             </span>
           </h1>
+
 
           <div class="flex items-center gap-4 mb-8">
             <div class="h-[1px] w-12 bg-outline-variant/30"></div>
@@ -58,15 +58,17 @@
             <div class="ring ring-1"></div>
             <div class="ring ring-2"></div>
 
+            <!-- Floating Tags -->
+            <div class="tag left-tag">Dart Specialist</div>
+            <div class="tag right-tag">Cloud Architect</div>
+
             <div class="profile-img">
               <img
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnDTVCxoMuizTpem3xYx5OhWtNrOX_9H59S6Lny-vbqKB0OyZEG0K5dqGJECxY9dQZXz8RRdKHs6efL0XV41vLM-mIMq2P-OWl4Bq41h6TPo_zZCOPxWA_t2fpGsJAW0HvBaO2Ml9RAMV8nfSNd0Kl2VPxCvsHR59Np1JimpMVkev7_5InyACSeHnRIQ3hjIGw7RzjJ-zTHWGIrpPPcjZOUzLjt0X7M0EMElcF-eH0c_Bhtu1rYtgIQmFoGbVke7yp8IYw-O5-UQ3G"
                 class="w-full h-full object-cover" />
             </div>
 
-            <!-- Floating Tags -->
-            <div class="tag left-tag">Dart Specialist</div>
-            <div class="tag right-tag">Cloud Architect</div>
+
 
           </div>
         </div>
@@ -82,15 +84,44 @@
     </main>
   </div>
 </template>
+<!-- Light and Dark Theme Toggle -->
+<script setup>
+import { ref, onMounted } from 'vue'
 
+const isDark = ref(false)
+
+const toggleDark = () => {
+  isDark.value = !isDark.value
+  document.documentElement.classList.toggle('dark')
+
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme')
+
+  if (savedTheme === 'dark') {
+    isDark.value = true
+    document.documentElement.classList.add('dark')
+  }
+})
+</script>
 <style scoped>
 /* ================= BACKGROUND ================= */
+/* LIGHT MODE (default) */
 .bg-grid-pattern {
   background-image:
-    linear-gradient(to right, rgba(129, 28, 217, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(129, 28, 217, 0.08) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
   background-size: 40px 40px;
   animation: moveGrid 20s linear infinite;
+}
+
+/* DARK MODE */
+.dark .bg-grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
 }
 
 @keyframes moveGrid {
@@ -215,7 +246,7 @@
 }
 
 .right-tag {
-  bottom: 20px;
+  bottom: -5px;
   right: -20px;
   border-left: 4px solid #00fbfb;
 }
