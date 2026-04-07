@@ -8,6 +8,11 @@ export default defineNuxtConfig({
         {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined'
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',   // ✅ add this
+          href: '/logo_test.png'
         }
       ]
     }

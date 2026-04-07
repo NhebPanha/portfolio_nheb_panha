@@ -48,11 +48,11 @@ import { ref, onMounted } from 'vue'
 
 const navLinks = [
   { name: 'Hero', href: '#', active: true },
-  { name: 'About', href: '#' },
-  { name: 'Projects', href: '#' },
-  { name: 'Experience', href: '#' },
-  { name: 'Skills', href: '#' },
-  { name: 'Contact', href: '#' }
+  { name: 'About', href: '#', active: false },
+  { name: 'Projects', href: '#', active: false },
+  { name: 'Experience', href: '#', active: false },
+  { name: 'Skills', href: '#', active: false },
+  { name: 'Contact', href: '#', active: false }
 ];
 
 const isDark = ref(false)
