@@ -26,8 +26,7 @@
       <!-- Right Actions -->
       <div class="flex items-center gap-4">
         <!-- 🌙 Dark Mode Toggle -->
-        <button @click="toggleDark"
-          class="transition-colors center">
+        <button @click="toggleDark" class="transition-colors center">
           <span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">
             {{ isDark ? 'light_mode' : 'dark_mode' }}
           </span>
@@ -39,7 +38,6 @@
         </button>
       </div>
     </div>
-
     <!-- Power Rail Accent -->
     <div class="h-[2px] w-full power-rail"></div>
   </nav>
@@ -58,7 +56,6 @@ const navLinks = [
 ];
 
 const isDark = ref(false)
-
 const toggleDark = () => {
   isDark.value = !isDark.value
   document.documentElement.classList.toggle('dark')

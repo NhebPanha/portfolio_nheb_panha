@@ -8,9 +8,7 @@
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
       </div>
-
       <div class="particles"></div>
-
       <!-- Content -->
       <div class="max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center color-black">
 
@@ -63,9 +61,7 @@
             <div class="tag right-tag">Cloud Architect</div>
 
             <div class="profile-img">
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnDTVCxoMuizTpem3xYx5OhWtNrOX_9H59S6Lny-vbqKB0OyZEG0K5dqGJECxY9dQZXz8RRdKHs6efL0XV41vLM-mIMq2P-OWl4Bq41h6TPo_zZCOPxWA_t2fpGsJAW0HvBaO2Ml9RAMV8nfSNd0Kl2VPxCvsHR59Np1JimpMVkev7_5InyACSeHnRIQ3hjIGw7RzjJ-zTHWGIrpPPcjZOUzLjt0X7M0EMElcF-eH0c_Bhtu1rYtgIQmFoGbVke7yp8IYw-O5-UQ3G"
-                class="w-full h-full object-cover" />
+              <img src="/image/unnamed.png" class="object-cover" />
             </div>
 
 
@@ -84,6 +80,7 @@
     </main>
   </div>
 </template>
+
 <!-- Light and Dark Theme Toggle -->
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -106,6 +103,7 @@ onMounted(() => {
   }
 })
 </script>
+
 <style scoped>
 /* ================= BACKGROUND ================= */
 /* LIGHT MODE (default) */
@@ -135,7 +133,6 @@ onMounted(() => {
 }
 
 /* ================= BLOBS ================= */
-
 .blob {
   position: absolute;
   width: 400px;

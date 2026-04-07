@@ -1,5 +1,9 @@
+<script setup lang="ts">
+</script>
 <template>
   <Header />
-  <slot />
+  <HeroSection />
+  <ExperienceContact />
+  <Portfolio />
   <Footer />
 </template>
