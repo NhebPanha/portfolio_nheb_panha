@@ -2,7 +2,6 @@
   <div class="bg-background text-on-background font-body min-h-screen transition-colors duration-500">
     <!-- Hero Section -->
     <main class="relative min-h-screen flex items-center overflow-hidden bg-grid-pattern pt-20">
-
       <!-- ✅ Animated Background Layers -->
       <div class="absolute inset-0 overflow-hidden">
         <div class="blob blob-1"></div>
@@ -25,7 +24,6 @@
               Panha
             </span>
           </h1>
-
 
           <div class="flex items-center gap-4 mb-8">
             <div class="h-[1px] w-12 bg-outline-variant/30"></div>
@@ -61,7 +59,7 @@
             <div class="tag right-tag">Cloud Architect</div>
 
             <div class="profile-img">
-              <img src="/image/unnamed.png" class="object-cover" />
+              <img src="/image/panha_profile.png" class="object-cover" />
             </div>
 
 

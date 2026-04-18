@@ -2,7 +2,6 @@
     <div class="bg-background text-on-background font-body">
         <!-- Main -->
         <main class="pt-32 pb-24 px-8 max-w-7xl mx-auto">
-
             <!-- Hero -->
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-32 items-end">
 
@@ -113,11 +112,11 @@ const backendSkills = [
     { name: "Supabase", level: 92 },
     { name: "PostgreSQL", level: 85 }
 ]
-</script>
 
+</script>
 <style>
 .glass-panel {
-    background: rgba(255, 255, 255, 0.4);
+    background: #ffffff66;
     backdrop-filter: blur(12px);
 }
 
