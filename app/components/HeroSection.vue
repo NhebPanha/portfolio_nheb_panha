@@ -46,7 +46,6 @@
             </button>
           </div>
         </div>
-
         <!-- Profile Image -->
         <div class="lg:col-span-5 relative flex justify-center lg:justify-end">
           <div class="relative w-80 h-80 md:w-96 md:h-96">
