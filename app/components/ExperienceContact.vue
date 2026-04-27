@@ -1,6 +1,6 @@
 <template>
     <div class="bg-background text-on-background font-body min-h-screen transition-colors duration-500">
-        <section class="pt-24 md:pt-32 pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8">
+        <section id="experience" class="pt-24 md:pt-32 pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
 
                 <!-- Left Panel -->
@@ -61,7 +61,7 @@
         </section>
 
         <!-- ================= CONTACT ================= -->
-        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8">
+        <section id="contact" class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8">
 
             <!-- Left Contact Info -->
             <div class="lg:col-span-5">

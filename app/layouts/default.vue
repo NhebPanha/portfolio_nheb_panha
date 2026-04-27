@@ -6,4 +6,5 @@
   <ExperienceContact />
   <Portfolio />
   <Footer />
+  <test />
 </template>

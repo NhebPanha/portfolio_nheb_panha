@@ -13,7 +13,7 @@
       </div>
       <!-- Nav Links -->
       <div class="hidden md:flex gap-8 items-center">
-        <a v-for="link in navLinks" :key="link.name" :href="link.href" :class="[
+        <a v-for="link in navLinks" :key="link.name" :href="link.href" @click="(e) => scrollToSection(e, link.href)" :class="[
           'font-headline tracking-tight text-sm uppercase transition-colors',
           link.active
             ? 'text-cyan-500 border-b-2 border-cyan-500 pb-1'
@@ -47,7 +47,7 @@
 
     <!-- Mobile Navigation Menu -->
     <div v-show="isMenuOpen" class="md:hidden glass-nav border-t border-slate-200/10 dark:border-slate-800/50 absolute w-full left-0 top-full flex flex-col px-4 py-4 gap-4 shadow-lg">
-      <a v-for="link in navLinks" :key="link.name" :href="link.href" @click="isMenuOpen = false" :class="[
+      <a v-for="link in navLinks" :key="link.name" :href="link.href" @click="(e) => scrollToSection(e, link.href)" :class="[
         'font-headline tracking-tight text-sm uppercase transition-colors px-4 py-2 rounded-lg',
         link.active
           ? 'bg-cyan-500/10 text-cyan-500'
@@ -63,21 +63,52 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const isMenuOpen = ref(false)
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 }
 
-const navLinks = [
-  { name: 'Hero', href: '#', active: true },
-  { name: 'About', href: '#', active: false },
-  { name: 'Projects', href: '#', active: false },
-  { name: 'Experience', href: '#', active: false },
-  { name: 'Skills', href: '#', active: false },
-  { name: 'Contact', href: '#', active: false }
-];
+const navLinks = ref([
+  { name: 'Hero', href: '#hero', active: true },
+  { name: 'About', href: '#about', active: false },
+  { name: 'Projects', href: '#projects', active: false },
+  { name: 'Experience', href: '#experience', active: false },
+  { name: 'Skills', href: '#skills', active: false },
+  { name: 'Contact', href: '#contact', active: false }
+]);
+
+const scrollToSection = (e, href) => {
+  e.preventDefault();
+  isMenuOpen.value = false;
+  
+  if (href === '#') return;
+
+  const target = document.querySelector(href);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+const handleScroll = () => {
+  const scrollPosition = window.scrollY + 150; // offset for header
+
+  let currentSection = '#hero';
+  
+  for (const link of navLinks.value) {
+    const section = document.querySelector(link.href);
+    if (section) {
+      if (section.offsetTop <= scrollPosition) {
+        currentSection = link.href;
+      }
+    }
+  }
+
+  navLinks.value.forEach(link => {
+    link.active = link.href === currentSection;
+  });
+}
 
 const isDark = ref(false)
 const toggleDark = () => {
@@ -97,6 +128,13 @@ onMounted(() => {
   }
 
   document.documentElement.classList.toggle('dark', isDark.value)
+  
+  window.addEventListener('scroll', handleScroll)
+  setTimeout(handleScroll, 100)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
 })
 </script>
 

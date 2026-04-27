@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-background text-on-background font-body min-h-screen transition-colors duration-500">
+  <div id="hero" class="bg-background text-on-background font-body min-h-screen transition-colors duration-500">
     <!-- Hero Section -->
     <main class="relative min-h-screen flex items-center overflow-hidden bg-grid-pattern pt-20">
       <!-- ✅ Animated Background Layers -->
