@@ -13,10 +13,22 @@
                 <div class="lg:col-span-8">
                     <div class="glass-panel p-8 md:p-12">
                         <p class="text-on-surface-variant text-lg leading-relaxed mb-6">
-                            I am a passionate software engineer and creative developer who synthesizes high-end digital aesthetics with robust backend infrastructure. With an eye for design and a focus on performance, I create experiences that leave a lasting impression.
+                            I am a passionate Software Developer with experience in building modern mobile and web
+                            applications using Flutter, Vue.js, and Laravel. I have hands-on experience developing
+                            full-stack systems, from designing user-friendly UI/UX to implementing backend services and
+                            database integration.
+
+                            I have worked on various projects including e-commerce platforms, wallet applications, and
+                            delivery systems, where I implemented key features such as authentication, real-time data
+                            processing, and responsive design.
                         </p>
                         <p class="text-on-surface-variant text-lg leading-relaxed">
-                            My journey began with a fascination for web technologies, evolving into an expertise spanning from immersive WebGL experiences to micro-frontend architectures.
+                            I focus on writing clean, maintainable, and scalable code to ensure long-term project
+                            success.
+
+                            I am highly motivated to continuously learn new technologies and improve my skills,
+                            especially in mobile development and system architecture. My goal is to become a
+                            professional full-stack developer and contribute to building impactful digital solutions.
                         </p>
                     </div>
                 </div>
