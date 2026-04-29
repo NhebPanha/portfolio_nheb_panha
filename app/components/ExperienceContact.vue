@@ -31,24 +31,16 @@
           <div class="absolute left-4 md:left-12 top-0 bottom-0 w-px timeline-line opacity-30"></div>
 
           <!-- Items -->
-          <div
-            v-for="(item, index) in experiences"
-            :key="index"
-            class="relative mb-24 group animate-fadeIn"
-            :style="{ animationDelay: `${index * 0.2}s` }"
-          >
+          <div v-for="(item, index) in experiences" :key="index" class="relative mb-24 group animate-fadeIn"
+            :style="{ animationDelay: `${index * 0.2}s` }">
 
             <!-- Dot -->
-            <div
-              class="absolute -left-10 md:-left-[52px] top-2 w-4 h-4 rounded-full border-4 border-background z-10"
-              :class="item.dotColor"
-            ></div>
+            <div class="absolute -left-10 md:-left-[52px] top-2 w-4 h-4 rounded-full border-4 border-background z-10"
+              :class="item.dotColor"></div>
 
             <!-- Card -->
-            <div
-              class="glass-panel p-8 hover:translate-x-2 transition-transform duration-300 cursor-pointer"
-              @click="item.showDetails = !item.showDetails"
-            >
+            <div class="glass-panel p-8 hover:translate-x-2 transition-transform duration-300 cursor-pointer"
+              @click="item.showDetails = !item.showDetails">
 
               <span class="text-[10px] tracking-widest uppercase font-bold block mb-2 text-secondary-dim">
                 {{ item.year }}
@@ -67,11 +59,8 @@
               </p>
 
               <div v-if="item.showDetails" class="flex flex-wrap gap-2 mb-4">
-                <span
-                  v-for="tech in item.tech"
-                  :key="tech"
-                  class="bg-surface-container px-3 py-1 text-[10px] uppercase"
-                >
+                <span v-for="tech in item.tech" :key="tech"
+                  class="bg-surface-container px-3 py-1 text-[10px] uppercase">
                   {{ tech }}
                 </span>
               </div>
@@ -132,20 +121,13 @@
                 <option>General</option>
               </select>
 
-              <textarea
-                v-model="form.message"
-                rows="5"
-                placeholder="Your message..."
-                class="input-style resize-none"
-              ></textarea>
+              <textarea v-model="form.message" rows="5" placeholder="Your message..."
+                class="input-style resize-none"></textarea>
 
-              <button
-                type="submit"
-                class="bg-black text-white px-8 md:px-12 py-4 uppercase text-xs tracking-widest w-full md:w-auto
-                       hover:shadow-lg transition duration-300
-                       dark:bg-black dark:text-white dark:border dark:border-gray-800"
-              >
-                Send Message
+              <button type="submit" :disabled="isSubmitting" class="bg-black text-white px-8 md:px-12 py-4 uppercase text-xs tracking-widest w-full md:w-auto
+                       hover:shadow-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed
+                       dark:bg-black dark:text-white dark:border dark:border-gray-800">
+                {{ isSubmitting ? 'Sending...' : 'Send Message' }}
               </button>
 
             </form>
@@ -161,7 +143,8 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+
 
 /* ================= EXPERIENCE ================= */
 const experiences = [
@@ -208,8 +191,28 @@ const form = reactive({
   message: "",
 });
 
-const handleSubmit = () => {
-  console.log("Form Data:", form);
+const isSubmitting = ref(false);
+
+const handleSubmit = async () => {
+  if (isSubmitting.value) return;
+  isSubmitting.value = true;
+
+  try {
+    await $fetch('/api/contact', {
+      method: 'POST',
+      body: form,
+    });
+    alert('Message sent successfully! I will get back to you soon.');
+    // Clear form
+    form.name = '';
+    form.email = '';
+    form.message = '';
+  } catch (error) {
+    console.error('Error sending message:', error.data);
+    // alert('Failed to send message. Please ensure you have configured your Telegram credentials in the .env file.');
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 </script>
 
@@ -220,6 +223,7 @@ const handleSubmit = () => {
     opacity: 0;
     transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);

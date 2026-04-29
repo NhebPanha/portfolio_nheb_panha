@@ -13,12 +13,13 @@
       </div>
       <!-- Nav Links -->
       <div class="hidden md:flex gap-8 items-center">
-        <a v-for="link in navLinks" :key="link.name" :href="link.href" @click="(e) => scrollToSection(e, link.href)" :class="[
-          'font-headline tracking-tight text-sm uppercase transition-colors',
-          link.active
-            ? 'text-cyan-500 border-b-2 border-cyan-500 pb-1'
-            : 'text-slate-600 dark:text-slate-300 hover:text-cyan-500'
-        ]">
+        <a v-for="link in navLinks" :key="link.name" :href="link.href" @click="(e) => scrollToSection(e, link.href)"
+          :class="[
+            'font-headline tracking-tight text-sm uppercase transition-colors',
+            link.active
+              ? 'text-cyan-500 border-b-2 border-cyan-500 pb-1'
+              : 'text-slate-600 dark:text-slate-300 hover:text-cyan-500'
+          ]">
           {{ link.name }}
         </a>
       </div>
@@ -46,13 +47,15 @@
     </div>
 
     <!-- Mobile Navigation Menu -->
-    <div v-show="isMenuOpen" class="md:hidden glass-nav border-t border-slate-200/10 dark:border-slate-800/50 absolute w-full left-0 top-full flex flex-col px-4 py-4 gap-4 shadow-lg">
-      <a v-for="link in navLinks" :key="link.name" :href="link.href" @click="(e) => scrollToSection(e, link.href)" :class="[
-        'font-headline tracking-tight text-sm uppercase transition-colors px-4 py-2 rounded-lg',
-        link.active
-          ? 'bg-cyan-500/10 text-cyan-500'
-          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-      ]">
+    <div v-show="isMenuOpen"
+      class="md:hidden glass-nav border-t border-slate-200/10 dark:border-slate-800/50 absolute w-full left-0 top-full flex flex-col px-4 py-4 gap-4 shadow-lg">
+      <a v-for="link in navLinks" :key="link.name" :href="link.href" @click="(e) => scrollToSection(e, link.href)"
+        :class="[
+          'font-headline tracking-tight text-sm uppercase transition-colors px-4 py-2 rounded-lg',
+          link.active
+            ? 'bg-cyan-500/10 text-cyan-500'
+            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+        ]">
         {{ link.name }}
       </a>
     </div>
@@ -74,15 +77,15 @@ const navLinks = ref([
   { name: 'Hero', href: '#hero', active: true },
   { name: 'About', href: '#about', active: false },
   { name: 'Projects', href: '#projects', active: false },
-  { name: 'Skills', href: '#skills', active: false },
   { name: 'Experience', href: '#experience', active: false },
+  { name: 'Skills', href: '#skills', active: false },
   { name: 'Contact', href: '#contact', active: false }
 ]);
 
 const scrollToSection = (e, href) => {
   e.preventDefault();
   isMenuOpen.value = false;
-  
+
   if (href === '#') return;
 
   const target = document.querySelector(href);
@@ -94,20 +97,13 @@ const scrollToSection = (e, href) => {
 const handleScroll = () => {
   const scrollPosition = window.scrollY + 150; // offset for header
 
-  // Check if at the bottom of the page
-  const isBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50;
-
   let currentSection = '#hero';
-  
-  if (isBottom) {
-    currentSection = '#contact';
-  } else {
-    for (const link of navLinks.value) {
-      const section = document.querySelector(link.href);
-      if (section) {
-        if (section.offsetTop <= scrollPosition) {
-          currentSection = link.href;
-        }
+
+  for (const link of navLinks.value) {
+    const section = document.querySelector(link.href);
+    if (section) {
+      if (section.offsetTop <= scrollPosition) {
+        currentSection = link.href;
       }
     }
   }
@@ -135,7 +131,7 @@ onMounted(() => {
   }
 
   document.documentElement.classList.toggle('dark', isDark.value)
-  
+
   window.addEventListener('scroll', handleScroll)
   setTimeout(handleScroll, 100)
 })

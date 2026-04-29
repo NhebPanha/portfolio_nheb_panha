@@ -1,8 +1,8 @@
 <template>
   <div class="bg-background text-on-background font-body transition-colors duration-500">
-    
+
     <section id="skills" class="pt-24 md:pt-32 pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8">
-      
+
       <!-- Title -->
       <div class="text-center mb-16">
         <span class="text-xs tracking-[0.2em] text-primary uppercase mb-4 block">
@@ -15,13 +15,9 @@
 
       <!-- Skills -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        
-        <div
-          v-for="(skill, index) in skills"
-          :key="index"
-          class="glass-panel p-6 text-center font-semibold flex items-center justify-center 
-                 hover:-translate-y-2 hover:shadow-lg transition-all duration-300"
-        >
+
+        <div v-for="(skill, index) in skills" :key="index" class="glass-panel p-6 text-center font-semibold flex items-center justify-center 
+                 hover:-translate-y-2 hover:shadow-lg transition-all duration-300">
           {{ skill }}
         </div>
 

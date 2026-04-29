@@ -8,7 +8,8 @@
           Panha
         </span>
       </div>
-      <p class="font-body text-xs tracking-widest uppercase text-slate-500 dark:text-slate-400 text-center md:text-left">
+      <p
+        class="font-body text-xs tracking-widest uppercase text-slate-500 dark:text-slate-400 text-center md:text-left">
         &copy; 2024 NHEB Panha. All rights reserved.
       </p>
       <div class="flex flex-wrap gap-4 sm:gap-8 justify-center">
