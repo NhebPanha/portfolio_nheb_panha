@@ -56,6 +56,9 @@ Hello! I'm a passionate developer who loves building modern applications using *
 ---
 
 ## ⚙️ Setup
+```bash
+node V 22 up
+```
 
 ```bash
 npm install
