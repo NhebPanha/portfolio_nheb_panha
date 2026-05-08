@@ -1,102 +1,136 @@
 <template>
   <section id="chart-ai" class="py-24 bg-background text-on-background relative overflow-hidden">
-    <!-- Ambient Background -->
-    <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-      <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary rounded-full blur-[120px]"></div>
-      <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary rounded-full blur-[120px]"></div>
+    <!-- Ambient Glow Background -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+      <div class="absolute top-[-15%] left-[-10%] w-[45%] h-[45%] bg-primary/10 rounded-full blur-[140px]"></div>
+      <div class="absolute bottom-[-15%] right-[-10%] w-[45%] h-[45%] bg-secondary/10 rounded-full blur-[140px]"></div>
+      <div class="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-primary/5 rounded-full blur-[100px]"></div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-      <div class="text-center mb-12">
-        <span class="text-xs tracking-[0.2em] text-primary uppercase mb-4 block">Interactive Analytics</span>
+      <!-- Header -->
+      <div class="text-center mb-14">
+        <span class="text-xs tracking-[0.3em] text-primary uppercase mb-4 block font-bold">Interactive Analytics</span>
         <h2 class="text-4xl md:text-5xl font-black tracking-tighter leading-none mb-4">
           <span class="text-secondary">AI</span> Assistant
         </h2>
         <p class="text-on-surface-variant font-light max-w-2xl mx-auto">
-          Explore my journey through data. Ask about my *skills*, *projects*, or *productivity*.
+          Explore my journey through data. Ask about my <span class="text-primary font-medium">skills</span>, <span
+            class="text-secondary font-medium">projects</span>, or <span
+            class="text-white/70 font-medium">productivity</span>.
         </p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <!-- Chat Interface -->
-        <div class="lg:col-span-4 glass-panel p-6 flex flex-col h-[600px]">
-          <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+
+        <!-- ─── Chat Interface ─────────────────────────────────────────── -->
+        <div class="lg:col-span-4 chat-panel flex flex-col h-[620px]">
+
+          <!-- Bot Header -->
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
             <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-sm">smart_toy</span>
+              <div class="bot-avatar">
+                <span class="material-symbols-outlined text-white text-xl">smart_toy</span>
               </div>
               <div>
-                <h3 class="font-bold text-sm">Analyst Bot</h3>
-                <span class="text-[10px] text-green-400 flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                <h3 class="font-black text-sm tracking-wider uppercase">Analyst Bot</h3>
+                <span class="text-[10px] text-emerald-400 flex items-center gap-1.5 font-semibold">
+                  <span class="status-dot"></span>
                   Gemini Flash 1.5
                 </span>
               </div>
             </div>
+            <div class="flex gap-1.5">
+              <div class="w-2 h-2 rounded-full bg-white/10"></div>
+              <div class="w-2 h-2 rounded-full bg-white/10"></div>
+              <div class="w-2 h-2 rounded-full bg-white/10"></div>
+            </div>
           </div>
 
-          <div ref="chatContainer" class="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 custom-scrollbar">
+          <!-- Messages -->
+          <div ref="chatContainer" class="flex-1 overflow-y-auto mb-5 space-y-5 pr-2 custom-scrollbar">
             <div v-for="(msg, index) in messages" :key="index"
-              :class="['flex', msg.role === 'user' ? 'justify-end' : 'justify-start']">
+              :class="['flex flex-col', msg.role === 'user' ? 'items-end' : 'items-start']">
+              <span class="text-[10px] uppercase tracking-widest opacity-30 mb-1 mx-1">
+                {{ msg.role === 'user' ? 'You' : 'Bot' }}
+              </span>
               <div :class="[
-                'max-w-[85%] p-3 rounded-2xl text-sm leading-relaxed',
+                'max-w-[88%] px-4 py-3 rounded-2xl text-sm leading-relaxed transition-transform duration-200 hover:scale-[1.02]',
                 msg.role === 'user'
-                  ? 'bg-primary/20 border border-primary/30 text-on-background rounded-tr-none'
-                  : 'bg-white/5 border border-white/10 text-on-surface-variant rounded-tl-none'
+                  ? 'user-bubble'
+                  : 'bot-bubble'
               ]">
                 {{ msg.content }}
               </div>
             </div>
-            <div v-if="isTyping" class="flex justify-start">
-              <div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-tl-none flex gap-1">
-                <span class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce"></span>
-                <span class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                <span class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce [animation-delay:0.4s]"></span>
+
+            <!-- Typing indicator -->
+            <div v-if="isTyping" class="flex flex-col items-start typing-entry">
+              <span class="text-[10px] uppercase tracking-widest opacity-30 mb-1 mx-1">Bot</span>
+              <div class="bot-bubble px-4 py-3 rounded-2xl flex gap-1.5">
+                <span class="dot-bounce" style="animation-delay: 0s"></span>
+                <span class="dot-bounce" style="animation-delay: 0.18s"></span>
+                <span class="dot-bounce" style="animation-delay: 0.36s"></span>
               </div>
             </div>
           </div>
 
-          <form @submit.prevent="handleSendMessage" class="relative">
-            <input v-model="userInput" type="text" placeholder="Ask about my stats..."
-              class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:ring-1 focus:ring-primary/50 outline-none text-white transition-all"
+          <!-- Input Form -->
+          <form @submit.prevent="handleSendMessage" class="relative input-wrap">
+            <input v-model="userInput" type="text" placeholder="Ask about my stats..." class="chat-input"
               :disabled="isTyping" />
-            <button type="submit"
-              class="absolute right-2 top-1.5 p-1.5 text-primary hover:text-secondary disabled:opacity-50"
-              :disabled="!userInput.trim() || isTyping">
+            <button type="submit" class="send-btn" :disabled="!userInput.trim() || isTyping">
               <span class="material-symbols-outlined">send</span>
             </button>
           </form>
         </div>
 
-        <!-- Chart Visualization -->
-        <div class="lg:col-span-8 glass-panel p-8 min-h-[500px] flex flex-col items-center justify-center relative">
-          <div v-if="!currentChart" class="text-center opacity-40">
-            <span class="material-symbols-outlined text-6xl mb-4">monitoring</span>
-            <p class="text-lg font-medium">Ready for Data Query</p>
-            <p class="text-sm mt-2 text-primary">Try: "Show me your skill radar"</p>
+        <!-- ─── Chart Visualization ────────────────────────────────────── -->
+        <div
+          class="lg:col-span-8 chart-panel min-h-[620px] flex flex-col items-center justify-center relative overflow-hidden">
+          <!-- Grid overlay -->
+          <div class="chart-grid-bg"></div>
+
+          <!-- Empty state -->
+          <div v-if="!currentChart" class="text-center relative z-10 empty-state">
+            <div class="icon-ring">
+              <div class="icon-glow"></div>
+              <span class="material-symbols-outlined text-5xl text-primary animate-float">monitoring</span>
+            </div>
+            <h4 class="text-2xl font-black tracking-tight mt-6 mb-2">Neural Analysis Engine</h4>
+            <p class="text-on-surface-variant text-sm font-light max-w-xs mx-auto">
+              Ask about <span class="text-primary font-semibold">skills</span>,
+              <span class="text-secondary font-semibold">projects</span>, or
+              <span class="text-white/60 font-semibold">productivity</span> to generate a chart.
+            </p>
           </div>
 
-          <div v-show="currentChart" class="w-full h-full flex flex-col">
-            <div class="mb-6 flex justify-between items-center">
-              <h3 class="text-xl font-bold text-primary">{{ currentChartTitle }}</h3>
-              <button @click="resetChart"
-                class="text-xs text-on-surface-variant hover:text-white flex items-center gap-1 bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                <span class="material-symbols-outlined text-sm">close</span> Clear
+          <!-- Chart area -->
+          <div v-show="currentChart" class="w-full h-full flex flex-col relative z-10 chart-reveal">
+            <div class="mb-6 flex justify-between items-end px-2">
+              <div>
+                <span class="text-[10px] uppercase tracking-[0.3em] text-primary mb-1 block font-bold">Data
+                  Visualization</span>
+                <h3 class="text-2xl font-black tracking-tighter text-white">{{ currentChartTitle }}</h3>
+              </div>
+              <button @click="resetChart" class="clear-btn">
+                <span class="material-symbols-outlined text-sm">close</span>
+                Clear
               </button>
             </div>
-            <div class="relative flex-1 min-h-[400px]">
+            <div class="relative flex-1 min-h-[420px] chart-canvas-wrap">
               <canvas ref="chartCanvas"></canvas>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, nextTick } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
 Chart.register(...registerables)
@@ -121,7 +155,7 @@ const chartDataModels = {
     labels: ['Frontend', 'Backend', 'UI/UX', 'DevOps', 'Mobile', 'Database'],
     data: [95, 85, 78, 82, 70, 88],
     label: 'Proficiency %',
-    colors: { bg: 'rgba(0, 251, 251, 0.2)', border: '#00fbfb' }
+    colors: { bg: 'rgba(0, 251, 251, 0.15)', border: '#00fbfb' }
   },
   projects: {
     title: 'Project Ecosystem',
@@ -129,7 +163,7 @@ const chartDataModels = {
     labels: ['Web Apps', 'Automation', 'Mobile', 'Open Source', 'UI Kits'],
     data: [12, 8, 4, 15, 6],
     label: 'Completed',
-    colors: { bg: 'rgba(255, 129, 245, 0.5)', border: '#ff81f5' }
+    colors: { bg: 'rgba(255, 129, 245, 0.4)', border: '#ff81f5' }
   },
   productivity: {
     title: 'Weekly Coding Activity',
@@ -158,7 +192,6 @@ const handleSendMessage = async () => {
   scrollToBottom()
 
   try {
-    // Map history to Gemini format (user -> model -> user)
     const history = messages.value.slice(0, -1).map(m => ({
       role: m.role === 'user' ? 'user' : 'model',
       parts: [{ text: m.content }]
@@ -171,12 +204,12 @@ const handleSendMessage = async () => {
 
     messages.value.push({ role: 'assistant', content: data.responseText })
 
-    const context = (prompt + " " + data.responseText).toLowerCase()
+    const context = (prompt + ' ' + data.responseText).toLowerCase()
     if (context.includes('skill')) renderChart('skills')
     else if (context.includes('project')) renderChart('projects')
     else if (context.includes('productivity') || context.includes('hour') || context.includes('activity')) renderChart('productivity')
 
-  } catch (error) {
+  } catch {
     messages.value.push({ role: 'assistant', content: "I'm having trouble connecting to my brain. Try again?" })
   } finally {
     isTyping.value = false
@@ -204,21 +237,44 @@ const renderChart = (type: keyof typeof chartDataModels) => {
           borderColor: model.colors.border,
           borderWidth: 2,
           pointBackgroundColor: model.colors.border,
-          tension: 0.4
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          tension: 0.4,
+          fill: true
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: 'rgba(255,255,255,0.5)', font: { size: 11 } } },
+          tooltip: {
+            backgroundColor: 'rgba(10,10,20,0.9)',
+            borderColor: model.colors.border,
+            borderWidth: 1,
+            titleColor: '#fff',
+            bodyColor: 'rgba(255,255,255,0.7)',
+            padding: 12,
+            cornerRadius: 10
+          }
+        },
         scales: model.type !== 'radar' ? {
-          y: { ticks: { color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          x: { ticks: { color: '#888' }, grid: { display: false } }
+          y: {
+            ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            border: { color: 'rgba(255,255,255,0.05)' }
+          },
+          x: {
+            ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
+            grid: { display: false },
+            border: { color: 'rgba(255,255,255,0.05)' }
+          }
         } : {
           r: {
-            angleLines: { color: 'rgba(255,255,255,0.1)' },
-            grid: { color: 'rgba(255,255,255,0.1)' },
-            pointLabels: { color: '#fff' },
-            ticks: { display: false }
+            angleLines: { color: 'rgba(255,255,255,0.08)' },
+            grid: { color: 'rgba(255,255,255,0.08)' },
+            pointLabels: { color: 'rgba(255,255,255,0.7)', font: { size: 12, weight: 'bold' } },
+            ticks: { display: false, backdropColor: 'transparent' }
           }
         }
       }
@@ -233,19 +289,339 @@ const resetChart = () => {
 </script>
 
 <style scoped>
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+/* ── Panels ──────────────────────────────────────────────────────── */
+.chat-panel {
+  background: rgba(10, 10, 20, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 1.75rem;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 32px 80px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(var(--tw-color-primary, 0, 251, 251), 0.04);
 }
 
+.chart-panel {
+  background: rgba(10, 10, 20, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 28px;
+  padding: 2rem;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 8px 40px rgba(0, 0, 0, 0.55),
+    0 40px 100px rgba(0, 0, 0, 0.45),
+    0 0 80px rgba(129, 28, 217, 0.06);
+}
+
+/* ── Grid overlay ────────────────────────────────────────────────── */
+.chart-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+  border-radius: 28px;
+  pointer-events: none;
+}
+
+/* ── Bot avatar ──────────────────────────────────────────────────── */
+.bot-avatar {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #811cd9, #00fbfb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 16px rgba(129, 28, 217, 0.4),
+    0 0 30px rgba(0, 251, 251, 0.15);
+  flex-shrink: 0;
+}
+
+/* ── Status dot ──────────────────────────────────────────────────── */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #34d399;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Chat bubbles ────────────────────────────────────────────────── */
+.user-bubble {
+  background: linear-gradient(135deg, rgba(129, 28, 217, 0.25), rgba(129, 28, 217, 0.1));
+  border: 1px solid rgba(129, 28, 217, 0.3);
+  border-top-right-radius: 4px;
+  color: #f0f0f0;
+  box-shadow:
+    0 2px 12px rgba(129, 28, 217, 0.2),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.bot-bubble {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-left-radius: 4px;
+  color: rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.3),
+    0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Typing dots ─────────────────────────────────────────────────── */
+.dot-bounce {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #00fbfb;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 251, 251, 0.6);
+  animation: bounce 0.6s ease-in-out infinite alternate;
+}
+
+/* ── Input wrap ──────────────────────────────────────────────────── */
+.input-wrap {
+  position: relative;
+}
+
+.input-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(129, 28, 217, 0.3), rgba(0, 251, 251, 0.3));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.input-wrap:focus-within::before {
+  opacity: 1;
+}
+
+.chat-input {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 0.85rem 3.5rem 0.85rem 1.25rem;
+  font-size: 0.875rem;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) inset;
+}
+
+.chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.chat-input:focus {
+  border-color: rgba(129, 28, 217, 0.4);
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.3) inset,
+    0 0 20px rgba(129, 28, 217, 0.15);
+}
+
+.chat-input:disabled {
+  opacity: 0.5;
+}
+
+.send-btn {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #811cd9, #00fbfb);
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 14px rgba(129, 28, 217, 0.4),
+    0 0 20px rgba(0, 251, 251, 0.15);
+}
+
+.send-btn:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.08);
+  box-shadow:
+    0 6px 20px rgba(129, 28, 217, 0.5),
+    0 0 30px rgba(0, 251, 251, 0.2);
+}
+
+.send-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Empty state icon ────────────────────────────────────────────── */
+.icon-ring {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(0, 251, 251, 0.08);
+}
+
+.icon-glow {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 251, 251, 0.12);
+  border-radius: 24px;
+  filter: blur(16px);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* ── Chart canvas wrapper ────────────────────────────────────────── */
+.chart-canvas-wrap {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) inset;
+}
+
+/* ── Clear button ────────────────────────────────────────────────── */
+.clear-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.clear-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(129, 28, 217, 0.1);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────── */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(129, 28, 217, 0.4);
+}
+
+/* ── Animations ──────────────────────────────────────────────────── */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes chartReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes typingIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.chart-reveal {
+  animation: chartReveal 0.45s ease-out both;
+}
+
+.typing-entry {
+  animation: typingIn 0.3s ease-out both;
 }
 </style>
