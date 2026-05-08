@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
+    geminiApiKey: process.env.GEMINI_API_KEY,
     public: {
       telegramBotToken: process.env.NUXT_TELEGRAM_BOT_TOKEN,
       telegramChatId: process.env.NUXT_TELEGRAM_CHAT_ID,

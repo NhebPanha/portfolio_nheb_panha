@@ -15,13 +15,15 @@ export default defineEventHandler(async (event) => {
   const { name, email, type, message } = body;
 
   const text = `
-🚀 *New Contact Form Submission*
-  
-👤 *Name:* ${name}
+✨ *New Contact Submission* ✨
+
+👨‍💻 *Name:* ${name}
 📧 *Email:* ${email}
-📂 *Type:* ${type}
-📝 *Message:* ${message}
-  `.trim();
+📌 *Type:* ${type}
+💬 *Message:*${message}
+───────────────
+📨 Sent from your website
+`.trim();
 
   const url = `https://api.telegram.org/bot${config.telegramBotToken}/sendMessage`;
   try {

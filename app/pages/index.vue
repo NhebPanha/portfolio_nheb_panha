@@ -3,5 +3,6 @@
   <About />
   <Portfolio />
   <Skills />
+  <ChartAI />
   <ExperienceContact />
 </template>
