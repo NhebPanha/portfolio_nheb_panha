@@ -1,44 +1,48 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
   const config = useRuntimeConfig()
-  const { prompt, history, apiKey } = body
-  const finalApiKey = apiKey || config.geminiApiKey
+  const body = await readBody(event)
+  const { prompt, history } = body
 
-  if (!finalApiKey) {
-    console.error('Chat API Error: No API key found in request or environment')
+  // This looks at runtimeConfig.GEMINI_API_KEY defined in nuxt.config.ts
+  const apiKey = config.geminiApiKey
+  if (!apiKey) {
     throw createError({
-      statusCode: 400,
-      statusMessage: 'API Key is missing',
+      statusCode: 500,
+      statusMessage: 'CRITICAL: GEMINI_API_KEY is missing from environment.',
     })
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(finalApiKey)
-    // Using gemini-pro for maximum compatibility
+    const genAI = new GoogleGenerativeAI(apiKey)
+    
+    // Using gemini-flash-latest for best performance (points to 2.5 flash in 2026)
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-pro",
-      systemInstruction: "You are a professional, witty data analyst for a developer's portfolio. You have access to three data types: 'skills', 'projects', and 'productivity'. If the user asks about these, explain that you are visualizing them. Keep responses under 40 words."
+      model: "gemini-flash-latest",
+      systemInstruction: "You are a professional, witty data analyst for a developer's portfolio. You have access to three data types: 'skills', 'projects', and 'productivity'. If the user asks about these, explain that you are visualizing them. Keep responses under 50 words."
     })
 
-    // Gemini requires the history to start with a 'user' role
-    const filteredHistory = history.filter((_: any, index: number) => {
-      if (index === 0 && history[0].role === 'model') return false
+    const safeHistory = Array.isArray(history) ? history : []
+    const filteredHistory = safeHistory.filter((m: any, index: number) => {
+      if (index === 0 && m.role === 'model') return false
       return true
     })
 
-    console.log(`Processing chat request: "${prompt}"`)
-    const chat = model.startChat({ history: filteredHistory })
+    const chat = model.startChat({
+      history: filteredHistory,
+    })
+
     const result = await chat.sendMessage(prompt)
     const responseText = result.response.text()
 
     return { responseText }
+
   } catch (error: any) {
-    console.error('Gemini API Error Detail:', error)
+    console.error('Gemini API Error:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: error.message || 'Internal Server Error',
+      statusMessage: error.message || 'Internal Server Error'
     })
   }
 })
