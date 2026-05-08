@@ -13,7 +13,7 @@
           <span class="text-secondary">AI</span> Assistant
         </h2>
         <p class="text-on-surface-variant font-light max-w-2xl mx-auto">
-          Explore my journey through data. Ask about my **skills**, **projects**, or **productivity**.
+          Explore my journey through data. Ask about my *skills*, *projects*, or *productivity*.
         </p>
       </div>
 
