@@ -2,12 +2,13 @@
   <div class="bg-background text-on-background font-body min-h-screen transition-colors duration-500">
 
     <!-- ================= EXPERIENCE ================= -->
-    <section id="experience" class="pt-24 md:pt-32 pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8">
+    <section id="experience" class="pt-24 md:pt-32 pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8" ref="experienceRef">
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
 
         <!-- Left Panel -->
-        <div class="lg:col-span-4 sticky top-32 h-fit">
+        <div class="lg:col-span-4 sticky top-32 h-fit transition-all duration-700 ease-out"
+             :class="expVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'">
 
           <span class="text-xs tracking-[0.2em] text-primary uppercase mb-4 block">
             Professional Journey
@@ -25,21 +26,23 @@
         </div>
 
         <!-- Timeline -->
-        <div class="lg:col-span-8 relative pl-12 md:pl-24">
+        <div class="lg:col-span-8 relative pl-12 md:pl-24 transition-all duration-1000 ease-out"
+             :class="expVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
 
           <!-- Vertical Line -->
           <div class="absolute left-4 md:left-12 top-0 bottom-0 w-px timeline-line opacity-30"></div>
 
           <!-- Items -->
-          <div v-for="(item, index) in experiences" :key="index" class="relative mb-24 group animate-fadeIn"
-            :style="{ animationDelay: `${index * 0.2}s` }">
+          <div v-for="(item, index) in experiences" :key="index" class="relative mb-24 group transition-all duration-700 ease-out"
+            :class="expVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'"
+            :style="{ transitionDelay: expVisible ? `${index * 200}ms` : '0ms' }">
 
             <!-- Dot -->
             <div class="absolute -left-10 md:-left-[52px] top-2 w-4 h-4 rounded-full border-4 border-background z-10"
               :class="item.dotColor"></div>
 
             <!-- Card -->
-            <div class="glass-panel p-8 hover:translate-x-2 transition-transform duration-300 cursor-pointer"
+            <div class="glass-panel p-8 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer"
               @click="item.showDetails = !item.showDetails">
 
               <span class="text-[10px] tracking-widest uppercase font-bold block mb-2 text-secondary-dim">
@@ -60,7 +63,7 @@
 
               <div v-if="item.showDetails" class="flex flex-wrap gap-2 mb-4">
                 <span v-for="tech in item.tech" :key="tech"
-                  class="bg-surface-container px-3 py-1 text-[10px] uppercase">
+                  class="bg-surface-container px-3 py-1 text-[10px] uppercase rounded">
                   {{ tech }}
                 </span>
               </div>
@@ -79,9 +82,10 @@
     </section>
 
     <!-- ================= CONTACT ================= -->
-    <section id="contact" class="pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8">
+    <section id="contact" class="pb-16 md:pb-24 max-w-7xl mx-auto px-4 md:px-8" ref="contactRef">
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 transition-all duration-700 ease-out"
+           :class="contactVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
 
         <!-- Info -->
         <div class="lg:col-span-5">
@@ -105,28 +109,29 @@
 
         <!-- Form -->
         <div class="lg:col-span-7">
-          <div class="glass-panel p-10 md:p-16">
+          <div class="glass-panel p-8 md:p-12 hover:shadow-xl transition-shadow duration-300">
 
-            <form @submit.prevent="handleSubmit" class="space-y-10">
+            <form @submit.prevent="handleSubmit" class="space-y-6">
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <input v-model="form.name" placeholder="Your Name" class="input-style" />
-                <input v-model="form.email" type="email" placeholder="Email Address" class="input-style" />
+              <div class="ios-group shadow-sm">
+                <div class="ios-row">
+                  <span class="ios-label font-medium">Name</span>
+                  <input v-model="form.name" placeholder="John Doe" class="ios-input" />
+                </div>
+                <div class="ios-row">
+                  <span class="ios-label font-medium">Email</span>
+                  <input v-model="form.email" type="email" placeholder="john@example.com" class="ios-input" />
+                </div>
               </div>
 
-              <select v-model="form.type" class="input-style">
-                <option>Project Inquiry</option>
-                <option>Collaboration</option>
-                <option>Freelance Work</option>
-                <option>General</option>
-              </select>
+              <div class="ios-group shadow-sm">
+                <div class="ios-row items-start pt-4">
+                  <textarea v-model="form.message" rows="5" placeholder="Message..."
+                    class="ios-input resize-none w-full"></textarea>
+                </div>
+              </div>
 
-              <textarea v-model="form.message" rows="5" placeholder="Your message..."
-                class="input-style resize-none"></textarea>
-
-              <button type="submit" :disabled="isSubmitting" class="bg-black text-white px-8 md:px-12 py-4 uppercase text-xs tracking-widest w-full md:w-auto
-                       hover:shadow-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed
-                       dark:bg-black dark:text-white dark:border dark:border-gray-800">
+              <button type="submit" :disabled="isSubmitting" class="w-full bg-[#007aff] hover:bg-[#005bb5] text-white font-semibold text-[17px] py-3.5 rounded-xl transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md">
                 {{ isSubmitting ? 'Sending...' : 'Send Message' }}
               </button>
 
@@ -144,7 +149,8 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-
+const { sectionRef: experienceRef, isVisible: expVisible } = useScrollAnimate(0.1)
+const { sectionRef: contactRef, isVisible: contactVisible } = useScrollAnimate(0.1)
 
 /* ================= EXPERIENCE ================= */
 const experiences = [
@@ -187,7 +193,6 @@ const experiences = [
 const form = reactive({
   name: "",
   email: "",
-  type: "Project Inquiry",
   message: "",
 });
 
@@ -217,23 +222,6 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-/* Animation */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.6s forwards;
-}
-
 /* Glass */
 .glass-panel {
   background: rgba(255, 255, 255, 0.4);
@@ -246,23 +234,61 @@ const handleSubmit = async () => {
   background: rgba(131, 130, 130, 0.144);
 }
 
-/* Input */
-.input-style {
-  width: 100%;
-  border-bottom: 2px solid #ccc;
-  padding: 10px 0;
+/* iOS Form Styles */
+.ios-group {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dark .ios-group {
+  background: rgba(44, 44, 46, 0.9);
+}
+
+.ios-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark .ios-row {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.ios-row:last-child {
+  border-bottom: none;
+}
+
+.ios-label {
+  width: 80px;
+  font-size: 17px;
+  color: #333;
+}
+
+.dark .ios-label {
+  color: #ccc;
+}
+
+.ios-input {
+  flex: 1;
   background: transparent;
+  border: none;
   outline: none;
-  transition: border-color 0.3s;
+  font-size: 17px;
+  color: #000;
 }
 
-.dark .input-style {
-  border-color: #555;
-  color: #f5f5f5;
+.dark .ios-input {
+  color: #fff;
 }
 
-.input-style:focus {
-  border-color: #811cd9;
+.ios-input::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.dark .ios-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 /* Timeline line */

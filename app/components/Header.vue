@@ -97,14 +97,27 @@ const scrollToSection = (e, href) => {
 const handleScroll = () => {
   const scrollPosition = window.scrollY + 150; // offset for header
 
-  let currentSection = '#hero';
+  // Get all valid sections and their offset positions
+  const sections = navLinks.value
+    .map(link => {
+      const el = document.querySelector(link.href);
+      return { href: link.href, offsetTop: el ? el.offsetTop : -1 };
+    })
+    .filter(item => item.offsetTop !== -1)
+    .sort((a, b) => a.offsetTop - b.offsetTop);
 
-  for (const link of navLinks.value) {
-    const section = document.querySelector(link.href);
-    if (section) {
-      if (section.offsetTop <= scrollPosition) {
-        currentSection = link.href;
-      }
+  let currentSection = navLinks.value[0].href;
+
+  for (const section of sections) {
+    if (section.offsetTop <= scrollPosition) {
+      currentSection = section.href;
+    }
+  }
+
+  // If scrolled to the absolute bottom of the page, force the last section to be active
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+    if (sections.length > 0) {
+      currentSection = sections[sections.length - 1].href;
     }
   }
 

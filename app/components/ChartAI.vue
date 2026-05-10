@@ -1,7 +1,8 @@
 <template>
-  <section id="chart-ai" class="py-24 bg-background text-on-background relative overflow-hidden">
+  <section id="chart-ai" class="py-24 bg-background text-on-background relative overflow-hidden" ref="sectionRef">
     <!-- Ambient Glow Background -->
-    <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-1000"
+         :class="isVisible ? 'opacity-100' : 'opacity-0'">
       <div class="absolute top-[-15%] left-[-10%] w-[45%] h-[45%] bg-primary/10 rounded-full blur-[140px]"></div>
       <div class="absolute bottom-[-15%] right-[-10%] w-[45%] h-[45%] bg-secondary/10 rounded-full blur-[140px]"></div>
       <div class="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-primary/5 rounded-full blur-[100px]"></div>
@@ -9,7 +10,8 @@
 
     <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <!-- Header -->
-      <div class="text-center mb-14">
+      <div class="text-center mb-14 transition-all duration-700 ease-out"
+           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'">
         <span class="text-xs tracking-[0.3em] text-primary uppercase mb-4 block font-bold">Interactive Analytics</span>
         <h2 class="text-4xl md:text-5xl font-black tracking-tighter leading-none mb-4">
           <span class="text-secondary">AI</span> Assistant
@@ -24,26 +26,27 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
         <!-- ─── Chat Interface ─────────────────────────────────────────── -->
-        <div class="lg:col-span-4 chat-panel flex flex-col h-[620px]">
+        <div class="lg:col-span-4 chat-panel flex flex-col h-[620px] transition-all duration-700 ease-out delay-100"
+             :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'">
 
           <!-- Bot Header -->
-          <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-black/10 dark:border-white/5">
             <div class="flex items-center gap-3">
               <div class="bot-avatar">
                 <span class="material-symbols-outlined text-white text-xl">smart_toy</span>
               </div>
               <div>
-                <h3 class="font-black text-sm tracking-wider uppercase">Analyst Bot</h3>
-                <span class="text-[10px] text-emerald-400 flex items-center gap-1.5 font-semibold">
+                <h3 class="font-black text-sm tracking-wider uppercase text-on-background">Analyst Bot</h3>
+                <span class="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-semibold">
                   <span class="status-dot"></span>
                   Gemini Flash 1.5
                 </span>
               </div>
             </div>
             <div class="flex gap-1.5">
-              <div class="w-2 h-2 rounded-full bg-white/10"></div>
-              <div class="w-2 h-2 rounded-full bg-white/10"></div>
-              <div class="w-2 h-2 rounded-full bg-white/10"></div>
+              <div class="w-2 h-2 rounded-full bg-black/10 dark:bg-white/10"></div>
+              <div class="w-2 h-2 rounded-full bg-black/10 dark:bg-white/10"></div>
+              <div class="w-2 h-2 rounded-full bg-black/10 dark:bg-white/10"></div>
             </div>
           </div>
 
@@ -51,7 +54,7 @@
           <div ref="chatContainer" class="flex-1 overflow-y-auto mb-5 space-y-5 pr-2 custom-scrollbar">
             <div v-for="(msg, index) in messages" :key="index"
               :class="['flex flex-col', msg.role === 'user' ? 'items-end' : 'items-start']">
-              <span class="text-[10px] uppercase tracking-widest opacity-30 mb-1 mx-1">
+              <span class="text-[10px] uppercase tracking-widest opacity-40 mb-1 mx-1 text-on-background">
                 {{ msg.role === 'user' ? 'You' : 'Bot' }}
               </span>
               <div :class="[
@@ -66,7 +69,7 @@
 
             <!-- Typing indicator -->
             <div v-if="isTyping" class="flex flex-col items-start typing-entry">
-              <span class="text-[10px] uppercase tracking-widest opacity-30 mb-1 mx-1">Bot</span>
+              <span class="text-[10px] uppercase tracking-widest opacity-40 mb-1 mx-1 text-on-background">Bot</span>
               <div class="bot-bubble px-4 py-3 rounded-2xl flex gap-1.5">
                 <span class="dot-bounce" style="animation-delay: 0s"></span>
                 <span class="dot-bounce" style="animation-delay: 0.18s"></span>
@@ -87,7 +90,8 @@
 
         <!-- ─── Chart Visualization ────────────────────────────────────── -->
         <div
-          class="lg:col-span-8 chart-panel min-h-[620px] flex flex-col items-center justify-center relative overflow-hidden">
+          class="lg:col-span-8 chart-panel min-h-[620px] flex flex-col items-center justify-center relative overflow-hidden transition-all duration-700 ease-out delay-300"
+          :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'">
           <!-- Grid overlay -->
           <div class="chart-grid-bg"></div>
 
@@ -111,7 +115,7 @@
               <div>
                 <span class="text-[10px] uppercase tracking-[0.3em] text-primary mb-1 block font-bold">Data
                   Visualization</span>
-                <h3 class="text-2xl font-black tracking-tighter text-white">{{ currentChartTitle }}</h3>
+                <h3 class="text-2xl font-black tracking-tighter text-on-background">{{ currentChartTitle }}</h3>
               </div>
               <button @click="resetChart" class="clear-btn">
                 <span class="material-symbols-outlined text-sm">close</span>
@@ -134,6 +138,8 @@ import { ref, nextTick } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
 Chart.register(...registerables)
+
+const { sectionRef, isVisible } = useScrollAnimate(0.1)
 
 const chatContainer = ref<HTMLElement | null>(null)
 const chartCanvas = ref<HTMLCanvasElement | null>(null)
@@ -247,7 +253,7 @@ const renderChart = (type: keyof typeof chartDataModels) => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { labels: { color: 'rgba(255,255,255,0.5)', font: { size: 11 } } },
+          legend: { labels: { color: '#888', font: { size: 11 } } },
           tooltip: {
             backgroundColor: 'rgba(10,10,20,0.9)',
             borderColor: model.colors.border,
@@ -260,20 +266,20 @@ const renderChart = (type: keyof typeof chartDataModels) => {
         },
         scales: model.type !== 'radar' ? {
           y: {
-            ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            border: { color: 'rgba(255,255,255,0.05)' }
+            ticks: { color: '#888', font: { size: 11 } },
+            grid: { color: 'rgba(128,128,128,0.1)' },
+            border: { color: 'rgba(128,128,128,0.1)' }
           },
           x: {
-            ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
+            ticks: { color: '#888', font: { size: 11 } },
             grid: { display: false },
-            border: { color: 'rgba(255,255,255,0.05)' }
+            border: { color: 'rgba(128,128,128,0.1)' }
           }
         } : {
           r: {
-            angleLines: { color: 'rgba(255,255,255,0.08)' },
-            grid: { color: 'rgba(255,255,255,0.08)' },
-            pointLabels: { color: 'rgba(255,255,255,0.7)', font: { size: 12, weight: 'bold' } },
+            angleLines: { color: 'rgba(128,128,128,0.1)' },
+            grid: { color: 'rgba(128,128,128,0.1)' },
+            pointLabels: { color: '#888', font: { size: 12, weight: 'bold' } },
             ticks: { display: false, backdropColor: 'transparent' }
           }
         }
@@ -291,26 +297,44 @@ const resetChart = () => {
 <style scoped>
 /* ── Panels ──────────────────────────────────────────────────────── */
 .chat-panel {
-  background: rgba(10, 10, 20, 0.6);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 28px;
   padding: 1.75rem;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04) inset,
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 32px 80px rgba(0, 0, 0, 0.05);
+}
+
+.dark .chat-panel {
+  background: rgba(10, 10, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.04) inset,
     0 8px 32px rgba(0, 0, 0, 0.5),
     0 32px 80px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(var(--tw-color-primary, 0, 251, 251), 0.04);
+    0 0 60px rgba(0, 251, 251, 0.04);
 }
 
 .chart-panel {
-  background: rgba(10, 10, 20, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 28px;
   padding: 2rem;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.03) inset,
+    0 8px 40px rgba(0, 0, 0, 0.1),
+    0 40px 100px rgba(0, 0, 0, 0.05);
+}
+
+.dark .chart-panel {
+  background: rgba(10, 10, 20, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.03) inset,
     0 8px 40px rgba(0, 0, 0, 0.55),
@@ -323,11 +347,17 @@ const resetChart = () => {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
   background-size: 32px 32px;
   border-radius: 28px;
   pointer-events: none;
+}
+
+.dark .chart-grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
 }
 
 /* ── Bot avatar ──────────────────────────────────────────────────── */
@@ -358,9 +388,18 @@ const resetChart = () => {
 
 /* ── Chat bubbles ────────────────────────────────────────────────── */
 .user-bubble {
+  background: linear-gradient(135deg, rgba(129, 28, 217, 0.15), rgba(129, 28, 217, 0.05));
+  border: 1px solid rgba(129, 28, 217, 0.2);
+  border-top-right-radius: 4px;
+  color: #333;
+  box-shadow:
+    0 2px 12px rgba(129, 28, 217, 0.1),
+    0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.dark .user-bubble {
   background: linear-gradient(135deg, rgba(129, 28, 217, 0.25), rgba(129, 28, 217, 0.1));
   border: 1px solid rgba(129, 28, 217, 0.3);
-  border-top-right-radius: 4px;
   color: #f0f0f0;
   box-shadow:
     0 2px 12px rgba(129, 28, 217, 0.2),
@@ -368,9 +407,18 @@ const resetChart = () => {
 }
 
 .bot-bubble {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02));
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-top-left-radius: 4px;
+  color: #333;
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.05),
+    0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.dark .bot-bubble {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top-left-radius: 4px;
   color: rgba(255, 255, 255, 0.75);
   box-shadow:
     0 2px 12px rgba(0, 0, 0, 0.3),
@@ -413,23 +461,40 @@ const resetChart = () => {
   position: relative;
   z-index: 1;
   width: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   padding: 0.85rem 3.5rem 0.85rem 1.25rem;
   font-size: 0.875rem;
-  color: #fff;
+  color: #333;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) inset;
+}
+
+.dark .chat-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) inset;
 }
 
 .chat-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.dark .chat-input::placeholder {
   color: rgba(255, 255, 255, 0.2);
 }
 
 .chat-input:focus {
   border-color: rgba(129, 28, 217, 0.4);
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.05) inset,
+    0 0 20px rgba(129, 28, 217, 0.15);
+}
+
+.dark .chat-input:focus {
   box-shadow:
     0 2px 12px rgba(0, 0, 0, 0.3) inset,
     0 0 20px rgba(129, 28, 217, 0.15);
@@ -479,12 +544,20 @@ const resetChart = () => {
   width: 100px;
   height: 100px;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.05),
+    0 0 60px rgba(0, 251, 251, 0.08);
+}
+
+.dark .icon-ring {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     0 0 60px rgba(0, 251, 251, 0.08);
@@ -501,10 +574,16 @@ const resetChart = () => {
 
 /* ── Chart canvas wrapper ────────────────────────────────────────── */
 .chart-canvas-wrap {
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 20px;
   padding: 1.25rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05) inset;
+}
+
+.dark .chart-canvas-wrap {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) inset;
 }
 
@@ -518,16 +597,29 @@ const resetChart = () => {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.dark .clear-btn {
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 .clear-btn:hover {
+  color: #000;
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+.dark .clear-btn:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.14);
@@ -546,8 +638,12 @@ const resetChart = () => {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {

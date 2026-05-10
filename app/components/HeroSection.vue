@@ -1,7 +1,7 @@
 <template>
   <div id="hero" class="bg-background text-on-background font-body min-h-screen transition-colors duration-500">
     <!-- Hero Section -->
-    <main class="relative min-h-screen flex items-center overflow-hidden bg-grid-pattern pt-20">
+    <main class="relative min-h-screen flex items-center overflow-hidden bg-grid-pattern pt-20" ref="sectionRef">
       <!-- ✅ Animated Background Layers -->
       <div class="absolute inset-0 overflow-hidden">
         <div class="blob blob-1"></div>
@@ -12,7 +12,8 @@
       <div class="max-w-7xl mx-auto px-4 md:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
 
         <!-- Hero Content -->
-        <div class="lg:col-span-7 z-10">
+        <div class="lg:col-span-7 z-10 transition-all duration-1000 ease-out"
+             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
           <div
             class="inline-block bg-tertiary-container text-on-tertiary-container px-3 py-1 text-[10px] tracking-[0.2em] uppercase mb-6">
             Digital Craftsman // v2.0
@@ -37,18 +38,19 @@
           </p>
 
           <div class="flex flex-wrap gap-6">
-            <button class="btn-primary">
+            <button class="btn-primary hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(129,28,217,0.6)] transition-all">
               View My Work
             </button>
 
-            <button class="btn-outline">
+            <button class="btn-outline hover:-translate-y-1 hover:bg-cyan-400/10 transition-all">
               Contact Me
             </button>
           </div>
         </div>
         <!-- Profile Image -->
-        <div class="lg:col-span-5 relative flex justify-center lg:justify-end mt-12 lg:mt-0">
-          <div class="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+        <div class="lg:col-span-5 relative flex justify-center lg:justify-end mt-12 lg:mt-0 transition-all duration-1000 ease-out delay-300"
+             :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'">
+          <div class="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 hover:scale-105 transition-transform duration-500">
 
             <div class="ring ring-1"></div>
             <div class="ring ring-2"></div>
@@ -66,8 +68,28 @@
 
       </div>
 
+      <!-- Infinite Skill Marquee -->
+      <div class="absolute bottom-0 left-0 w-full overflow-hidden bg-background/40 backdrop-blur-md border-t border-white/5 py-4 z-20">
+        <div class="marquee-container flex whitespace-nowrap">
+          <div class="marquee-content flex gap-8 md:gap-16 items-center px-8">
+            <span v-for="skill in skills" :key="skill" class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-on-surface-variant opacity-70 flex items-center gap-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(0,251,251,0.8)]"></span>
+              {{ skill }}
+            </span>
+          </div>
+          <!-- Duplicate for seamless loop -->
+          <div class="marquee-content flex gap-8 md:gap-16 items-center px-8" aria-hidden="true">
+            <span v-for="skill in skills" :key="skill + '-dup'" class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-on-surface-variant opacity-70 flex items-center gap-3">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(0,251,251,0.8)]"></span>
+              {{ skill }}
+            </span>
+          </div>
+        </div>
+      </div>
+
       <!-- Scroll Indicator -->
-      <div class="scroll-indicator">
+      <div class="scroll-indicator transition-opacity duration-1000 delay-700 z-10"
+           :class="isVisible ? 'opacity-50' : 'opacity-0'">
         <span>Initiate Scroll</span>
         <div></div>
       </div>
@@ -80,7 +102,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+const { sectionRef, isVisible } = useScrollAnimate(0.1)
+
 const isDark = ref(false)
+
+const skills = [
+  'Flutter', 'Vue.js', 'Nuxt.js', 'Laravel', 'Tailwind CSS', 'Supabase', 'Firebase', 'Dart', 'MySQL', 'PostgreSQL', 'TypeScript', 'Node.js'
+]
 
 const toggleDark = () => {
   isDark.value = !isDark.value
@@ -295,5 +323,21 @@ onMounted(() => {
 main:hover .blob {
   filter: blur(150px);
   opacity: 0.6;
+}
+
+/* ================= MARQUEE ================= */
+.marquee-container {
+  display: flex;
+  width: max-content;
+  animation: scrollMarquee 30s linear infinite;
+}
+
+.marquee-container:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 </style>
