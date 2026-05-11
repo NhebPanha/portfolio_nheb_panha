@@ -2,7 +2,7 @@
   <section id="chart-ai" class="py-24 bg-background text-on-background relative overflow-hidden" ref="sectionRef">
     <!-- Ambient Glow Background -->
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-1000"
-         :class="isVisible ? 'opacity-100' : 'opacity-0'">
+      :class="isVisible ? 'opacity-100' : 'opacity-0'">
       <div class="absolute top-[-15%] left-[-10%] w-[45%] h-[45%] bg-primary/10 rounded-full blur-[140px]"></div>
       <div class="absolute bottom-[-15%] right-[-10%] w-[45%] h-[45%] bg-secondary/10 rounded-full blur-[140px]"></div>
       <div class="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-primary/5 rounded-full blur-[100px]"></div>
@@ -11,7 +11,7 @@
     <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <!-- Header -->
       <div class="text-center mb-14 transition-all duration-700 ease-out"
-           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'">
+        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'">
         <span class="text-xs tracking-[0.3em] text-primary uppercase mb-4 block font-bold">Interactive Analytics</span>
         <h2 class="text-4xl md:text-5xl font-black tracking-tighter leading-none mb-4">
           <span class="text-secondary">AI</span> Assistant
@@ -27,7 +27,7 @@
 
         <!-- ─── Chat Interface ─────────────────────────────────────────── -->
         <div class="lg:col-span-4 chat-panel flex flex-col h-[620px] transition-all duration-700 ease-out delay-100"
-             :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'">
+          :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'">
 
           <!-- Bot Header -->
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-black/10 dark:border-white/5">
@@ -37,7 +37,8 @@
               </div>
               <div>
                 <h3 class="font-black text-sm tracking-wider uppercase text-on-background">Analyst Bot</h3>
-                <span class="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-semibold">
+                <span
+                  class="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-semibold">
                   <span class="status-dot"></span>
                   Gemini Flash 1.5
                 </span>
@@ -136,6 +137,7 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import { Chart, registerables } from 'chart.js'
+import { useScrollAnimate } from '~/composables/useScrollAnimate'
 
 Chart.register(...registerables)
 
