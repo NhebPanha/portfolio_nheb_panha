@@ -2,7 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Add your custom "Luminous Architect" patterns here */
+@layer base {
+  :root {
+    --bg: #ffffff;
+    --text: #111111;
+    --text-muted: #666666;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --primary: #811cd9;
+    --secondary: #ff81f5;
+    --accent: #00fbfb;
+  }
+
+  .dark {
+    --bg: #030303;
+    --text: #f5f5f5;
+    --text-muted: #999999;
+    --glass-bg: rgba(10, 10, 10, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    @apply transition-colors duration-500;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+}
+
 @layer components {
   .bg-grid-pattern {
     background-image: linear-gradient(to right, rgba(129, 28, 217, 0.05) 1px, transparent 1px),
@@ -11,57 +37,49 @@
   }
 
   .glass-nav {
-    @apply bg-white/40 backdrop-blur-md;
+    @apply backdrop-blur-xl transition-all duration-500;
+    background-color: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .glass-panel {
+    @apply backdrop-blur-2xl transition-all duration-500;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .glass-panel {
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.6);
+  }
+
+  .glass-panel:hover {
+    @apply -translate-y-1;
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary);
+  }
+
+  .dark .glass-panel:hover {
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
   }
 
   .power-rail {
-    background: linear-gradient(90deg, #811cd9, #00fbfb);
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+    background-size: 200% auto;
   }
 }
 
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-}
+/* Custom Utility Classes */
+.bg-background { background-color: var(--bg); }
+.text-on-background { color: var(--text); }
+.text-on-surface-variant { color: var(--text-muted); }
 
-.dark {
-  --bg: #0a0a0a;
-  --text: #f5f5f5;
-}
-
-/* Apply variables */
-.bg-background {
-  background-color: var(--bg);
-}
-
-.text-on-background {
-  color: var(--text);
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  /* Add these shadow properties */
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Chat-specific shadow (Subtle Cyan Glow) */
+/* Shadows & Glows */
 .shadow-chat {
-  box-shadow: 0 20px 40px -15px rgba(0, 251, 251, 0.15),
-    0 0 20px -5px rgba(0, 251, 251, 0.05);
+  box-shadow: 0 20px 40px -15px rgba(0, 251, 251, 0.2);
 }
 
-/* Analysis-specific shadow (Subtle Pink/Purple Glow) */
 .shadow-analysis {
-  box-shadow: 0 20px 40px -15px rgba(255, 129, 245, 0.15),
-    0 0 20px -5px rgba(255, 129, 245, 0.05);
-}
-
-/* Optional: Lift effect on hover */
-.glass-panel:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
-}
+  box-shadow: 0 20px 40px -15px rgba(255, 129, 245, 0.2);
+}

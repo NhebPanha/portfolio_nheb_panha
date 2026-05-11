@@ -299,46 +299,34 @@ const resetChart = () => {
 <style scoped>
 /* ── Panels ──────────────────────────────────────────────────────── */
 .chat-panel {
-  background: rgba(255, 255, 255, 0.6);
+  background-color: var(--glass-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--glass-border);
   border-radius: 28px;
   padding: 1.75rem;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.04) inset,
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    0 32px 80px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
 }
 
 .dark .chat-panel {
-  background: rgba(10, 10, 20, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
     0 8px 32px rgba(0, 0, 0, 0.5),
     0 32px 80px rgba(0, 0, 0, 0.4),
     0 0 60px rgba(0, 251, 251, 0.04);
 }
 
 .chart-panel {
-  background: rgba(255, 255, 255, 0.5);
+  background-color: var(--glass-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 0, 0, 0.07);
+  border: 1px solid var(--glass-border);
   border-radius: 28px;
   padding: 2rem;
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.03) inset,
-    0 8px 40px rgba(0, 0, 0, 0.1),
-    0 40px 100px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.05);
 }
 
 .dark .chart-panel {
-  background: rgba(10, 10, 20, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
     0 8px 40px rgba(0, 0, 0, 0.55),
     0 40px 100px rgba(0, 0, 0, 0.45),
     0 0 80px rgba(129, 28, 217, 0.06);
@@ -390,41 +378,28 @@ const resetChart = () => {
 
 /* ── Chat bubbles ────────────────────────────────────────────────── */
 .user-bubble {
-  background: linear-gradient(135deg, rgba(129, 28, 217, 0.15), rgba(129, 28, 217, 0.05));
+  background: linear-gradient(135deg, rgba(129, 28, 217, 0.1), rgba(129, 28, 217, 0.05));
   border: 1px solid rgba(129, 28, 217, 0.2);
   border-top-right-radius: 4px;
-  color: #333;
-  box-shadow:
-    0 2px 12px rgba(129, 28, 217, 0.1),
-    0 4px 20px rgba(0, 0, 0, 0.05);
+  color: var(--text);
+  box-shadow: 0 4px 12px rgba(129, 28, 217, 0.1);
 }
 
 .dark .user-bubble {
   background: linear-gradient(135deg, rgba(129, 28, 217, 0.25), rgba(129, 28, 217, 0.1));
-  border: 1px solid rgba(129, 28, 217, 0.3);
-  color: #f0f0f0;
-  box-shadow:
-    0 2px 12px rgba(129, 28, 217, 0.2),
-    0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .bot-bubble {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02));
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--glass-border);
   border-top-left-radius: 4px;
-  color: #333;
-  box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.05),
-    0 4px 20px rgba(0, 0, 0, 0.02);
+  color: var(--text);
 }
 
 .dark .bot-bubble {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.75);
-  box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.3),
-    0 4px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* ── Typing dots ─────────────────────────────────────────────────── */
@@ -463,22 +438,18 @@ const resetChart = () => {
   position: relative;
   z-index: 1;
   width: 100%;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--glass-border);
   border-radius: 16px;
   padding: 0.85rem 3.5rem 0.85rem 1.25rem;
   font-size: 0.875rem;
-  color: #333;
+  color: var(--text);
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) inset;
+  transition: all 0.3s ease;
 }
 
 .dark .chat-input {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #fff;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) inset;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .chat-input::placeholder {

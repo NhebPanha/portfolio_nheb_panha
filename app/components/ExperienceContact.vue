@@ -37,9 +37,11 @@
             :class="expVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'"
             :style="{ transitionDelay: expVisible ? `${index * 200}ms` : '0ms' }">
 
-            <!-- Dot -->
-            <div class="absolute -left-10 md:-left-[52px] top-2 w-4 h-4 rounded-full border-4 border-background z-10"
-              :class="item.dotColor"></div>
+            <!-- Dot/Icon (Small like old) -->
+            <div class="absolute -left-11 md:-left-[60px] top-2 w-6 h-6 md:w-6 md:h-6 rounded-full border-[3px] border-background z-10 flex items-center justify-center transition-all duration-300 group-hover:scale-125"
+              :class="item.dotColor">
+              <span class="material-symbols-outlined text-[10px] text-white">{{ item.icon }}</span>
+            </div>
 
             <!-- Card -->
             <div class="glass-panel p-8 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer"
@@ -158,6 +160,7 @@ const experiences = [
     year: "2025 — Present",
     role: "Flutter Developer",
     company: "Mobile App Development",
+    icon: "smartphone",
     description:
       "Building mobile applications such as grocery apps, wallet systems, and delivery tracking apps using Flutter with Supabase and Firebase integration.",
     tech: ["Flutter", "Dart", "Supabase", "Firebase"],
@@ -169,6 +172,7 @@ const experiences = [
     year: "2024 — 2025",
     role: "Frontend Developer",
     company: "Web Applications",
+    icon: "web",
     description:
       "Developed responsive web applications using Vue 3 and Nuxt 4 with modern UI design and API integration.",
     tech: ["Vue 3", "Nuxt 4", "Tailwind CSS", "TypeScript"],
@@ -180,6 +184,7 @@ const experiences = [
     year: "2023 — 2024",
     role: "Backend Developer",
     company: "API Development",
+    icon: "api",
     description:
       "Created RESTful APIs and backend systems using Laravel and Node.js with authentication and database management.",
     tech: ["Laravel", "Node.js", "MySQL", "REST API"],
@@ -224,36 +229,25 @@ const handleSubmit = async () => {
 <style scoped>
 /* Glass */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(12px);
-  border-radius: 12px;
-  transition: transform 0.3s;
-}
-
-.dark .glass-panel {
-  background: rgba(131, 130, 130, 0.144);
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
 }
 
 /* iOS Form Styles */
 .ios-group {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
   overflow: hidden;
-}
-
-.dark .ios-group {
-  background: rgba(44, 44, 46, 0.9);
 }
 
 .ios-row {
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.dark .ios-row {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .ios-row:last-child {
