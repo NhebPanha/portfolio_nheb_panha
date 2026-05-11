@@ -1,81 +1,225 @@
 <template>
-    <div id="about" class="bg-background text-on-background font-body relative overflow-hidden transition-colors duration-500">
+    <div id="about"
+        class="bg-background text-on-background font-body relative overflow-hidden transition-colors duration-500">
+
         <!-- Ambient Glows -->
-        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[140px] pointer-events-none"></div>
+        <div
+            class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none">
+        </div>
+
+        <div
+            class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[140px] pointer-events-none">
+        </div>
 
         <main class="pt-24 md:pt-40 pb-32 px-4 md:px-8 max-w-7xl mx-auto relative z-10" ref="sectionRef">
-            
-            <!-- Clean About Content -->
-            <section class="max-w-4xl transition-all duration-1000 ease-out"
-                     :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
-                
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-primary text-[10px] font-bold tracking-[0.3em] uppercase mb-8">
+
+            <!-- About Me Section -->
+            <section class="max-w-5xl transition-all duration-1000 ease-out"
+                :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+
+                <!-- Label -->
+                <span
+                    class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-primary text-[10px] font-bold tracking-[0.35em] uppercase mb-8">
                     <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                    The Architect
+                    About Me
                 </span>
 
+                <!-- Main Heading -->
                 <h1 class="font-headline text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] mb-10">
-                    Nheb <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Panha</span>
+                    Nheb
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">
+                        Panha
+                    </span>
                 </h1>
 
+                <!-- Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
-                    <div class="md:col-span-8 space-y-6">
+
+                    <!-- Left Content -->
+                    <div class="md:col-span-8 space-y-8">
+
                         <p class="text-xl md:text-3xl text-on-surface-variant font-light leading-snug">
-                            An <span class="text-on-surface font-medium italic underline decoration-primary/30 decoration-2 underline-offset-4">Accounting-Developer</span> 
-                            crafting high-precision digital ecosystems with Nuxt, Laravel, and Flutter.
+                            I am a
+                            <span
+                                class="text-on-surface font-medium italic underline decoration-primary/30 decoration-2 underline-offset-4">
+                                Mobile App Developer
+                            </span>
+                            passionate about building modern, high-performance applications with seamless user
+                            experiences and scalable architecture.
                         </p>
-                        <p class="text-lg text-on-surface-variant/80 leading-relaxed max-w-2xl">
-                            I bridge the gap between financial meticulousness and technical creativity. 
-                            My work focuses on building scalable, user-centric applications that solve 
-                            complex business challenges with elegant code.
+
+                        <p class="text-lg text-on-surface-variant/80 leading-relaxed max-w-3xl">
+                            My journey combines financial precision with software engineering,
+                            allowing me to create solutions that are both technically powerful
+                            and strategically efficient. I specialize in modern technologies
+                            including Flutter, Nuxt, Laravel, and cloud-based ecosystems.
                         </p>
+
+                        <p class="text-lg text-on-surface-variant/80 leading-relaxed max-w-3xl">
+                            From fintech platforms and delivery systems to AI-powered dashboards,
+                            I focus on building high-performance applications with clean architecture,
+                            modern UI/UX, and real-world impact.
+                        </p>
+
+                        <!-- Quick Info -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+
+                            <div class="glass-panel p-5 rounded-2xl border border-white/5">
+                                <p class="text-primary text-xs tracking-[0.25em] uppercase mb-2">
+                                    Experience
+                                </p>
+                                <h3 class="text-3xl font-black">06+</h3>
+                                <p class="text-sm text-on-surface-variant">
+                                    Years
+                                </p>
+                            </div>
+
+                            <div class="glass-panel p-5 rounded-2xl border border-white/5">
+                                <p class="text-secondary text-xs tracking-[0.25em] uppercase mb-2">
+                                    Projects
+                                </p>
+                                <h3 class="text-3xl font-black">42+</h3>
+                                <p class="text-sm text-on-surface-variant">
+                                    Completed
+                                </p>
+                            </div>
+
+                            <div class="glass-panel p-5 rounded-2xl border border-white/5">
+                                <p class="text-primary text-xs tracking-[0.25em] uppercase mb-2">
+                                    Focus
+                                </p>
+                                <h3 class="text-xl font-black">
+                                    UI/UX
+                                </h3>
+                                <p class="text-sm text-on-surface-variant">
+                                    Innovation
+                                </p>
+                            </div>
+
+                            <div class="glass-panel p-5 rounded-2xl border border-white/5">
+                                <p class="text-secondary text-xs tracking-[0.25em] uppercase mb-2">
+                                    Location
+                                </p>
+                                <h3 class="text-xl font-black">
+                                    Cambodia
+                                </h3>
+                                <p class="text-sm text-on-surface-variant">
+                                    Phnom Penh
+                                </p>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <div class="md:col-span-4 flex flex-col gap-6">
-                        <div class="p-6 rounded-3xl glass-panel border border-white/5">
-                            <span class="text-[10px] font-bold tracking-widest text-primary uppercase block mb-1">Experience</span>
-                            <div class="text-4xl font-black tracking-tighter italic">06+ <span class="text-sm font-normal not-italic text-on-surface-variant">Years</span></div>
-                        </div>
-                        <div class="p-6 rounded-3xl glass-panel border border-white/5">
-                            <span class="text-[10px] font-bold tracking-widest text-secondary uppercase block mb-1">Delivery</span>
-                            <div class="text-4xl font-black tracking-tighter italic">42+ <span class="text-sm font-normal not-italic text-on-surface-variant">Projects</span></div>
+                    <!-- Right Side Card -->
+                    <div class="md:col-span-4">
+                        <div class="glass-panel border border-white/10 rounded-[2rem] p-8 relative overflow-hidden">
+
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none">
+                            </div>
+
+                            <div class="relative z-10">
+
+                                <div
+                                    class="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-6 shadow-2xl">
+                                    <span class="material-symbols-outlined text-white text-4xl">
+                                        person
+                                    </span>
+                                </div>
+
+                                <h3 class="text-3xl font-black tracking-tight mb-3">
+                                    Creative Developer
+                                </h3>
+
+                                <p class="text-on-surface-variant leading-relaxed mb-6">
+                                    Passionate about designing modern digital ecosystems with
+                                    clean code, scalable architecture, and immersive user experiences.
+                                </p>
+
+                                <div class="space-y-4">
+
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-primary">
+                                            code
+                                        </span>
+                                        <span>Full Stack Development</span>
+                                    </div>
+
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-secondary">
+                                            smartphone
+                                        </span>
+                                        <span>Cross-Platform Mobile Apps</span>
+                                    </div>
+
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-primary">
+                                            palette
+                                        </span>
+                                        <span>Modern UI/UX Design</span>
+                                    </div>
+
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-secondary">
+                                            database
+                                        </span>
+                                        <span>Backend & Database Systems</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </section>
 
-            <!-- Running Skills Marquee (Bottom) -->
+            <!-- Skills Marquee -->
             <div class="mt-32 md:mt-48 relative transition-all duration-1000 delay-300"
-                 :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'">
-                
+                :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'">
+
                 <h3 class="text-center text-[10px] font-bold tracking-[0.4em] text-white/20 uppercase mb-12">
                     Core Technical Ecosystem
                 </h3>
 
-                <!-- Row 1: Forward -->
+                <!-- Row 1 -->
                 <div class="marquee-wrap mb-6">
                     <div class="marquee-content animate-marquee">
                         <div v-for="skill in [...allSkills, ...allSkills]" :key="skill.name" class="skill-tag">
-                            <span class="material-symbols-outlined text-primary/70 text-lg">{{ skill.icon }}</span>
-                            <span class="font-bold tracking-tight">{{ skill.name }}</span>
+                            <span class="material-symbols-outlined text-primary/70 text-lg">
+                                {{ skill.icon }}
+                            </span>
+                            <span class="font-bold tracking-tight">
+                                {{ skill.name }}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Row 2: Reverse -->
+                <!-- Row 2 -->
                 <div class="marquee-wrap">
                     <div class="marquee-content animate-marquee-reverse">
-                        <div v-for="skill in [...allSkills, ...allSkills]" :key="skill.name + '-rev'" class="skill-tag skill-tag-alt">
-                            <span class="material-symbols-outlined text-secondary/70 text-lg">{{ skill.icon }}</span>
-                            <span class="font-bold tracking-tight">{{ skill.name }}</span>
+                        <div v-for="skill in [...allSkills, ...allSkills]" :key="skill.name + '-rev'"
+                            class="skill-tag skill-tag-alt">
+                            <span class="material-symbols-outlined text-secondary/70 text-lg">
+                                {{ skill.icon }}
+                            </span>
+                            <span class="font-bold tracking-tight">
+                                {{ skill.name }}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Gradient Overlays for smooth edges -->
-                <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10"></div>
-                <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10"></div>
+                <!-- Gradient Overlays -->
+                <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10">
+                </div>
+
+                <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10">
+                </div>
+
             </div>
 
         </main>
@@ -151,13 +295,23 @@ const allSkills = [
 }
 
 @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 @keyframes marquee-reverse {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
 }
 
 .glass-panel {
