@@ -72,16 +72,16 @@
       <div class="absolute bottom-0 left-0 w-full overflow-hidden bg-background/40 backdrop-blur-md border-t border-white/5 py-4 z-20">
         <div class="marquee-container flex whitespace-nowrap">
           <div class="marquee-content flex gap-8 md:gap-16 items-center px-8">
-            <span v-for="skill in skills" :key="skill" class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-on-surface-variant opacity-70 flex items-center gap-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(0,251,251,0.8)]"></span>
-              {{ skill }}
+            <span v-for="skill in skills" :key="skill.name" class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-on-surface-variant opacity-70 flex items-center gap-3">
+              <Icon :name="skill.icon" class="text-lg" />
+              {{ skill.name }}
             </span>
           </div>
           <!-- Duplicate for seamless loop -->
           <div class="marquee-content flex gap-8 md:gap-16 items-center px-8" aria-hidden="true">
-            <span v-for="skill in skills" :key="skill + '-dup'" class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-on-surface-variant opacity-70 flex items-center gap-3">
-              <span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(0,251,251,0.8)]"></span>
-              {{ skill }}
+            <span v-for="skill in skills" :key="skill.name + '-dup'" class="text-xs md:text-sm font-black tracking-[0.2em] uppercase text-on-surface-variant opacity-70 flex items-center gap-3">
+              <Icon :name="skill.icon" class="text-lg" />
+              {{ skill.name }}
             </span>
           </div>
         </div>
@@ -107,7 +107,18 @@ const { sectionRef, isVisible } = useScrollAnimate(0.1)
 const isDark = ref(false)
 
 const skills = [
-  'Flutter', 'Vue.js', 'Nuxt.js', 'Laravel', 'Tailwind CSS', 'Supabase', 'Firebase', 'Dart', 'MySQL', 'PostgreSQL', 'TypeScript', 'Node.js'
+  { name: 'Flutter', icon: 'logos:flutter' },
+  { name: 'Vue.js', icon: 'logos:vue' },
+  { name: 'Nuxt.js', icon: 'logos:nuxt-icon' },
+  { name: 'Laravel', icon: 'logos:laravel' },
+  { name: 'Tailwind CSS', icon: 'logos:tailwindcss-icon' },
+  { name: 'Supabase', icon: 'logos:supabase-icon' },
+  { name: 'Firebase', icon: 'logos:firebase' },
+  { name: 'Dart', icon: 'logos:dart' },
+  { name: 'MySQL', icon: 'logos:mysql-icon' },
+  { name: 'PostgreSQL', icon: 'logos:postgresql' },
+  { name: 'TypeScript', icon: 'logos:typescript-icon' },
+  { name: 'Node.js', icon: 'logos:nodejs-icon' }
 ]
 
 const toggleDark = () => {

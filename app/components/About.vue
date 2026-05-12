@@ -68,7 +68,7 @@
                                 <p class="text-primary text-xs tracking-[0.25em] uppercase mb-2">
                                     Experience
                                 </p>
-                                <h3 class="text-3xl font-black">06+</h3>
+                                <h3 class="text-3xl font-black">01+</h3>
                                 <p class="text-sm text-on-surface-variant">
                                     Years
                                 </p>
@@ -78,7 +78,7 @@
                                 <p class="text-secondary text-xs tracking-[0.25em] uppercase mb-2">
                                     Projects
                                 </p>
-                                <h3 class="text-3xl font-black">42+</h3>
+                                <h3 class="text-3xl font-black">05+</h3>
                                 <p class="text-sm text-on-surface-variant">
                                     Completed
                                 </p>
@@ -140,30 +140,22 @@
                                 <div class="space-y-4">
 
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-primary">
-                                            code
-                                        </span>
+                                        <Icon name="logos:nuxt-icon" class="text-xl" />
                                         <span>Full Stack Development</span>
                                     </div>
 
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-secondary">
-                                            smartphone
-                                        </span>
+                                        <Icon name="logos:flutter" class="text-xl" />
                                         <span>Cross-Platform Mobile Apps</span>
                                     </div>
 
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-primary">
-                                            palette
-                                        </span>
+                                        <Icon name="logos:tailwindcss-icon" class="text-xl" />
                                         <span>Modern UI/UX Design</span>
                                     </div>
 
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-secondary">
-                                            database
-                                        </span>
+                                        <Icon name="logos:laravel" class="text-xl" />
                                         <span>Backend & Database Systems</span>
                                     </div>
 
@@ -188,9 +180,7 @@
                 <div class="marquee-wrap mb-6">
                     <div class="marquee-content animate-marquee">
                         <div v-for="skill in [...allSkills, ...allSkills]" :key="skill.name" class="skill-tag">
-                            <span class="material-symbols-outlined text-primary/70 text-lg">
-                                {{ skill.icon }}
-                            </span>
+                            <Icon :name="skill.icon" class="text-lg" />
                             <span class="font-bold tracking-tight">
                                 {{ skill.name }}
                             </span>
@@ -203,9 +193,7 @@
                     <div class="marquee-content animate-marquee-reverse">
                         <div v-for="skill in [...allSkills, ...allSkills]" :key="skill.name + '-rev'"
                             class="skill-tag skill-tag-alt">
-                            <span class="material-symbols-outlined text-secondary/70 text-lg">
-                                {{ skill.icon }}
-                            </span>
+                            <Icon :name="skill.icon" class="text-lg" />
                             <span class="font-bold tracking-tight">
                                 {{ skill.name }}
                             </span>
@@ -230,18 +218,18 @@
 const { sectionRef, isVisible } = useScrollAnimate(0.1)
 
 const allSkills = [
-    { name: "Flutter", icon: "smartphone" },
-    { name: "Laravel", icon: "api" },
-    { name: "Nuxt 3", icon: "auto_awesome" },
-    { name: "Vue.js", icon: "web" },
-    { name: "Supabase", icon: "cloud" },
-    { name: "PostgreSQL", icon: "database" },
-    { name: "Tailwind", icon: "palette" },
-    { name: "Dart", icon: "code" },
-    { name: "Node.js", icon: "terminal" },
-    { name: "Firebase", icon: "local_fire_department" },
-    { name: "TypeScript", icon: "javascript" },
-    { name: "Git", icon: "account_tree" }
+    { name: "Flutter", icon: "logos:flutter" },
+    { name: "Laravel", icon: "logos:laravel" },
+    { name: "Nuxt", icon: "logos:nuxt-icon" },
+    { name: "Vue.js", icon: "logos:vue" },
+    { name: "Supabase", icon: "logos:supabase-icon" },
+    { name: "PostgreSQL", icon: "logos:postgresql" },
+    { name: "Tailwind", icon: "logos:tailwindcss-icon" },
+    { name: "Dart", icon: "logos:dart" },
+    { name: "Node.js", icon: "logos:nodejs-icon" },
+    { name: "Firebase", icon: "logos:firebase" },
+    { name: "TypeScript", icon: "logos:typescript-icon" },
+    { name: "Git", icon: "logos:git-icon" }
 ]
 </script>
 

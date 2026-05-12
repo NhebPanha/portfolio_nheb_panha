@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-04', // Fixes the WARN in your terminal
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/icon'],
   ssr: false,
   tailwindcss: {
     config: {
