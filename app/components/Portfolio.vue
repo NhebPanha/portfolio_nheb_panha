@@ -9,7 +9,7 @@
                     Selected Works
                 </span>
                 <h2 class="font-headline text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6">
-                    Featured <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Ecosystems</span>
+                    Featured <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">Ecosystems</span>
                 </h2>
                 <p class="text-on-surface-variant/70 text-lg max-w-2xl leading-relaxed">
                     A collection of high-precision digital solutions, ranging from financial ecosystems to complex logistics platforms.
