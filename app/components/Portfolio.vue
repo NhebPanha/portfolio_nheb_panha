@@ -1,157 +1,295 @@
 <template>
-    <section id="portfolio" class="text-on-background py-24 md:py-40 px-4 md:px-8 max-w-7xl mx-auto relative overflow-hidden" ref="sectionRef">
+  <section id="portfolio" class="text-on-background py-24 md:py-36 px-4 md:px-8 max-w-7xl mx-auto relative overflow-hidden" ref="sectionRef">
 
-        <div class="relative z-10 transition-all duration-1000 ease-out"
-             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
-            
-            <div class="mb-20">
-                <span class="font-label text-xs tracking-[0.3em] text-primary uppercase mb-4 block">
-                    Selected Works
-                </span>
-                <h2 class="font-headline text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6">
-                    Featured <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">Ecosystems</span>
-                </h2>
-                <p class="text-on-surface-variant/70 text-lg max-w-2xl leading-relaxed">
-                    A collection of high-precision digital solutions, ranging from financial ecosystems to complex logistics platforms.
-                </p>
-            </div>
+    <div class="relative z-10 transition-all duration-1000 ease-out"
+         :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+        
+      <!-- Header & Supabase Source Indicator -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="font-label text-xs tracking-[0.3em] text-primary font-bold uppercase block">
+              Featured Work
+            </span>
 
-            <!-- Projects Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                <div v-for="(project, index) in projects" :key="index" 
-                     class="group relative rounded-[1.5rem] overflow-hidden glass-panel border border-white/5 bg-white/[0.02] transition-all duration-500 hover:border-primary/30">
-                    
-                    <!-- Project Image/Placeholder -->
-                    <div class="aspect-[16/10] overflow-hidden relative">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-40 group-hover:scale-110 transition-transform duration-700"></div>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <Icon :name="project.icon" class="text-6xl opacity-[0.03] dark:opacity-10 group-hover:opacity-40 transition-opacity duration-500" />
-                        </div>
-                        
-                        <!-- Floating Tag -->
-                        <div class="absolute top-6 left-6 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold tracking-widest uppercase text-white/80">
-                            {{ project.category }}
-                        </div>
-                    </div>
+            <!-- Supabase Data Source Badge -->
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border backdrop-blur-md"
+                  :class="dataSource === 'supabase' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'">
+              <span class="w-1.5 h-1.5 rounded-full" :class="dataSource === 'supabase' ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400'"></span>
+              {{ dataSource === 'supabase' ? 'Supabase DB Live' : 'Supabase Ready' }}
+            </span>
+          </div>
 
-                    <!-- Project Content -->
-                    <div class="p-6 md:p-8">
-                        <div class="flex justify-between items-start mb-3">
-                            <h3 class="text-xl md:text-2xl font-black tracking-tighter">{{ project.title }}</h3>
-                            <a :href="project.link" class="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white dark:hover:text-black transition-all duration-300">
-                                <span class="material-symbols-outlined text-xl">north_east</span>
-                            </a>
-                        </div>
-                        <p class="text-sm text-on-surface-variant/80 leading-relaxed mb-6 line-clamp-2">
-                            {{ project.description }}
-                        </p>
-                        
-                        <!-- Tech Stack Tags -->
-                        <div class="flex flex-wrap gap-2">
-                            <span v-for="tech in project.tags" :key="tech.name" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/[0.03] dark:bg-white/5 border border-black/[0.05] dark:border-white/5 text-[10px] font-medium text-on-surface-variant/60">
-                                <Icon :name="tech.icon" class="text-sm" />
-                                {{ tech.name }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- View More Button -->
-            <div class="mt-20 text-center">
-                <button class="px-8 py-4 rounded-full bg-white/5 border border-white/10 font-bold tracking-widest uppercase text-xs hover:bg-white/10 transition-all duration-300">
-                    Explore All Projects
-                </button>
-            </div>
+          <h2 class="font-headline text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-none">
+            Selected <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">Ecosystems</span>
+          </h2>
         </div>
-    </section>
+
+        <p class="text-on-surface-variant text-base md:text-lg max-w-md leading-relaxed">
+          High-performance cross-platform applications engineered with Flutter, Nuxt 3, Laravel, and Supabase cloud infrastructure.
+        </p>
+      </div>
+
+      <!-- Controls Bar: Search & Category Chips -->
+      <div class="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center mb-12 p-2 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 backdrop-blur-xl">
+        
+        <!-- Search Input -->
+        <div class="relative flex-1 max-w-md">
+          <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant/60 text-lg">search</span>
+          <input v-model="searchQuery" 
+                 type="text" 
+                 placeholder="Search by title, tech stack (Flutter, Supabase...)..." 
+                 class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/40 dark:bg-black/20 border border-black/5 dark:border-white/10 text-xs text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-cyan-400 transition-all" />
+          <button v-if="searchQuery" @click="searchQuery = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-on-surface">
+            <span class="material-symbols-outlined text-sm">close</span>
+          </button>
+        </div>
+
+        <!-- Category Chips -->
+        <div class="flex flex-wrap gap-1.5 overflow-x-auto pb-1 lg:pb-0 custom-scrollbar">
+          <button v-for="cat in categories" :key="cat" @click="selectedCategory = cat"
+                  :class="[
+                    'px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap',
+                    selectedCategory === cat
+                      ? 'bg-gradient-to-r from-primary to-purple-600 text-white shadow-md'
+                      : 'text-on-surface-variant hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5'
+                  ]">
+            {{ cat }}
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Projects Grid -->
+      <div v-if="filteredProjects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div v-for="(project, index) in filteredProjects" :key="project.id || index" 
+             @click="openModal(project)"
+             class="group relative rounded-[2rem] overflow-hidden glass-panel border border-black/5 dark:border-white/10 bg-white/40 dark:bg-white/[0.02] transition-all duration-500 hover:border-primary/50 hover:-translate-y-1.5 cursor-pointer">
+            
+          <!-- Card Header / Visual Pattern -->
+          <div class="aspect-[16/10] overflow-hidden relative bg-gradient-to-br from-primary/10 via-purple-600/10 to-cyan-400/10 p-6 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+            
+            <!-- Category Tag -->
+            <div class="relative z-10 flex justify-between items-center">
+              <span class="px-3.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-[10px] font-bold tracking-widest uppercase text-white">
+                {{ project.category }}
+              </span>
+
+              <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:scale-110 transition-all">
+                <span class="material-symbols-outlined text-sm">visibility</span>
+              </div>
+            </div>
+
+            <!-- Central Icon Graphic -->
+            <div class="relative z-10 my-auto flex justify-center items-center">
+              <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                <Icon :name="project.icon" class="text-3xl text-white" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Content -->
+          <div class="p-6 md:p-8">
+            <div class="flex justify-between items-start mb-3 gap-2">
+              <h3 class="text-xl font-black tracking-tight text-on-surface group-hover:text-cyan-400 transition-colors">
+                {{ project.title }}
+              </h3>
+            </div>
+
+            <p class="text-xs md:text-sm text-on-surface-variant/80 leading-relaxed mb-6 line-clamp-2">
+              {{ project.description }}
+            </p>
+            
+            <!-- Tech Stack Pills -->
+            <div class="flex flex-wrap gap-1.5">
+              <span v-for="tech in project.tags" :key="tech.name" 
+                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[10px] font-semibold text-on-surface-variant">
+                <Icon :name="tech.icon" class="text-xs" />
+                {{ tech.name }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Empty Filter Result -->
+      <div v-else class="text-center py-16 p-8 glass-panel rounded-3xl">
+        <span class="material-symbols-outlined text-5xl text-on-surface-variant/40 mb-3">search_off</span>
+        <h4 class="text-xl font-bold mb-2">No Ecosystems Found</h4>
+        <p class="text-xs text-on-surface-variant mb-6">No projects matched your active search query or category filter.</p>
+        <button @click="resetFilters" class="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider">
+          Reset Filters
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Project Detail Modal Dialog -->
+    <Transition name="modal">
+      <div v-if="activeModalProject" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-md" @click="activeModalProject = null"></div>
+
+        <!-- Dialog Box -->
+        <div class="relative z-10 w-full max-w-2xl bg-slate-900 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden text-white max-h-[90vh] overflow-y-auto custom-scrollbar">
+          
+          <!-- Header Actions -->
+          <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-[10px] font-bold tracking-widest uppercase text-cyan-400">
+                {{ activeModalProject.category }}
+              </span>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-[10px] font-bold uppercase text-emerald-400">
+                Production Ready
+              </span>
+            </div>
+
+            <button @click="activeModalProject = null" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+              <span class="material-symbols-outlined text-xl">close</span>
+            </button>
+          </div>
+
+          <!-- Project Title & Icon -->
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-cyan-400 p-[1px]">
+              <div class="w-full h-full bg-slate-950 rounded-[15px] flex items-center justify-center">
+                <Icon :name="activeModalProject.icon" class="text-3xl" />
+              </div>
+            </div>
+            <div>
+              <h3 class="text-2xl sm:text-3xl font-black tracking-tight">{{ activeModalProject.title }}</h3>
+              <p class="text-xs text-slate-400 font-mono mt-0.5">Architected by Nheb Panha</p>
+            </div>
+          </div>
+
+          <!-- Detailed Description -->
+          <div class="space-y-4 mb-8 text-sm text-slate-300 leading-relaxed">
+            <p>{{ activeModalProject.description }}</p>
+            <div class="p-4 rounded-2xl bg-slate-950/60 border border-white/5 space-y-2">
+              <div class="text-xs font-bold uppercase tracking-wider text-cyan-400">Key Features & Architecture:</div>
+              <ul class="text-xs space-y-1.5 text-slate-300">
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Real-time database integration with security Row Level Policies
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                  Responsive cross-platform UI optimized for mobile and web
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                  Clean architecture layer separation and strict type checking
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tech Stack Section -->
+          <div class="mb-8">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Technologies Employed:</h4>
+            <div class="flex flex-wrap gap-2">
+              <div v-for="tech in activeModalProject.tags" :key="tech.name"
+                   class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold">
+                <Icon :name="tech.icon" class="text-base" />
+                <span>{{ tech.name }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Actions -->
+          <div class="flex flex-wrap items-center gap-4 pt-4 border-t border-white/10">
+            <a :href="activeModalProject.github_url || 'https://github.com/nhebpanha'" target="_blank"
+               class="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-xs uppercase tracking-widest text-center hover:shadow-[0_0_20px_rgba(129,28,217,0.5)] transition-all flex items-center justify-center gap-2">
+              <Icon name="logos:github-icon" class="text-base" />
+              <span>GitHub Repo</span>
+            </a>
+
+            <button @click="activeModalProject = null"
+                    class="py-3 px-6 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-widest transition-colors">
+              Close Preview
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </Transition>
+
+  </section>
 </template>
 
-<script setup>
-const { sectionRef, isVisible } = useScrollAnimate(0.1)
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useScrollAnimate } from '~/composables/useScrollAnimate'
+import { useSupabase, type ProjectItem } from '~/composables/useSupabase'
 
-const projects = [
-    {
-        title: "FinTech Wallet",
-        category: "Financial Ecosystem",
-        description: "A robust digital wallet solution featuring real-time transactions, multi-currency support, and biometric security integration.",
-        icon: "logos:flutter",
-        tags: [
-            { name: "Flutter", icon: "logos:flutter" },
-            { name: "Laravel", icon: "logos:laravel" },
-            { name: "PostgreSQL", icon: "logos:postgresql" }
-        ],
-        link: "#"
-    },
-    {
-        title: "Nexus Logistics",
-        category: "Delivery System",
-        description: "End-to-end logistics platform with real-time GPS tracking, automated routing, and dynamic driver dispatching.",
-        icon: "logos:nuxt-icon",
-        tags: [
-            { name: "Nuxt", icon: "logos:nuxt-icon" },
-            { name: "Supabase", icon: "logos:supabase-icon" },
-            { name: "Google Maps", icon: "logos:google-maps" }
-        ],
-        link: "#"
-    },
-    {
-        title: "Aura E-Commerce",
-        category: "Retail Platform",
-        description: "Premium retail experience with advanced filtering, seamless checkout, and integrated inventory management.",
-        icon: "logos:vue",
-        tags: [
-            { name: "Vue.js", icon: "logos:vue" },
-            { name: "Firebase", icon: "logos:firebase" },
-            { name: "Stripe", icon: "logos:stripe" }
-        ],
-        link: "#"
-    },
-    {
-        title: "Precision Accounting",
-        category: "Business Tool",
-        description: "Specialized accounting software for SMEs, focusing on automated reporting and fiscal compliance.",
-        icon: "logos:laravel",
-        tags: [
-            { name: "Laravel", icon: "logos:laravel" },
-            { name: "TypeScript", icon: "logos:typescript-icon" },
-            { name: "Tailwind", icon: "logos:tailwindcss-icon" }
-        ],
-        link: "#"
-    },
-    {
-        title: "Smart HR",
-        category: "Enterprise Tool",
-        description: "Comprehensive human resource management system with automated payroll and performance tracking.",
-        icon: "logos:nuxt-icon",
-        tags: [
-            { name: "Nuxt", icon: "logos:nuxt-icon" },
-            { name: "Laravel", icon: "logos:laravel" },
-            { name: "MySQL", icon: "logos:mysql-icon" }
-        ],
-        link: "#"
-    },
-    {
-        title: "AgriTech Monitor",
-        category: "IoT Platform",
-        description: "Real-time agricultural monitoring system using IoT sensors for crop health and soil analysis.",
-        icon: "logos:flutter",
-        tags: [
-            { name: "Flutter", icon: "logos:flutter" },
-            { name: "Node.js", icon: "logos:nodejs-icon" },
-            { name: "MQTT", icon: "logos:mqtt" }
-        ],
-        link: "#"
-    }
-]
+const { sectionRef, isVisible } = useScrollAnimate(0.1)
+const { fetchProjects } = useSupabase()
+
+const projectsList = ref<ProjectItem[]>([])
+const dataSource = ref<'supabase' | 'fallback'>('fallback')
+
+const searchQuery = ref('')
+const selectedCategory = ref('All')
+
+const activeModalProject = ref<ProjectItem | null>(null)
+
+const categories = computed(() => {
+  const cats = new Set(projectsList.value.map(p => p.category))
+  return ['All', ...Array.from(cats)]
+})
+
+const filteredProjects = computed(() => {
+  return projectsList.value.filter(project => {
+    const matchesCategory = selectedCategory.value === 'All' || project.category === selectedCategory.value
+    const query = searchQuery.value.toLowerCase().trim()
+    if (!query) return matchesCategory
+
+    const matchesTitle = project.title.toLowerCase().includes(query)
+    const matchesCat = project.category.toLowerCase().includes(query)
+    const matchesDesc = project.description.toLowerCase().includes(query)
+    const matchesTech = project.tags.some(t => t.name.toLowerCase().includes(query))
+
+    return matchesCategory && (matchesTitle || matchesCat || matchesDesc || matchesTech)
+  })
+})
+
+const openModal = (project: ProjectItem) => {
+  activeModalProject.value = project
+}
+
+const resetFilters = () => {
+  searchQuery.value = ''
+  selectedCategory.value = 'All'
+}
+
+onMounted(async () => {
+  const res = await fetchProjects()
+  projectsList.value = res.projects
+  dataSource.value = res.source
+})
 </script>
 
 <style scoped>
-.glass-panel {
-    backdrop-filter: blur(20px);
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.3s ease;
 }
 
-.group:hover .glass-panel {
-    background: rgba(255, 255, 255, 0.04);
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(129, 28, 217, 0.4);
+  border-radius: 10px;
 }
 </style>

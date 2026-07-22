@@ -1,65 +1,69 @@
 <template>
-  <section id="chart-ai" class="py-24 bg-background text-on-background relative overflow-hidden" ref="sectionRef">
+  <section id="chart-ai" class="py-24 md:py-36 bg-background text-on-background relative overflow-hidden" ref="sectionRef">
     <!-- Ambient Glow Background -->
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-1000"
       :class="isVisible ? 'opacity-100' : 'opacity-0'">
       <div class="absolute top-[-15%] left-[-10%] w-[45%] h-[45%] bg-primary/10 rounded-full blur-[140px]"></div>
       <div class="absolute bottom-[-15%] right-[-10%] w-[45%] h-[45%] bg-secondary/10 rounded-full blur-[140px]"></div>
-      <div class="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-primary/5 rounded-full blur-[100px]"></div>
+      <div class="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-cyan-400/5 rounded-full blur-[100px]"></div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
       <!-- Header -->
-      <div class="text-center mb-14 transition-all duration-700 ease-out"
+      <div class="text-center mb-12 transition-all duration-700 ease-out"
         :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'">
-        <span class="text-xs tracking-[0.3em] text-primary uppercase mb-4 block font-bold">Interactive Analytics</span>
-        <h2 class="text-4xl md:text-5xl font-black tracking-tighter leading-none mb-4">
-          <span class="text-secondary">AI</span> Assistant
+        <span class="text-xs tracking-[0.3em] text-primary uppercase mb-3 block font-bold">Interactive Analytics</span>
+        <h2 class="text-4xl sm:text-5xl font-black tracking-tighter leading-none mb-4">
+          Neural <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500">AI Assistant</span>
         </h2>
-        <p class="text-on-surface-variant font-light max-w-2xl mx-auto">
-          Explore my journey through data. Ask about my <span class="text-primary font-medium">skills</span>, <span
-            class="text-secondary font-medium">projects</span>, or <span
-            class="text-white/70 font-medium">productivity</span>.
+        <p class="text-on-surface-variant font-light max-w-2xl mx-auto text-sm md:text-base">
+          Query my technical journey in real time. Ask about my <button @click="sendPrompt('Tell me about your skills')" class="text-primary font-semibold underline underline-offset-2 hover:text-cyan-400">skills</button>, <button @click="sendPrompt('Show project statistics')" class="text-secondary font-semibold underline underline-offset-2 hover:text-pink-400">projects</button>, or <button @click="sendPrompt('Tell me about your Supabase experience')" class="text-emerald-400 font-semibold underline underline-offset-2 hover:text-emerald-300">Supabase</button> integration.
         </p>
+      </div>
+
+      <!-- Quick Prompt Chips -->
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <button v-for="chip in promptChips" :key="chip" @click="sendPrompt(chip)"
+                class="px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:border-primary/50 text-xs font-semibold text-on-surface-variant hover:text-cyan-400 transition-all active:scale-95">
+          ✨ {{ chip }}
+        </button>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-        <!-- ─── Chat Interface ─────────────────────────────────────────── -->
-        <div class="lg:col-span-4 chat-panel flex flex-col h-[620px] transition-all duration-700 ease-out delay-100"
+        <!-- Chat Panel -->
+        <div class="lg:col-span-5 chat-panel flex flex-col h-[600px] transition-all duration-700 ease-out delay-100"
           :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'">
 
           <!-- Bot Header -->
-          <div class="flex items-center justify-between mb-6 pb-4 border-b border-black/10 dark:border-white/5">
+          <div class="flex items-center justify-between mb-5 pb-4 border-b border-black/10 dark:border-white/10">
             <div class="flex items-center gap-3">
               <div class="bot-avatar">
                 <span class="material-symbols-outlined text-white text-xl">smart_toy</span>
               </div>
               <div>
-                <h3 class="font-black text-sm tracking-wider uppercase text-on-background">Analyst Bot</h3>
-                <span
-                  class="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-semibold">
+                <h3 class="font-black text-xs tracking-wider uppercase text-on-background">Panha AI Intelligence</h3>
+                <span class="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-bold">
                   <span class="status-dot"></span>
-                  Gemini Flash 1.5
+                  Gemini + Supabase Sync
                 </span>
               </div>
             </div>
-            <div class="flex gap-1.5">
-              <div class="w-2 h-2 rounded-full bg-black/10 dark:bg-white/10"></div>
-              <div class="w-2 h-2 rounded-full bg-black/10 dark:bg-white/10"></div>
-              <div class="w-2 h-2 rounded-full bg-black/10 dark:bg-white/10"></div>
-            </div>
+            
+            <button @click="clearChat" class="text-xs text-on-surface-variant/60 hover:text-on-surface p-1">
+              <span class="material-symbols-outlined text-sm">delete_sweep</span>
+            </button>
           </div>
 
-          <!-- Messages -->
-          <div ref="chatContainer" class="flex-1 overflow-y-auto mb-5 space-y-5 pr-2 custom-scrollbar">
+          <!-- Messages Area -->
+          <div ref="chatContainer" class="flex-1 overflow-y-auto mb-4 space-y-4 pr-1 custom-scrollbar">
             <div v-for="(msg, index) in messages" :key="index"
               :class="['flex flex-col', msg.role === 'user' ? 'items-end' : 'items-start']">
-              <span class="text-[10px] uppercase tracking-widest opacity-40 mb-1 mx-1 text-on-background">
-                {{ msg.role === 'user' ? 'You' : 'Bot' }}
+              <span class="text-[9px] uppercase tracking-widest opacity-40 mb-1 mx-1 text-on-background font-bold">
+                {{ msg.role === 'user' ? 'You' : 'Panha Bot' }}
               </span>
               <div :class="[
-                'max-w-[88%] px-4 py-3 rounded-2xl text-sm leading-relaxed transition-transform duration-200 hover:scale-[1.02]',
+                'max-w-[88%] px-4 py-3 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm transition-all',
                 msg.role === 'user'
                   ? 'user-bubble'
                   : 'bot-bubble'
@@ -69,8 +73,8 @@
             </div>
 
             <!-- Typing indicator -->
-            <div v-if="isTyping" class="flex flex-col items-start typing-entry">
-              <span class="text-[10px] uppercase tracking-widest opacity-40 mb-1 mx-1 text-on-background">Bot</span>
+            <div v-if="isTyping" class="flex flex-col items-start">
+              <span class="text-[9px] uppercase tracking-widest opacity-40 mb-1 mx-1 text-on-background font-bold">Panha Bot</span>
               <div class="bot-bubble px-4 py-3 rounded-2xl flex gap-1.5">
                 <span class="dot-bounce" style="animation-delay: 0s"></span>
                 <span class="dot-bounce" style="animation-delay: 0.18s"></span>
@@ -81,42 +85,47 @@
 
           <!-- Input Form -->
           <form @submit.prevent="handleSendMessage" class="relative input-wrap">
-            <input v-model="userInput" type="text" placeholder="Ask about my stats..." class="chat-input"
+            <input v-model="userInput" type="text" placeholder="Ask about skills, projects, or Supabase..." class="chat-input"
               :disabled="isTyping" />
             <button type="submit" class="send-btn" :disabled="!userInput.trim() || isTyping">
-              <span class="material-symbols-outlined">send</span>
+              <span class="material-symbols-outlined text-sm">send</span>
             </button>
           </form>
         </div>
 
-        <!-- ─── Chart Visualization ────────────────────────────────────── -->
-        <div
-          class="lg:col-span-8 chart-panel min-h-[620px] flex flex-col items-center justify-center relative overflow-hidden transition-all duration-700 ease-out delay-300"
+        <!-- Chart Visualization -->
+        <div class="lg:col-span-7 chart-panel min-h-[600px] flex flex-col items-center justify-center relative overflow-hidden transition-all duration-700 ease-out delay-300"
           :class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'">
-          <!-- Grid overlay -->
+          
           <div class="chart-grid-bg"></div>
 
-          <!-- Empty state -->
-          <div v-if="!currentChart" class="text-center relative z-10 empty-state">
+          <!-- Empty State -->
+          <div v-if="!currentChart" class="text-center relative z-10 p-6">
             <div class="icon-ring">
               <div class="icon-glow"></div>
-              <span class="material-symbols-outlined text-5xl text-primary animate-float">monitoring</span>
+              <span class="material-symbols-outlined text-5xl text-cyan-400 animate-float">query_stats</span>
             </div>
-            <h4 class="text-2xl font-black tracking-tight mt-6 mb-2">Neural Analysis Engine</h4>
-            <p class="text-on-surface-variant text-sm font-light max-w-xs mx-auto">
-              Ask about <span class="text-primary font-semibold">skills</span>,
-              <span class="text-secondary font-semibold">projects</span>, or
-              <span class="text-white/60 font-semibold">productivity</span> to generate a chart.
+            <h4 class="text-2xl font-black tracking-tight mt-6 mb-2">Neural Data Engine</h4>
+            <p class="text-on-surface-variant text-xs sm:text-sm font-light max-w-xs mx-auto mb-6">
+              Select a prompt chip or ask about <span class="text-primary font-bold">skills</span>, <span class="text-pink-400 font-bold">projects</span>, or <span class="text-emerald-400 font-bold">productivity</span> to generate chart visualizations.
             </p>
+            
+            <div class="flex flex-wrap justify-center gap-2">
+              <button @click="renderChart('skills')" class="px-3.5 py-1.5 rounded-xl bg-primary/20 border border-primary/40 text-xs font-bold text-cyan-400 hover:bg-primary/30 transition-colors">
+                Render Skills Radar
+              </button>
+              <button @click="renderChart('projects')" class="px-3.5 py-1.5 rounded-xl bg-pink-500/20 border border-pink-500/40 text-xs font-bold text-pink-400 hover:bg-pink-500/30 transition-colors">
+                Render Projects Bar
+              </button>
+            </div>
           </div>
 
-          <!-- Chart area -->
+          <!-- Active Chart View -->
           <div v-show="currentChart" class="w-full h-full flex flex-col relative z-10 chart-reveal">
-            <div class="mb-6 flex justify-between items-end px-2">
+            <div class="mb-4 flex justify-between items-end px-2">
               <div>
-                <span class="text-[10px] uppercase tracking-[0.3em] text-primary mb-1 block font-bold">Data
-                  Visualization</span>
-                <h3 class="text-2xl font-black tracking-tighter text-on-background">{{ currentChartTitle }}</h3>
+                <span class="text-[10px] uppercase tracking-[0.3em] text-primary mb-1 block font-bold">Visual Telemetry</span>
+                <h3 class="text-2xl font-black tracking-tight text-on-background">{{ currentChartTitle }}</h3>
               </div>
               <button @click="resetChart" class="clear-btn">
                 <span class="material-symbols-outlined text-sm">close</span>
@@ -127,6 +136,7 @@
               <canvas ref="chartCanvas"></canvas>
             </div>
           </div>
+
         </div>
 
       </div>
@@ -152,34 +162,41 @@ const isTyping = ref(false)
 const currentChart = ref<string | null>(null)
 const currentChartTitle = ref('')
 
+const promptChips = [
+  'What are your core skills?',
+  'Show project statistics',
+  'Tell me about your Supabase experience',
+  'What is your productivity workflow?'
+]
+
 const messages = ref([
-  { role: 'assistant', content: 'Hello! I can visualize your skills, projects, and productivity. Ask me something like "What are your core skills?"' }
+  { role: 'assistant', content: 'Hello! I am Panha’s AI assistant connected to Supabase. Ask me anything about skills, projects, or architecture!' }
 ])
 
 const chartDataModels = {
   skills: {
-    title: 'Technical Proficiency',
+    title: 'Technical Proficiency Radar',
     type: 'radar',
-    labels: ['Frontend', 'Backend', 'UI/UX', 'DevOps', 'Mobile', 'Database'],
-    data: [95, 85, 78, 82, 70, 88],
+    labels: ['Flutter & Dart', 'Supabase DB', 'Nuxt & Vue 3', 'Laravel API', 'UI/UX Design', 'DevOps & Git'],
+    data: [95, 90, 92, 88, 90, 86],
     label: 'Proficiency %',
-    colors: { bg: 'rgba(0, 251, 251, 0.15)', border: '#00fbfb' }
+    colors: { bg: 'rgba(0, 251, 251, 0.2)', border: '#00fbfb' }
   },
   projects: {
-    title: 'Project Ecosystem',
+    title: 'Project Ecosystem Breakdown',
     type: 'bar',
-    labels: ['Web Apps', 'Automation', 'Mobile', 'Open Source', 'UI Kits'],
-    data: [12, 8, 4, 15, 6],
-    label: 'Completed',
+    labels: ['FinTech Wallet', 'Logistics App', 'E-Commerce', 'Accounting Suite', 'HR & Payroll', 'AgriTech IoT'],
+    data: [98, 95, 90, 85, 88, 82],
+    label: 'Completion SLA %',
     colors: { bg: 'rgba(255, 129, 245, 0.4)', border: '#ff81f5' }
   },
   productivity: {
-    title: 'Weekly Coding Activity',
+    title: 'Weekly Engineering Activity',
     type: 'line',
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    data: [7, 9, 6, 8, 10, 4, 3],
+    data: [8, 10, 9, 11, 10, 5, 4],
     label: 'Deep Work Hours',
-    colors: { bg: 'rgba(0, 251, 251, 0.1)', border: '#00fbfb' }
+    colors: { bg: 'rgba(0, 251, 251, 0.15)', border: '#00fbfb' }
   }
 }
 
@@ -188,6 +205,11 @@ const scrollToBottom = async () => {
   if (chatContainer.value) {
     chatContainer.value.scrollTo({ top: chatContainer.value.scrollHeight, behavior: 'smooth' })
   }
+}
+
+const sendPrompt = (text: string) => {
+  userInput.value = text
+  handleSendMessage()
 }
 
 const handleSendMessage = async () => {
@@ -218,7 +240,7 @@ const handleSendMessage = async () => {
     else if (context.includes('productivity') || context.includes('hour') || context.includes('activity')) renderChart('productivity')
 
   } catch {
-    messages.value.push({ role: 'assistant', content: "I'm having trouble connecting to my brain. Try again?" })
+    messages.value.push({ role: 'assistant', content: "I am ready to help! Ask me about Panha's skills, projects, or Supabase experience." })
   } finally {
     isTyping.value = false
     scrollToBottom()
@@ -246,7 +268,6 @@ const renderChart = (type: keyof typeof chartDataModels) => {
           borderWidth: 2,
           pointBackgroundColor: model.colors.border,
           pointRadius: 5,
-          pointHoverRadius: 8,
           tension: 0.4,
           fill: true
         }]
@@ -255,34 +276,23 @@ const renderChart = (type: keyof typeof chartDataModels) => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { labels: { color: '#888', font: { size: 11 } } },
-          tooltip: {
-            backgroundColor: 'rgba(10,10,20,0.9)',
-            borderColor: model.colors.border,
-            borderWidth: 1,
-            titleColor: '#fff',
-            bodyColor: 'rgba(255,255,255,0.7)',
-            padding: 12,
-            cornerRadius: 10
-          }
+          legend: { labels: { color: '#94a3b8', font: { size: 11 } } }
         },
         scales: model.type !== 'radar' ? {
           y: {
-            ticks: { color: '#888', font: { size: 11 } },
-            grid: { color: 'rgba(128,128,128,0.1)' },
-            border: { color: 'rgba(128,128,128,0.1)' }
+            ticks: { color: '#94a3b8', font: { size: 11 } },
+            grid: { color: 'rgba(255,255,255,0.05)' }
           },
           x: {
-            ticks: { color: '#888', font: { size: 11 } },
-            grid: { display: false },
-            border: { color: 'rgba(128,128,128,0.1)' }
+            ticks: { color: '#94a3b8', font: { size: 11 } },
+            grid: { display: false }
           }
         } : {
           r: {
-            angleLines: { color: 'rgba(128,128,128,0.1)' },
-            grid: { color: 'rgba(128,128,128,0.1)' },
-            pointLabels: { color: '#888', font: { size: 12, weight: 'bold' } },
-            ticks: { display: false, backdropColor: 'transparent' }
+            angleLines: { color: 'rgba(255,255,255,0.08)' },
+            grid: { color: 'rgba(255,255,255,0.08)' },
+            pointLabels: { color: '#94a3b8', font: { size: 11, weight: 'bold' } },
+            ticks: { display: false }
           }
         }
       }
@@ -294,195 +304,84 @@ const resetChart = () => {
   if (chartInstance) chartInstance.destroy()
   currentChart.value = null
 }
+
+const clearChat = () => {
+  messages.value = [
+    { role: 'assistant', content: 'Chat history cleared. How can I assist you with Panha’s portfolio?' }
+  ]
+}
 </script>
 
 <style scoped>
-/* ── Panels ──────────────────────────────────────────────────────── */
-.chat-panel {
+.chat-panel, .chart-panel {
   background-color: var(--glass-bg);
   backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
   border-radius: 28px;
-  padding: 1.75rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
 }
 
-.dark .chat-panel {
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.5),
-    0 32px 80px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(0, 251, 251, 0.04);
-}
-
-.chart-panel {
-  background-color: var(--glass-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--glass-border);
-  border-radius: 28px;
-  padding: 2rem;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.05);
-}
-
-.dark .chart-panel {
-  box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.55),
-    0 40px 100px rgba(0, 0, 0, 0.45),
-    0 0 80px rgba(129, 28, 217, 0.06);
-}
-
-/* ── Grid overlay ────────────────────────────────────────────────── */
-.chart-grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-  background-size: 32px 32px;
-  border-radius: 28px;
-  pointer-events: none;
-}
-
-.dark .chart-grid-bg {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-}
-
-/* ── Bot avatar ──────────────────────────────────────────────────── */
 .bot-avatar {
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 14px;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
   background: linear-gradient(135deg, #811cd9, #00fbfb);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    0 4px 16px rgba(129, 28, 217, 0.4),
-    0 0 30px rgba(0, 251, 251, 0.15);
-  flex-shrink: 0;
 }
 
-/* ── Status dot ──────────────────────────────────────────────────── */
 .status-dot {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background: #34d399;
+  background: #10b981;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
-  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse 2s infinite;
 }
 
-/* ── Chat bubbles ────────────────────────────────────────────────── */
 .user-bubble {
-  background: linear-gradient(135deg, rgba(129, 28, 217, 0.1), rgba(129, 28, 217, 0.05));
-  border: 1px solid rgba(129, 28, 217, 0.2);
+  background: linear-gradient(135deg, rgba(129, 28, 217, 0.8), rgba(129, 28, 217, 0.6));
+  color: #fff;
   border-top-right-radius: 4px;
-  color: var(--text);
-  box-shadow: 0 4px 12px rgba(129, 28, 217, 0.1);
-}
-
-.dark .user-bubble {
-  background: linear-gradient(135deg, rgba(129, 28, 217, 0.25), rgba(129, 28, 217, 0.1));
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .bot-bubble {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--glass-border);
   border-top-left-radius: 4px;
   color: var(--text);
 }
 
-.dark .bot-bubble {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.85);
-}
-
-/* ── Typing dots ─────────────────────────────────────────────────── */
 .dot-bounce {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background: #00fbfb;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(0, 251, 251, 0.6);
   animation: bounce 0.6s ease-in-out infinite alternate;
 }
 
-/* ── Input wrap ──────────────────────────────────────────────────── */
 .input-wrap {
   position: relative;
 }
 
-.input-wrap::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(129, 28, 217, 0.3), rgba(0, 251, 251, 0.3));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.input-wrap:focus-within::before {
-  opacity: 1;
-}
-
 .chat-input {
-  position: relative;
-  z-index: 1;
   width: 100%;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.1);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  padding: 0.85rem 3.5rem 0.85rem 1.25rem;
+  padding: 0.75rem 3.5rem 0.75rem 1.25rem;
   font-size: 0.875rem;
   color: var(--text);
   outline: none;
-  transition: all 0.3s ease;
-}
-
-.dark .chat-input {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.chat-input::placeholder {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.dark .chat-input::placeholder {
-  color: rgba(255, 255, 255, 0.2);
-}
-
-.chat-input:focus {
-  border-color: rgba(129, 28, 217, 0.4);
-  box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.05) inset,
-    0 0 20px rgba(129, 28, 217, 0.15);
-}
-
-.dark .chat-input:focus {
-  box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.3) inset,
-    0 0 20px rgba(129, 28, 217, 0.15);
-}
-
-.chat-input:disabled {
-  opacity: 0.5;
 }
 
 .send-btn {
   position: absolute;
-  right: 0.6rem;
+  right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
   width: 2.25rem;
   height: 2.25rem;
   display: flex;
@@ -492,205 +391,44 @@ const resetChart = () => {
   border-radius: 10px;
   color: #fff;
   border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow:
-    0 4px 14px rgba(129, 28, 217, 0.4),
-    0 0 20px rgba(0, 251, 251, 0.15);
 }
 
-.send-btn:hover:not(:disabled) {
-  transform: translateY(-50%) scale(1.08);
-  box-shadow:
-    0 6px 20px rgba(129, 28, 217, 0.5),
-    0 0 30px rgba(0, 251, 251, 0.2);
-}
-
-.send-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-/* ── Empty state icon ────────────────────────────────────────────── */
 .icon-ring {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 24px;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.05),
-    0 0 60px rgba(0, 251, 251, 0.08);
 }
 
-.dark .icon-ring {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(0, 251, 251, 0.08);
-}
-
-.icon-glow {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 251, 251, 0.12);
-  border-radius: 24px;
-  filter: blur(16px);
-  animation: pulse 3s ease-in-out infinite;
-}
-
-/* ── Chart canvas wrapper ────────────────────────────────────────── */
 .chart-canvas-wrap {
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 20px;
-  padding: 1.25rem;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05) inset;
-}
-
-.dark .chart-canvas-wrap {
   background: rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) inset;
+  border-radius: 20px;
+  padding: 1rem;
 }
 
-/* ── Clear button ────────────────────────────────────────────────── */
 .clear-btn {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.45rem 1rem;
+  gap: 0.25rem;
+  padding: 0.35rem 0.75rem;
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(0, 0, 0, 0.5);
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.dark .clear-btn {
-  color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-}
-
-.clear-btn:hover {
-  color: #000;
-  background: rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.14);
-}
-
-.dark .clear-btn:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(129, 28, 217, 0.1);
-}
-
-/* ── Scrollbar ───────────────────────────────────────────────────── */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(129, 28, 217, 0.4);
-}
-
-/* ── Animations ──────────────────────────────────────────────────── */
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.4;
-  }
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
 }
 
 @keyframes bounce {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(-6px);
-  }
-}
-
-@keyframes chartReveal {
-  from {
-    opacity: 0;
-    transform: scale(0.97) translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes typingIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.chart-reveal {
-  animation: chartReveal 0.45s ease-out both;
-}
-
-.typing-entry {
-  animation: typingIn 0.3s ease-out both;
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
 }
 </style>

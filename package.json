@@ -13,6 +13,7 @@
     "@google/genai": "^2.0.0",
     "@google/generative-ai": "^0.24.1",
     "@nuxt/icon": "^2.2.2",
+    "@supabase/supabase-js": "^2.110.8",
     "chart.js": "^4.5.1",
     "nuxt": "^4.4.2",
     "vue": "^3.5.31",

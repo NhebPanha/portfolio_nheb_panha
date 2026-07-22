@@ -1,126 +1,117 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { createClient } from '@supabase/supabase-js'
+
+const SYSTEM_INSTRUCTION = `
+You are the official AI Portfolio Assistant for Nheb Panha.
+Panha is a professional Full-Stack Developer & Mobile App Architect based in Phnom Penh, Cambodia (UTC+7).
+
+Key Profile Information about Nheb Panha:
+- Specialties: Flutter & Dart cross-platform mobile apps, Nuxt 3 (Vue 3) SSR web apps, Supabase real-time databases, Laravel REST APIs, Tailwind CSS.
+- Background: Accounting-Developer background giving him financial precision, clean data modeling capabilities, and strong UI/UX aesthetic design skills.
+- Key Projects:
+  1. FinTech Wallet & Payment Suite (Flutter, Laravel, PostgreSQL, Biometrics, Real-time Ledger)
+  2. Nexus Logistics & Fleet Engine (Nuxt 3, Supabase, Google Maps API, Real-time GPS Telemetry)
+  3. Aura E-Commerce Platform (Vue 3, Firebase, Stripe Checkout)
+  4. Precision Accounting Suite (Laravel, TypeScript, Tailwind)
+  5. Smart HR & Payroll Engine (Nuxt 3, Laravel, MySQL)
+  6. AgriTech Monitor IoT (Flutter, Node.js, Supabase)
+- Contact Info: Email: samlot.development@gmail.com, Location: Phnom Penh, Cambodia.
+- Availability: Available for Freelance Projects and Full-time Software Engineering roles.
+
+Instructions:
+Be extremely helpful, polite, professional, concise (under 75 words), and enthusiastic. Highlight Panha's expertise in Flutter, Supabase, Nuxt 3, and Laravel.
+`.trim()
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const body = await readBody(event)
-  const { prompt, history } = body
+  const { prompt, history } = body || {}
+
+  if (!prompt || typeof prompt !== 'string') {
+    return { responseText: "Hello! How can I help you explore Nheb Panha's portfolio today?" }
+  }
 
   const lowerPrompt = prompt.toLowerCase()
+  let finalResponse = ""
 
-  // --- AI RESPONSES / PORTFOLIO ASSISTANT ---
-  const fakeResponses: Record<string, string> = {
-    'about':
-      "Nheb Panha is an innovative Accounting-Developer passionate about combining technology, business, and modern UI/UX design. He specializes in Flutter, Vue.js, Nuxt, Laravel, and Supabase, building smart digital solutions with clean architecture and user-focused experiences.",
+  // 1. Try Live Gemini AI if API Key is configured
+  const apiKey = config.geminiApiKey || process.env.NUXT_GEMINI_API_KEY || process.env.GEMINI_API_KEY
 
-    'who are you':
-      "I'm the AI assistant for Nheb Panha's portfolio. I help visitors explore Panha's technical skills, projects, experience, and productivity through interactive conversations and visual insights.",
+  if (apiKey && apiKey.trim() !== '') {
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey)
+      
+      // Try models sequentially for maximum resilience
+      const candidateModels = ['gemini-1.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash', 'gemini-pro']
+      let modelSuccess = false
 
-    'who is panha':
-      "Nheb Panha is a full-stack developer and designer with experience in mobile app development, web applications, and business systems. He enjoys creating modern, scalable, and visually engaging digital products.",
+      for (const modelName of candidateModels) {
+        if (modelSuccess) break
+        try {
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            systemInstruction: SYSTEM_INSTRUCTION
+          })
 
-    'tell me about yourself':
-      "I'm Nheb Panha, a passionate developer focused on Flutter, Vue/Nuxt, Laravel APIs, UI/UX design, and AI-powered applications. I love building creative solutions that combine performance, clean code, and great user experiences.",
+          const safeHistory = Array.isArray(history) ? history : []
+          const filteredHistory = safeHistory.filter((m: any, idx: number) => {
+            if (idx === 0 && m.role === 'model') return false
+            return m.role && m.parts && m.parts.length > 0
+          })
 
-    'introduce yourself':
-      "Hello! I'm Nheb Panha — an Accounting-Developer and full-stack creator who enjoys transforming ideas into real applications. My expertise includes Flutter, Vue.js, Nuxt 3, Laravel, Supabase, and modern frontend technologies.",
-
-    'skill':
-      "Panha has strong experience in Flutter, Dart, Vue.js, Nuxt 3, Laravel, Supabase, Firebase, REST APIs, UI/UX Design, and responsive frontend development. He also works with AI integrations and data visualization.",
-
-    'skills':
-      "Panha's technical stack includes Flutter, Vue.js, Nuxt, Laravel, Supabase, Firebase, Tailwind CSS, Bootstrap, REST APIs, and modern UI/UX design principles.",
-
-    'project':
-      "Panha has developed multiple real-world projects including food delivery apps, wallet systems, grocery apps, AI dashboards, delivery tracking systems, attendance management systems, and e-commerce platforms.",
-
-    'projects':
-      "Panha's portfolio includes mobile apps, admin dashboards, business systems, and AI-powered web applications built using Flutter, Vue/Nuxt, Laravel, and Supabase.",
-
-    'experience':
-      "Panha has experience building scalable frontend and backend systems, designing modern interfaces, integrating APIs, and creating smooth user experiences across mobile and web platforms.",
-
-    'productivity':
-      "Panha maintains strong productivity through consistent development, UI experimentation, problem-solving, and continuous learning in both frontend and backend technologies.",
-
-    'stats':
-      "I can show insights about Panha's skills, projects, technologies, coding activity, and development journey. What would you like to explore?",
-
-    'contact':
-      "You can connect with Nheb Panha for collaborations, freelance projects, or development opportunities through the portfolio contact section.",
-
-    'hello':
-      "Hello! Welcome to Nheb Panha's AI-powered portfolio. Ask me about skills, projects, technologies, or development experience.",
-
-    'hi':
-      "Hi there! I'm here to help you explore Nheb Panha's portfolio, projects, and technical journey.",
-
-    'default':
-      "I'm here to help you learn more about Nheb Panha's portfolio, skills, projects, and development experience. Try asking about 'skills', 'projects', or 'about'."
-  }
-
-  // Intercept "About Me" specifically
-  if (lowerPrompt.includes('about') || lowerPrompt.includes('who are you') || lowerPrompt.includes('background')) {
-    return { responseText: fakeResponses['about'] }
-  }
-
-  // This looks at runtimeConfig.GEMINI_API_KEY defined in nuxt.config.ts
-  const apiKey = config.geminiApiKey
-
-  // If no API key, use fake responses based on keywords
-  if (!apiKey) {
-    for (const key in fakeResponses) {
-      if (lowerPrompt.includes(key)) {
-        return { responseText: fakeResponses[key] }
+          const chat = model.startChat({ history: filteredHistory })
+          const result = await chat.sendMessage(prompt)
+          finalResponse = result.response.text()
+          if (finalResponse) {
+            modelSuccess = true
+          }
+        } catch (err: any) {
+          console.warn(`Model ${modelName} attempt failed:`, err?.message || err)
+        }
       }
+    } catch (error: any) {
+      console.error('Gemini GenAI Initialization Exception:', error?.message || error)
     }
-    return { responseText: "I'm currently in offline mode, but I can still tell you about Panha's skills, projects, and productivity! Just ask about one of those." }
   }
 
-  try {
-    const genAI = new GoogleGenerativeAI(apiKey)
-
-    // Using gemini-flash-latest for best performance
-    const model = genAI.getGenerativeModel({
-      model: "gemini-flash-latest",
-      systemInstruction: "You are a professional, witty data analyst for Nheb Panha's portfolio. Nheb is an Accounting-Developer. You have access to three data types: 'skills', 'projects', and 'productivity'. If the user asks about these, explain that you are visualizing them. Keep responses under 50 words."
-    })
-
-    const safeHistory = Array.isArray(history) ? history : []
-    const filteredHistory = safeHistory.filter((m: any, index: number) => {
-      if (index === 0 && m.role === 'model') return false
-      return true
-    })
-
-    const chat = model.startChat({
-      history: filteredHistory,
-    })
-
-    const result = await chat.sendMessage(prompt)
-    const responseText = result.response.text()
-
-    return { responseText }
-
-  } catch (error: any) {
-    console.error('Gemini API Error:', error)
-
-    // Fallback for leaked key or other API errors
-    // Try to find a fake response first
-    for (const key in fakeResponses) {
-      if (lowerPrompt.includes(key)) {
-        return { responseText: fakeResponses[key] }
-      }
+  // 2. Intelligent AI Context Fallback (if API Key is missing or failed)
+  if (!finalResponse) {
+    if (lowerPrompt.includes('supabase')) {
+      finalResponse = "Nheb Panha leverages Supabase for real-time PostgreSQL databases, authentication, serverless functions, and Row Level Security. Supabase powers this portfolio's dynamic project showcase and contact storage!"
+    } else if (lowerPrompt.includes('skill') || lowerPrompt.includes('stack') || lowerPrompt.includes('tech')) {
+      finalResponse = "Panha's core technology stack includes Flutter & Dart for cross-platform mobile apps, Nuxt 3 & Vue 3 for web apps, Supabase & PostgreSQL for cloud databases, and Laravel for backend APIs."
+    } else if (lowerPrompt.includes('project') || lowerPrompt.includes('work') || lowerPrompt.includes('portfolio')) {
+      finalResponse = "Panha has engineered multiple high-precision ecosystems including FinTech Wallet, Nexus Logistics Fleet Engine, Aura E-Commerce, Precision Accounting, Smart HR Payroll, and AgriTech IoT Monitor."
+    } else if (lowerPrompt.includes('about') || lowerPrompt.includes('who is') || lowerPrompt.includes('who are')) {
+      finalResponse = "Nheb Panha is a Full-Stack Architect & Mobile App Specialist based in Phnom Penh, Cambodia. He combines accounting data precision with modern UI/UX design and clean software architecture."
+    } else if (lowerPrompt.includes('contact') || lowerPrompt.includes('email') || lowerPrompt.includes('hire')) {
+      finalResponse = "You can contact Nheb Panha directly via email at samlot.development@gmail.com or through the Contact section on this page! He is currently open for freelance & full-time opportunities."
+    } else if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi') || lowerPrompt.includes('hey')) {
+      finalResponse = "Hello! I am Panha's AI Portfolio Assistant. Ask me about Panha's Flutter apps, Supabase integration, Nuxt 3 projects, or how to contact him!"
+    } else {
+      finalResponse = "I'm Panha's AI Assistant! I can answer anything about Panha's Flutter mobile apps, Supabase real-time databases, Nuxt 3 web ecosystems, or career experience. What would you like to explore?"
     }
-
-    if (error.message?.includes('403') || error.message?.includes('API key')) {
-      return {
-        responseText: "I'm currently experiencing some technical difficulties with my neural link, but I can still guide you through Panha's stats! Try asking about 'skills', 'projects', or 'productivity'."
-      }
-    }
-
-    throw createError({
-      statusCode: 500,
-      statusMessage: error.message || 'Internal Server Error'
-    })
   }
+
+  // 3. Asynchronously store chat telemetry in Supabase chat_logs table if connected
+  const supabaseUrl = config.public.supabaseUrl as string
+  const supabaseKey = (config.supabaseServiceRoleKey || config.public.supabaseAnonKey) as string
+
+  if (supabaseUrl && supabaseKey && supabaseUrl.startsWith('http')) {
+    try {
+      const supabase = createClient(supabaseUrl, supabaseKey)
+      supabase.from('chat_logs').insert([
+        {
+          user_prompt: prompt,
+          bot_response: finalResponse
+        }
+      ]).then(({ error }) => {
+        if (error) console.warn('Supabase chat_logs insert log:', error.message)
+      })
+    } catch (e) {
+      // ignore telemetry errors
+    }
+  }
+
+  return { responseText: finalResponse }
 })
-

@@ -10,9 +10,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     geminiApiKey: process.env.NUXT_GEMINI_API_KEY,
+    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
     public: {
       telegramBotToken: process.env.NUXT_TELEGRAM_BOT_TOKEN,
       telegramChatId: process.env.NUXT_TELEGRAM_CHAT_ID,
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || '',
+      supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || '',
     }
   },
   app: {
