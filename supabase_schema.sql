@@ -127,3 +127,54 @@ VALUES
     false,
     '[{"name": "Flutter", "icon": "logos:flutter"}, {"name": "Node.js", "icon": "logos:nodejs-icon"}, {"name": "Supabase", "icon": "logos:supabase-icon"}]'::jsonb
 );
+
+-- 4. Create Blog Posts Table
+CREATE TABLE IF NOT EXISTS public.blog_posts (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    title TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    category TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    content TEXT NOT NULL,
+    read_time TEXT DEFAULT '5 min read',
+    published_at TEXT DEFAULT 'Jul 2025',
+    author TEXT DEFAULT 'Nheb Panha',
+    tags JSONB DEFAULT '[]'::jsonb,
+    icon TEXT DEFAULT 'logos:flutter',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS for blog_posts
+ALTER TABLE public.blog_posts ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access to blog posts
+CREATE POLICY "Allow public read access to blog_posts" 
+ON public.blog_posts FOR SELECT 
+USING (true);
+
+INSERT INTO public.blog_posts (title, slug, category, summary, content, read_time, published_at, author, tags, icon)
+VALUES
+(
+    'Building Real-Time Mobile Apps with Flutter & Supabase',
+    'flutter-supabase-realtime',
+    'Mobile Architecture',
+    'A practical guide to implementing BLoC state isolation, Supabase Row-Level Security (RLS), and offline-first Hive caching in Flutter production apps.',
+    'Building real-time mobile applications requires a decoupled architecture that balances UI responsiveness, local data caching, and secure cloud synchronization.',
+    '5 min read',
+    'Jul 2025',
+    'Nheb Panha',
+    '["Flutter", "Supabase", "BLoC", "PostgreSQL"]'::jsonb,
+    'logos:flutter'
+),
+(
+    'Optimizing Nuxt 3 SSR & Glassmorphism Design Tokens',
+    'nuxt3-ssr-glassmorphism',
+    'Frontend Engineering',
+    'How to craft ultra-fast Vue 3 applications using Nuxt 3 server-side rendering, dynamic dark mode themes, and performance-first CSS glass utilities.',
+    'Modern web interfaces must deliver immediate visual impact without sacrificing Lighthouse web vitals or page transition speeds.',
+    '4 min read',
+    'Jun 2025',
+    'Nheb Panha',
+    '["Nuxt 3", "Vue 3", "Tailwind CSS", "SSR"]'::jsonb,
+    'logos:nuxt-icon'
+);

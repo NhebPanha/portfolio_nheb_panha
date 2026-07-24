@@ -3,6 +3,8 @@
   <About />
   <Portfolio />
   <Skills />
-  <ChartAI />
+  <TechStack />
+  <WorkTimeline />
+  <Blog />
   <ExperienceContact />
 </template>
