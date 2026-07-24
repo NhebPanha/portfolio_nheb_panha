@@ -188,36 +188,52 @@
       </section>
 
       <!-- Technical Ecosystem Marquee -->
-      <div class="mt-24 relative transition-all duration-1000 delay-300"
+      <div class="mt-20 md:mt-28 relative transition-all duration-1000 delay-300"
            :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'">
         
         <h3 class="text-center text-[11px] font-bold tracking-[0.4em] text-on-surface-variant/60 uppercase mb-8">
           Technology Ecosystem Stack
         </h3>
 
-        <!-- Marquee Row 1 -->
-        <div class="marquee-wrap mb-4">
-          <div class="marquee-content animate-marquee">
-            <div v-for="skill in [...allSkills, ...allSkills]" :key="skill.name" class="skill-tag">
-              <Icon :name="skill.icon" class="text-xl" />
-              <span class="font-bold text-xs tracking-wider uppercase">{{ skill.name }}</span>
+        <!-- Marquee Row 1 (Left Stream) -->
+        <div class="marquee-wrap mb-4 py-2 overflow-hidden relative">
+          <div class="marquee-track animate-marquee">
+            <div class="flex gap-4 items-center shrink-0 pr-4">
+              <div v-for="skill in allSkills" :key="skill.name + '-row1-a'" class="skill-tag">
+                <Icon :name="skill.icon" class="text-xl shrink-0" />
+                <span class="font-bold text-xs tracking-wider uppercase whitespace-nowrap">{{ skill.name }}</span>
+              </div>
+            </div>
+            <div class="flex gap-4 items-center shrink-0 pr-4" aria-hidden="true">
+              <div v-for="skill in allSkills" :key="skill.name + '-row1-b'" class="skill-tag">
+                <Icon :name="skill.icon" class="text-xl shrink-0" />
+                <span class="font-bold text-xs tracking-wider uppercase whitespace-nowrap">{{ skill.name }}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Marquee Row 2 -->
-        <div class="marquee-wrap">
-          <div class="marquee-content animate-marquee-reverse">
-            <div v-for="skill in [...allSkills, ...allSkills]" :key="skill.name + '-rev'" class="skill-tag skill-tag-alt">
-              <Icon :name="skill.icon" class="text-xl" />
-              <span class="font-bold text-xs tracking-wider uppercase">{{ skill.name }}</span>
+        <!-- Marquee Row 2 (Right Stream) -->
+        <div class="marquee-wrap py-2 overflow-hidden relative">
+          <div class="marquee-track animate-marquee-reverse">
+            <div class="flex gap-4 items-center shrink-0 pr-4">
+              <div v-for="skill in allSkills" :key="skill.name + '-row2-a'" class="skill-tag skill-tag-alt">
+                <Icon :name="skill.icon" class="text-xl shrink-0" />
+                <span class="font-bold text-xs tracking-wider uppercase whitespace-nowrap">{{ skill.name }}</span>
+              </div>
+            </div>
+            <div class="flex gap-4 items-center shrink-0 pr-4" aria-hidden="true">
+              <div v-for="skill in allSkills" :key="skill.name + '-row2-b'" class="skill-tag skill-tag-alt">
+                <Icon :name="skill.icon" class="text-xl shrink-0" />
+                <span class="font-bold text-xs tracking-wider uppercase whitespace-nowrap">{{ skill.name }}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Fade Gradients -->
-        <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+        <!-- Ambient Side Edge Fades -->
+        <div class="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none"></div>
       </div>
 
     </main>
@@ -279,19 +295,32 @@ const allSkills = [
 
 .marquee-wrap {
   overflow: hidden;
-  display: flex;
-  white-space: nowrap;
+  position: relative;
+  width: 100%;
+  padding: 0.5rem 0;
 }
 
-.marquee-content {
+.marquee-track {
   display: flex;
-  gap: 1.25rem;
-  padding: 0.25rem 0;
+  width: max-content;
+  will-change: transform;
+}
+
+.animate-marquee {
+  animation: scrollLinear 32s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: scrollLinearReverse 36s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
 }
 
 .skill-tag {
   flex-shrink: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
@@ -299,37 +328,29 @@ const allSkills = [
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(12px);
   border-radius: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .skill-tag:hover {
   background: rgba(0, 251, 251, 0.12);
   border-color: var(--accent);
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(0, 251, 251, 0.25);
+  box-shadow: 0 10px 25px -5px rgba(0, 251, 251, 0.3);
 }
 
 .skill-tag-alt:hover {
   background: rgba(255, 129, 245, 0.12);
   border-color: var(--secondary);
-  box-shadow: 0 10px 20px -5px rgba(255, 129, 245, 0.25);
+  box-shadow: 0 10px 25px -5px rgba(255, 129, 245, 0.3);
 }
 
-.animate-marquee {
-  animation: marquee 40s linear infinite;
+@keyframes scrollLinear {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
-.animate-marquee-reverse {
-  animation: marquee-reverse 45s linear infinite;
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes marquee-reverse {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+@keyframes scrollLinearReverse {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 </style>

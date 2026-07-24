@@ -30,8 +30,46 @@ export interface BlogPost {
   icon: string
 }
 
+export interface ContactSubmission {
+  id?: string
+  name: string
+  email: string
+  message: string
+  type: string
+  status?: string
+  created_at?: string
+}
+
+export interface TimelineItem {
+  id?: string
+  period: string
+  role: string
+  company: string
+  location: string
+  type: string
+  category: string
+  icon: string
+  metric: string
+  summary: string
+  highlights: string[]
+  techStack: string[]
+}
+
+export interface TechItem {
+  id?: string
+  name: string
+  category: string
+  categoryName: string
+  icon: string
+  level: number
+  status: string
+  description: string
+  tags: string[]
+}
+
 const FALLBACK_PROJECTS: ProjectItem[] = [
   {
+    id: "p1",
     title: "FinTech Wallet & Payment Suite",
     category: "Financial Ecosystem",
     description: "High-performance cross-platform digital wallet solution featuring real-time transactions, biometric authentication, QR payment engine, and multi-currency ledger.",
@@ -49,6 +87,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: "p2",
     title: "Nexus Logistics & Fleet Engine",
     category: "Delivery System",
     description: "Enterprise real-time logistics platform with active GPS telemetry tracking, route optimization algorithms, driver dispatching, and dynamic delivery status.",
@@ -66,6 +105,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: "p3",
     title: "Aura E-Commerce Platform",
     category: "Retail Platform",
     description: "Modern headless retail experience with instant fuzzy filtering, Stripe checkout integration, real-time inventory management, and automated invoice printing.",
@@ -83,6 +123,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: "p4",
     title: "Precision Accounting Suite",
     category: "Business Tool",
     description: "Automated accounting software for SMEs focused on tax compliance, financial analytics reporting, automated bank feeds, and receipt scanning.",
@@ -99,6 +140,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: "p5",
     title: "Smart HR & Payroll Engine",
     category: "Enterprise Tool",
     description: "Comprehensive human resource management system featuring automated monthly payroll, attendance check-ins, leave workflow approvals, and KPI dashboards.",
@@ -115,6 +157,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: "p6",
     title: "AgriTech Monitor IoT",
     category: "IoT Platform",
     description: "Real-time precision agriculture dashboard connecting soil moisture sensors, weather telemetry, automated irrigation triggers, and crop yield forecasting.",
@@ -134,7 +177,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
 
 const FALLBACK_BLOG_POSTS: BlogPost[] = [
   {
-    id: "1",
+    id: "b1",
     title: "Building Real-Time Mobile Apps with Flutter & Supabase",
     slug: "flutter-supabase-realtime",
     category: "Mobile Architecture",
@@ -156,7 +199,7 @@ To maintain sub-100ms UI interactions, local key-value stores like Hive cache re
     icon: "logos:flutter"
   },
   {
-    id: "2",
+    id: "b2",
     title: "Optimizing Nuxt 3 SSR & Glassmorphism Design Tokens",
     slug: "nuxt3-ssr-glassmorphism",
     category: "Frontend Engineering",
@@ -175,7 +218,7 @@ Instead of relying on heavy third-party UI libraries, custom backdrop-filter CSS
     icon: "logos:nuxt-icon"
   },
   {
-    id: "3",
+    id: "b3",
     title: "Architecting High-Throughput REST APIs in Laravel & Node.js",
     slug: "laravel-nodejs-api-throughput",
     category: "Backend Systems",
@@ -192,6 +235,27 @@ By integrating automated webhook triggers into exception handlers, engineering t
     author: "Nheb Panha",
     tags: ["Laravel", "Node.js", "MySQL", "Telegram API"],
     icon: "logos:laravel"
+  }
+]
+
+const FALLBACK_CONTACT_SUBMISSIONS: ContactSubmission[] = [
+  {
+    id: 'demo-1',
+    name: 'Sarah Connor',
+    email: 'sarah@cyberdyne.io',
+    type: 'Mobile App Development',
+    message: 'We are looking for a Senior Flutter Architect to lead our mobile payment application build in Q3.',
+    status: 'unread',
+    created_at: new Date(Date.now() - 3600000 * 4).toISOString()
+  },
+  {
+    id: 'demo-2',
+    name: 'Alex Mercer',
+    email: 'alex@apex-tech.com',
+    type: 'Full-Stack Web Development',
+    message: 'Need a Nuxt 3 server-side rendered admin dashboard with glassmorphism UI tokens.',
+    status: 'read',
+    created_at: new Date(Date.now() - 3600000 * 24).toISOString()
   }
 ]
 
@@ -285,6 +349,104 @@ export const useSupabase = () => {
     }
   }
 
+  const fetchContactSubmissions = async (): Promise<{ submissions: ContactSubmission[]; source: 'supabase' | 'fallback' }> => {
+    const client = getClient()
+    if (!client) {
+      return { submissions: FALLBACK_CONTACT_SUBMISSIONS, source: 'fallback' }
+    }
+
+    try {
+      const { data, error } = await client
+        .from('contact_submissions')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error || !data || data.length === 0) {
+        return { submissions: FALLBACK_CONTACT_SUBMISSIONS, source: 'fallback' }
+      }
+
+      return { submissions: data as ContactSubmission[], source: 'supabase' }
+    } catch (err) {
+      return { submissions: FALLBACK_CONTACT_SUBMISSIONS, source: 'fallback' }
+    }
+  }
+
+  const deleteContactSubmission = async (id: string) => {
+    const client = getClient()
+    if (!client) return { success: true }
+    try {
+      const { error } = await client.from('contact_submissions').delete().eq('id', id)
+      return { success: !error, error: error?.message }
+    } catch (err: any) {
+      return { success: false, error: err.message }
+    }
+  }
+
+  const updateContactStatus = async (id: string, status: string) => {
+    const client = getClient()
+    if (!client) return { success: true }
+    try {
+      const { error } = await client.from('contact_submissions').update({ status }).eq('id', id)
+      return { success: !error, error: error?.message }
+    } catch (err: any) {
+      return { success: false, error: err.message }
+    }
+  }
+
+  const saveProject = async (project: ProjectItem) => {
+    const client = getClient()
+    if (!client) return { success: true }
+    try {
+      if (project.id) {
+        const { error } = await client.from('projects').update(project).eq('id', project.id)
+        return { success: !error, error: error?.message }
+      } else {
+        const { error } = await client.from('projects').insert([project])
+        return { success: !error, error: error?.message }
+      }
+    } catch (err: any) {
+      return { success: false, error: err.message }
+    }
+  }
+
+  const deleteProject = async (id: string) => {
+    const client = getClient()
+    if (!client) return { success: true }
+    try {
+      const { error } = await client.from('projects').delete().eq('id', id)
+      return { success: !error, error: error?.message }
+    } catch (err: any) {
+      return { success: false, error: err.message }
+    }
+  }
+
+  const saveBlogPost = async (post: BlogPost) => {
+    const client = getClient()
+    if (!client) return { success: true }
+    try {
+      if (post.id) {
+        const { error } = await client.from('blog_posts').update(post).eq('id', post.id)
+        return { success: !error, error: error?.message }
+      } else {
+        const { error } = await client.from('blog_posts').insert([post])
+        return { success: !error, error: error?.message }
+      }
+    } catch (err: any) {
+      return { success: false, error: err.message }
+    }
+  }
+
+  const deleteBlogPost = async (id: string) => {
+    const client = getClient()
+    if (!client) return { success: true }
+    try {
+      const { error } = await client.from('blog_posts').delete().eq('id', id)
+      return { success: !error, error: error?.message }
+    } catch (err: any) {
+      return { success: false, error: err.message }
+    }
+  }
+
   const submitContact = async (payload: { name: string; email: string; message: string; type?: string }) => {
     const client = getClient()
     if (!client) {
@@ -316,8 +478,16 @@ export const useSupabase = () => {
     getClient,
     fetchProjects,
     fetchBlogPosts,
+    fetchContactSubmissions,
+    deleteContactSubmission,
+    updateContactStatus,
+    saveProject,
+    deleteProject,
+    saveBlogPost,
+    deleteBlogPost,
     submitContact,
     fallbackProjects: FALLBACK_PROJECTS,
-    fallbackBlogPosts: FALLBACK_BLOG_POSTS
+    fallbackBlogPosts: FALLBACK_BLOG_POSTS,
+    fallbackContactSubmissions: FALLBACK_CONTACT_SUBMISSIONS
   }
 }
