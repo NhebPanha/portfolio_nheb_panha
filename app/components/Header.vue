@@ -4,11 +4,8 @@
 
       <!-- Logo -->
       <a href="#hero" @click="(e) => scrollToSection(e, '#hero')" class="flex items-center gap-2.5 group">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary via-purple-600 to-cyan-400 p-[1px] shadow-neon-purple group-hover:scale-105 transition-transform duration-300">
-          <div class="w-full h-full bg-slate-950 rounded-[7px] flex items-center justify-center font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-400 text-sm">
-            NP
-          </div>
-        </div>
+        <img src="/logo_test.png" alt="NHEB Panha logo"
+             class="w-8 h-8 rounded-lg object-contain group-hover:scale-105 transition-transform duration-300" />
         <div class="text-base md:text-lg font-black tracking-tighter text-on-surface font-headline">
           NHEB
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">
