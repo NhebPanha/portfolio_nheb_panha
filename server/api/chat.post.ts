@@ -23,26 +23,31 @@ Be extremely helpful, polite, professional, concise (under 75 words), and enthus
 `.trim()
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const body = await readBody(event)
-  const { prompt, history } = body || {}
+  const rawPrompt = body?.prompt
+  const history = body?.history
 
-  if (!prompt || typeof prompt !== 'string') {
+  if (!rawPrompt || typeof rawPrompt !== 'string' || !rawPrompt.trim()) {
     return { responseText: "Hello! How can I help you explore Nheb Panha's portfolio today?" }
   }
+
+  // Keep requests small so a single visitor can't run up the Gemini bill.
+  const prompt = rawPrompt.trim().slice(0, 1000)
 
   const lowerPrompt = prompt.toLowerCase()
   let finalResponse = ""
 
   // 1. Try Live Gemini AI if API Key is configured
-  const apiKey = config.geminiApiKey || process.env.NUXT_GEMINI_API_KEY || process.env.GEMINI_API_KEY
+  const apiKey = (config.geminiApiKey as string) || process.env.GEMINI_API_KEY || ''
 
   if (apiKey && apiKey.trim() !== '') {
     try {
       const genAI = new GoogleGenerativeAI(apiKey)
       
-      // Try models sequentially for maximum resilience
-      const candidateModels = ['gemini-1.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash', 'gemini-pro']
+      // Current model first; the alias is a fallback. (gemini-1.5-flash / gemini-pro are retired
+      // and only added a failed round-trip to every message.)
+      const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest']
       let modelSuccess = false
 
       for (const modelName of candidateModels) {
@@ -53,11 +58,12 @@ export default defineEventHandler(async (event) => {
             systemInstruction: SYSTEM_INSTRUCTION
           })
 
-          const safeHistory = Array.isArray(history) ? history : []
-          const filteredHistory = safeHistory.filter((m: any, idx: number) => {
-            if (idx === 0 && m.role === 'model') return false
-            return m.role && m.parts && m.parts.length > 0
-          })
+          const safeHistory = Array.isArray(history) ? history.slice(-12) : []
+          const filteredHistory = safeHistory
+            .filter((m: any) => (m?.role === 'user' || m?.role === 'model') && typeof m?.parts?.[0]?.text === 'string')
+            .map((m: any) => ({ role: m.role, parts: [{ text: String(m.parts[0].text).slice(0, 1000) }] }))
+          // Gemini requires the history to start with a user turn.
+          while (filteredHistory.length && filteredHistory[0].role !== 'user') filteredHistory.shift()
 
           const chat = model.startChat({ history: filteredHistory })
           const result = await chat.sendMessage(prompt)
@@ -76,7 +82,11 @@ export default defineEventHandler(async (event) => {
 
   // 2. Intelligent AI Context Fallback (if API Key is missing or failed)
   if (!finalResponse) {
-    if (lowerPrompt.includes('supabase')) {
+    if (lowerPrompt.includes('availab') || lowerPrompt.includes('hire') || lowerPrompt.includes('freelance')) {
+      finalResponse = "Yes! Panha is currently open to freelance projects and full-time roles. The quickest way to reach him is the contact form on this page or email at samlot.development@gmail.com."
+    } else if (lowerPrompt.includes('experience') || lowerPrompt.includes('career')) {
+      finalResponse = "Panha has been building software since 2022, moving from junior mobile and web work to backend and database development, then full-stack Nuxt engineering and senior Flutter and Supabase work. See the Experience section for details."
+    } else if (lowerPrompt.includes('supabase')) {
       finalResponse = "Nheb Panha leverages Supabase for real-time PostgreSQL databases, authentication, serverless functions, and Row Level Security. Supabase powers this portfolio's dynamic project showcase and contact storage!"
     } else if (lowerPrompt.includes('skill') || lowerPrompt.includes('stack') || lowerPrompt.includes('tech')) {
       finalResponse = "Panha's core technology stack includes Flutter & Dart for cross-platform mobile apps, Nuxt 3 & Vue 3 for web apps, Supabase & PostgreSQL for cloud databases, and Laravel for backend APIs."

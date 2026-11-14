@@ -1,92 +1,113 @@
 <template>
-  <div class="bg-background text-on-background font-body transition-colors duration-500 overflow-hidden relative">
-    <!-- Ambient Glows -->
-    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none"></div>
+  <section id="skills" class="section">
+    <div ref="sectionRef" class="container-page">
+      <SectionHeading
+        eyebrow="Skills"
+        title="Tools and technologies"
+        lead="The stack I use day to day, grouped by where it fits in a product."
+      />
 
-    <section id="skills" class="pt-24 md:pt-36 pb-20 md:pb-32 max-w-7xl mx-auto px-4 md:px-8 relative z-10" ref="sectionRef">
-
-      <!-- Header -->
-      <div class="mb-16 transition-all duration-1000 ease-out"
-           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-primary text-[10px] font-bold tracking-[0.35em] uppercase mb-6">
-            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-            Technical Expertise
-        </span>
-        <h2 class="font-headline text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[0.85] mb-6">
-          Core Technical <br/>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">Specialization</span>
-        </h2>
-        <p class="text-on-surface-variant/80 text-base md:text-lg max-w-2xl leading-relaxed">
-          Production-proven mastery across mobile frameworks, cloud data platforms, serverless backends, and UI architectural patterns.
-        </p>
-      </div>
-
-      <!-- Skills Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div v-for="(skill, index) in skillList" :key="index" 
-             class="group relative p-7 rounded-[2rem] bg-white/40 dark:bg-white/[0.02] border border-black/5 dark:border-white/10 hover:border-primary/40 transition-all duration-500 overflow-hidden flex flex-col justify-between"
-             :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'"
-             :style="{ transitionDelay: isVisible ? `${index * 70}ms` : '0ms' }">
-          
-          <!-- Card Top -->
-          <div>
-            <!-- Hover Glow Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-            <!-- Icon & Category -->
-            <div class="flex justify-between items-center mb-6 relative z-10">
-              <div class="w-14 h-14 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/10 group-hover:border-primary/30 transition-all duration-500">
-                <Icon :name="skill.icon" class="text-3xl text-on-surface" />
-              </div>
-              <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider px-2.5 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20">
-                {{ skill.level }}%
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <article
+          v-for="(group, i) in groups"
+          :key="group.title"
+          class="card reveal p-6"
+          :class="{ 'reveal-hidden': !isVisible }"
+          :style="{ transitionDelay: `${i * 70}ms` }"
+        >
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[22px] text-primary">{{ group.icon }}</span>
+            <h3 class="text-base font-semibold text-on-surface">{{ group.title }}</h3>
+          </div>
+          <ul class="mt-5 space-y-3">
+            <li v-for="skill in group.items" :key="skill.name" class="flex items-center gap-3 text-sm">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-line bg-surface">
+                <Icon :name="skill.icon" class="text-base" />
               </span>
-            </div>
+              <span class="font-medium text-on-surface">{{ skill.name }}</span>
+              <span v-if="skill.note" class="ml-auto text-xs text-on-surface-variant">{{ skill.note }}</span>
+            </li>
+          </ul>
+        </article>
 
-            <!-- Title & Description -->
-            <div class="relative z-10 mb-6">
-              <h3 class="text-xl font-bold text-on-surface mb-2 group-hover:text-primary transition-colors duration-300">
-                {{ skill.name }}
-              </h3>
-              <p class="text-xs text-on-surface-variant/80 leading-relaxed">
-                {{ skill.desc }}
-              </p>
-            </div>
+        <!-- Practices -->
+        <article class="card reveal p-6 sm:col-span-2 lg:col-span-1" :class="{ 'reveal-hidden': !isVisible }" style="transition-delay: 350ms">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[22px] text-primary">verified</span>
+            <h3 class="text-base font-semibold text-on-surface">How I work</h3>
           </div>
-
-          <!-- Card Bottom: Proficiency Meter -->
-          <div class="relative z-10 pt-4 border-t border-black/5 dark:border-white/5">
-            <div class="flex justify-between text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-1.5">
-              <span>Proficiency</span>
-              <span>{{ skill.level >= 90 ? 'Master' : 'Advanced' }}</span>
-            </div>
-            <div class="w-full h-2 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
-              <div class="h-full rounded-full bg-gradient-to-r from-primary via-cyan-400 to-pink-400 transition-all duration-1000"
-                   :style="{ width: isVisible ? `${skill.level}%` : '0%' }"></div>
-            </div>
-          </div>
-
-        </div>
+          <ul class="mt-5 space-y-3">
+            <li v-for="practice in practices" :key="practice" class="flex gap-3 text-sm leading-relaxed text-on-surface-variant">
+              <span class="material-symbols-outlined mt-0.5 text-[16px] text-emerald-600 dark:text-emerald-400">check</span>
+              <span>{{ practice }}</span>
+            </li>
+          </ul>
+        </article>
       </div>
-
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
 import { useScrollAnimate } from '~/composables/useScrollAnimate'
 
-const skillList = [
-  { name: 'Flutter & Dart', icon: 'logos:flutter', level: 95, desc: 'Cross-platform mobile apps with native performance, custom BLoC/Riverpod state, and offline caching.' },
-  { name: 'Supabase', icon: 'logos:supabase-icon', level: 90, desc: 'Real-time PostgreSQL databases, authentication, serverless functions, and Row Level Security.' },
-  { name: 'Nuxt.js & Vue 3', icon: 'logos:nuxt-icon', level: 92, desc: 'Modern web apps with SSR, static generation, Pinia state, and dynamic routing.' },
-  { name: 'Laravel API', icon: 'logos:laravel', level: 88, desc: 'Secure backend microservices, RESTful APIs, Eloquent ORM, and queue management.' },
-  { name: 'Tailwind CSS', icon: 'logos:tailwindcss-icon', level: 96, desc: 'Utility-first modern styling, dark mode glassmorphism, and responsive layout grids.' },
-  { name: 'PostgreSQL & MySQL', icon: 'logos:postgresql', level: 86, desc: 'Relational database schema modeling, indexing optimization, and SQL analytics queries.' },
-  { name: 'Firebase', icon: 'logos:firebase', level: 88, desc: 'Cloud Firestore, Auth, Push Notifications, Cloud Messaging, and hosting workflows.' },
-  { name: 'Git & DevOps', icon: 'logos:git-icon', level: 90, desc: 'Version control, GitHub Actions CI/CD pipelines, automated deployments, and release tags.' }
+const { sectionRef, isVisible } = useScrollAnimate(0.05)
+
+const groups = [
+  {
+    title: 'Mobile',
+    icon: 'smartphone',
+    items: [
+      { name: 'Flutter', icon: 'devicon:flutter', note: 'Primary' },
+      { name: 'Dart', icon: 'logos:dart' },
+      { name: 'BLoC & Riverpod', icon: 'mdi:state-machine' },
+      { name: 'Firebase', icon: 'logos:firebase-icon', note: 'Auth, FCM' }
+    ]
+  },
+  {
+    title: 'Frontend',
+    icon: 'web',
+    items: [
+      { name: 'Nuxt', icon: 'logos:nuxt-icon', note: 'Primary' },
+      { name: 'Vue 3', icon: 'logos:vue' },
+      { name: 'TypeScript', icon: 'logos:typescript-icon' },
+      { name: 'Tailwind CSS', icon: 'logos:tailwindcss-icon' }
+    ]
+  },
+  {
+    title: 'Backend',
+    icon: 'dns',
+    items: [
+      { name: 'Laravel', icon: 'logos:laravel', note: 'REST APIs' },
+      { name: 'Node.js & Express', icon: 'logos:nodejs-icon' },
+      { name: 'Supabase', icon: 'logos:supabase-icon', note: 'Auth, RLS' },
+      { name: 'Telegram Bot API', icon: 'logos:telegram' }
+    ]
+  },
+  {
+    title: 'Data',
+    icon: 'database',
+    items: [
+      { name: 'PostgreSQL', icon: 'logos:postgresql' },
+      { name: 'MySQL', icon: 'logos:mysql-icon' },
+      { name: 'Redis', icon: 'logos:redis' }
+    ]
+  },
+  {
+    title: 'Tooling',
+    icon: 'build',
+    items: [
+      { name: 'Git & GitHub Actions', icon: 'logos:git-icon', note: 'CI/CD' },
+      { name: 'Docker', icon: 'logos:docker-icon' },
+      { name: 'Figma', icon: 'logos:figma', note: 'Design to code' }
+    ]
+  }
 ]
 
-const { sectionRef, isVisible } = useScrollAnimate(0.1)
+const practices = [
+  'Clean architecture with clear separation between UI, state and data layers',
+  'Strict typing in TypeScript and Dart to catch errors before release',
+  'Database-level security with row-level policies',
+  'Responsive, accessible interfaces that work on every screen size'
+]
 </script>

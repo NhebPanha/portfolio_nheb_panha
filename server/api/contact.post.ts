@@ -1,16 +1,28 @@
 import { createClient } from '@supabase/supabase-js'
 
+const LIMITS = { name: 120, email: 200, type: 80, message: 5000 }
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const escapeHtml = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+const clean = (value: unknown, max: number) =>
+  typeof value === 'string' ? value.trim().slice(0, max) : ''
+
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
-  const { name, email, type, message } = body || {}
+  const name = clean(body?.name, LIMITS.name)
+  const email = clean(body?.email, LIMITS.email)
+  const type = clean(body?.type, LIMITS.type) || 'General Inquiry'
+  const message = clean(body?.message, LIMITS.message)
 
   if (!name || !email || !message) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Please provide name, email, and message.',
-    })
+    throw createError({ statusCode: 400, statusMessage: 'Please provide name, email, and message.' })
+  }
+  if (!EMAIL_RE.test(email)) {
+    throw createError({ statusCode: 400, statusMessage: 'Please provide a valid email address.' })
   }
 
   let supabaseSaved = false
@@ -23,62 +35,50 @@ export default defineEventHandler(async (event) => {
   if (supabaseUrl && supabaseKey && supabaseUrl.startsWith('http')) {
     try {
       const supabase = createClient(supabaseUrl, supabaseKey)
-      const { error } = await supabase.from('contact_submissions').insert([
-        {
-          name,
-          email,
-          message,
-          type: type || 'General Contact',
-          status: 'unread'
-        }
-      ])
-      if (!error) {
-        supabaseSaved = true
-      } else {
-        console.warn('Supabase DB Insert Warning:', error.message)
-      }
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([{ name, email, message, type, status: 'unread' }])
+      if (error) console.warn('Supabase insert warning:', error.message)
+      else supabaseSaved = true
     } catch (err: any) {
-      console.error('Supabase DB Insert Exception:', err?.message || err)
+      console.error('Supabase insert exception:', err?.message || err)
     }
   }
 
-  // 2. Notify Telegram if token is set
-  const telegramBotToken = config.public.telegramBotToken as string
-  const telegramChatId = config.public.telegramChatId as string
+  // 2. Notify Telegram if configured (server-only credentials)
+  const telegramBotToken = config.telegramBotToken as string
+  const telegramChatId = config.telegramChatId as string
 
   if (telegramBotToken && telegramChatId) {
-    const text = `
-✨ *New Portfolio Contact* ✨
+    const text = [
+      '✨ <b>New Portfolio Contact</b>',
+      '',
+      `👤 <b>Name:</b> ${escapeHtml(name)}`,
+      `📧 <b>Email:</b> ${escapeHtml(email)}`,
+      `📌 <b>Type:</b> ${escapeHtml(type)}`,
+      '💬 <b>Message:</b>',
+      escapeHtml(message),
+      '',
+      `💾 Supabase: ${supabaseSaved ? 'saved ✅' : 'not saved'}`
+    ].join('\n')
 
-👨‍💻 *Name:* ${name}
-📧 *Email:* ${email}
-📌 *Type:* ${type || 'General Contact'}
-💬 *Message:*
-${message}
-───────────────
-💾 *Supabase Status:* ${supabaseSaved ? 'Saved to DB ✅' : 'Demo / Standby ⚡'}
-`.trim()
-
-    const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`
     try {
-      await $fetch(url, {
+      await $fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
         method: 'POST',
-        body: JSON.stringify({
-          chat_id: telegramChatId,
-          text: text,
-          parse_mode: 'Markdown',
-        })
+        body: { chat_id: telegramChatId, text, parse_mode: 'HTML' }
       })
       telegramSent = true
-    } catch (error) {
-      console.error('Telegram API Error:', error)
+    } catch (error: any) {
+      console.error('Telegram API error:', error?.data?.description || error?.message || error)
     }
   }
 
-  return {
-    success: true,
-    supabaseSaved,
-    telegramSent,
-    message: 'Submission received successfully!'
+  if (!supabaseSaved && !telegramSent) {
+    throw createError({
+      statusCode: 503,
+      statusMessage: 'Message could not be delivered right now. Please email me directly.'
+    })
   }
+
+  return { success: true, supabaseSaved, telegramSent }
 })

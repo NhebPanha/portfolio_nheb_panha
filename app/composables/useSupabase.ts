@@ -73,7 +73,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     title: "FinTech Wallet & Payment Suite",
     category: "Financial Ecosystem",
     description: "High-performance cross-platform digital wallet solution featuring real-time transactions, biometric authentication, QR payment engine, and multi-currency ledger.",
-    icon: "logos:flutter",
+    icon: "devicon:flutter",
     link: "https://github.com/nhebpanha",
     github_url: "https://github.com/nhebpanha",
     demo_url: "https://github.com/nhebpanha",
@@ -81,7 +81,7 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     metrics: "15k+ Transactions / Day",
     featured: true,
     tags: [
-      { name: "Flutter", icon: "logos:flutter" },
+      { name: "Flutter", icon: "devicon:flutter" },
       { name: "Laravel", icon: "logos:laravel" },
       { name: "PostgreSQL", icon: "logos:postgresql" }
     ]
@@ -118,8 +118,8 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     featured: true,
     tags: [
       { name: "Vue 3", icon: "logos:vue" },
-      { name: "Firebase", icon: "logos:firebase" },
-      { name: "Stripe", icon: "logos:stripe" }
+      { name: "Firebase", icon: "logos:firebase-icon" },
+      { name: "Stripe", icon: "simple-icons:stripe" }
     ]
   },
   {
@@ -161,14 +161,14 @@ const FALLBACK_PROJECTS: ProjectItem[] = [
     title: "AgriTech Monitor IoT",
     category: "IoT Platform",
     description: "Real-time precision agriculture dashboard connecting soil moisture sensors, weather telemetry, automated irrigation triggers, and crop yield forecasting.",
-    icon: "logos:flutter",
+    icon: "devicon:flutter",
     link: "https://github.com/nhebpanha",
     github_url: "https://github.com/nhebpanha",
     status: "Released",
     metrics: "24/7 Sensor Telemetry",
     featured: false,
     tags: [
-      { name: "Flutter", icon: "logos:flutter" },
+      { name: "Flutter", icon: "devicon:flutter" },
       { name: "Node.js", icon: "logos:nodejs-icon" },
       { name: "Supabase", icon: "logos:supabase-icon" }
     ]
@@ -196,7 +196,7 @@ To maintain sub-100ms UI interactions, local key-value stores like Hive cache re
     published_at: "Jul 2025",
     author: "Nheb Panha",
     tags: ["Flutter", "Supabase", "BLoC", "PostgreSQL"],
-    icon: "logos:flutter"
+    icon: "devicon:flutter"
   },
   {
     id: "b2",
@@ -297,7 +297,7 @@ export const useSupabase = () => {
         title: item.title,
         category: item.category,
         description: item.description,
-        icon: item.icon || 'logos:flutter',
+        icon: item.icon || 'devicon:flutter',
         link: item.link || '#',
         github_url: item.github_url || '#',
         demo_url: item.demo_url || item.link || '#',
@@ -340,7 +340,7 @@ export const useSupabase = () => {
         published_at: item.published_at || 'Jul 2025',
         author: item.author || 'Nheb Panha',
         tags: Array.isArray(item.tags) ? item.tags : (typeof item.tags === 'string' ? JSON.parse(item.tags) : []),
-        icon: item.icon || 'logos:flutter'
+        icon: item.icon || 'devicon:flutter'
       }))
 
       return { posts: formattedPosts, source: 'supabase' }

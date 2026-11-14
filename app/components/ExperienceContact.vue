@@ -1,176 +1,140 @@
 <template>
-  <div class="bg-background text-on-background font-body min-h-screen transition-colors duration-500 relative overflow-hidden">
+  <section id="contact" class="section">
+    <div ref="contactRef" class="container-page grid gap-12 lg:grid-cols-12">
+      <!-- Info -->
+      <div class="reveal lg:col-span-5" :class="{ 'reveal-hidden': !contactVisible }">
+        <SectionHeading
+          eyebrow="Contact"
+          title="Let's work together"
+          lead="Have a mobile app, web platform or backend project in mind? Send me a message and I'll get back to you within one or two working days."
+        />
 
-    <!-- ================= CONTACT SECTION ================= -->
-    <section id="contact" class="pt-24 md:pt-36 pb-24 md:pb-36 max-w-7xl mx-auto px-4 md:px-8 relative z-10" ref="contactRef">
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 transition-all duration-700 ease-out"
-           :class="contactVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
-
-        <!-- Left Info -->
-        <div class="lg:col-span-5">
-          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-secondary text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
-            <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
-            Direct Inquiry
-          </span>
-
-          <h2 class="text-4xl sm:text-6xl font-black tracking-tighter leading-tight mb-8">
-            Let's Build <br />
-            Something <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-pink-500">Extraordinary</span>
-          </h2>
-
-          <p class="text-on-surface-variant text-base leading-relaxed mb-10">
-            Have a product vision, mobile application requirement, or full-stack software project? Send a direct message below. Your inquiry is recorded into Supabase and notified instantly.
-          </p>
-
-          <div class="space-y-6">
-            <!-- Email Item -->
-            <div class="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 backdrop-blur-md flex justify-between items-center group">
-              <div>
-                <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-1">Direct Email</span>
-                <p class="text-base sm:text-lg font-bold text-on-surface font-mono">samlot.development@gmail.com</p>
-              </div>
-
-              <button @click="copyEmail" class="p-2.5 rounded-xl bg-primary/10 hover:bg-primary text-cyan-400 hover:text-white transition-all" title="Copy Email">
-                <span class="material-symbols-outlined text-lg">{{ copied ? 'check' : 'content_copy' }}</span>
-              </button>
+        <ul class="mt-10 space-y-3">
+          <li class="card flex items-center justify-between gap-4 p-4">
+            <div class="flex min-w-0 items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-on-surface-variant">mail</span>
+              <a :href="`mailto:${email}`" class="truncate text-sm font-medium text-on-surface hover:text-primary">{{ email }}</a>
             </div>
-
-            <!-- Location Item -->
-            <div class="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 backdrop-blur-md flex justify-between items-center">
-              <div>
-                <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant block mb-1">Location & Timezone</span>
-                <p class="text-base sm:text-lg font-bold text-on-surface">Phnom Penh, Cambodia (UTC+7)</p>
-              </div>
-              <span class="material-symbols-outlined text-2xl text-emerald-400">public</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Form Panel -->
-        <div class="lg:col-span-7">
-          <div class="glass-panel p-8 md:p-10 relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-cyan-400/5 pointer-events-none"></div>
-
-            <div class="relative z-10">
-              <h3 class="text-2xl font-black mb-2 text-on-surface">Send Message</h3>
-              <p class="text-xs text-on-surface-variant mb-6">Recorded live via Supabase DB Engine & Telegram Notification</p>
-
-              <!-- Toast Notification Alert -->
-              <div v-if="statusMessage" class="mb-6 p-4 rounded-xl text-xs font-bold border flex items-center gap-3 backdrop-blur-md"
-                   :class="isSuccess ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-rose-500/10 border-rose-500/30 text-rose-400'">
-                <span class="material-symbols-outlined text-lg">{{ isSuccess ? 'check_circle' : 'error' }}</span>
-                <span>{{ statusMessage }}</span>
-              </div>
-
-              <form @submit.prevent="handleSubmit" class="space-y-5">
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Your Name</label>
-                    <input v-model="form.name" required placeholder="John Doe" 
-                           class="w-full px-4 py-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-cyan-400 transition-all" />
-                  </div>
-
-                  <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Email Address</label>
-                    <input v-model="form.email" type="email" required placeholder="john@example.com" 
-                           class="w-full px-4 py-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-cyan-400 transition-all" />
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Inquiry Type</label>
-                  <select v-model="form.type" 
-                          class="w-full px-4 py-3 rounded-xl bg-black/5 dark:bg-slate-900 border border-black/10 dark:border-white/10 text-sm text-on-surface focus:outline-none focus:border-cyan-400 transition-all">
-                    <option value="Mobile App Development">Mobile App Development (Flutter)</option>
-                    <option value="Full-Stack Web Development">Full-Stack Web Development (Nuxt 3)</option>
-                    <option value="Supabase / Cloud Integration">Supabase / Cloud Database Integration</option>
-                    <option value="General Inquiry">General Collaboration / Hire</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2">Message</label>
-                  <textarea v-model="form.message" required rows="4" placeholder="Describe your project, timeline, or inquiry..."
-                            class="w-full px-4 py-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-cyan-400 transition-all resize-none"></textarea>
-                </div>
-
-                <button type="submit" :disabled="isSubmitting" 
-                        class="w-full py-4 rounded-xl bg-gradient-to-r from-primary via-purple-600 to-pink-500 text-white font-bold text-xs uppercase tracking-widest shadow-lg hover:shadow-[0_0_25px_rgba(129,28,217,0.5)] hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                  <span v-if="isSubmitting" class="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
-                  <span>{{ isSubmitting ? 'Transmitting to Supabase...' : 'Submit Inquiry' }}</span>
-                  <span v-if="!isSubmitting" class="material-symbols-outlined text-sm">send</span>
-                </button>
-
-              </form>
-            </div>
-          </div>
-        </div>
-
+            <button class="btn-secondary !px-3 !py-1.5 text-xs" :aria-label="copied ? 'Email copied' : 'Copy email address'" @click="copyEmail">
+              <span class="material-symbols-outlined text-[16px]">{{ copied ? 'check' : 'content_copy' }}</span>
+              {{ copied ? 'Copied' : 'Copy' }}
+            </button>
+          </li>
+          <li class="card flex items-center gap-3 p-4">
+            <span class="material-symbols-outlined text-[20px] text-on-surface-variant">send</span>
+            <a href="https://t.me/nhebpanha" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-on-surface hover:text-primary">
+              Telegram: @nhebpanha
+            </a>
+          </li>
+          <li class="card flex items-center gap-3 p-4">
+            <span class="material-symbols-outlined text-[20px] text-on-surface-variant">location_on</span>
+            <span class="text-sm font-medium text-on-surface">Phnom Penh, Cambodia <span class="font-normal text-on-surface-variant">(UTC+7)</span></span>
+          </li>
+        </ul>
       </div>
 
-    </section>
+      <!-- Form -->
+      <div class="reveal lg:col-span-7" :class="{ 'reveal-hidden': !contactVisible }" style="transition-delay: 120ms">
+        <form class="card space-y-5 p-6 sm:p-8" novalidate @submit.prevent="handleSubmit">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label for="c-name" class="label">Name</label>
+              <input id="c-name" v-model="form.name" required autocomplete="name" maxlength="120" class="input" />
+            </div>
+            <div>
+              <label for="c-email" class="label">Email</label>
+              <input id="c-email" v-model="form.email" type="email" required autocomplete="email" maxlength="200" class="input" />
+            </div>
+          </div>
 
-  </div>
+          <div>
+            <label for="c-type" class="label">What can I help with?</label>
+            <select id="c-type" v-model="form.type" class="input">
+              <option value="Mobile App Development">Mobile app (Flutter)</option>
+              <option value="Full-Stack Web Development">Web application (Nuxt / Vue)</option>
+              <option value="Backend / API">Backend or API</option>
+              <option value="Full-time Role">Full-time role</option>
+              <option value="General Inquiry">Something else</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="c-message" class="label">Message</label>
+            <textarea id="c-message" v-model="form.message" required rows="5" maxlength="5000"
+                      placeholder="A few lines about the project, timeline and budget."
+                      class="input resize-y"></textarea>
+          </div>
+
+          <p v-if="statusMessage" role="status"
+             class="flex items-start gap-2 rounded-lg border px-4 py-3 text-sm"
+             :class="isSuccess
+               ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
+               : 'border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300'">
+            <span class="material-symbols-outlined text-[18px]">{{ isSuccess ? 'check_circle' : 'error' }}</span>
+            {{ statusMessage }}
+          </p>
+
+          <button type="submit" :disabled="isSubmitting" class="btn-primary w-full sm:w-auto">
+            <span v-if="isSubmitting" class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+            {{ isSubmitting ? 'Sending…' : 'Send message' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
 </template>
 
-<script setup>
-import { reactive, ref } from "vue";
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
 import { useScrollAnimate } from '~/composables/useScrollAnimate'
 
 const { sectionRef: contactRef, isVisible: contactVisible } = useScrollAnimate(0.1)
 
-const scrollTo = (href, e) => {
-  e.preventDefault()
-  const target = document.querySelector(href)
-  if (target) {
-    const yOffset = -90
-    const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset
-    window.scrollTo({ top: y, behavior: 'smooth' })
-  }
-}
+const email = 'samlot.development@gmail.com'
 
 const form = reactive({
-  name: "",
-  email: "",
-  type: "Mobile App Development",
-  message: ""
+  name: '',
+  email: '',
+  type: 'Mobile App Development',
+  message: ''
 })
 
 const isSubmitting = ref(false)
-const statusMessage = ref("")
+const statusMessage = ref('')
 const isSuccess = ref(true)
-
 const copied = ref(false)
-const copyEmail = () => {
-  navigator.clipboard.writeText('samlot.development@gmail.com')
-  copied.value = true
-  setTimeout(() => { copied.value = false }, 2500)
+
+const copyEmail = async () => {
+  try {
+    await navigator.clipboard.writeText(email)
+    copied.value = true
+    setTimeout(() => { copied.value = false }, 2000)
+  } catch {
+    window.location.href = `mailto:${email}`
+  }
 }
 
 const handleSubmit = async () => {
   if (isSubmitting.value) return
-  isSubmitting.value = true
-  statusMessage.value = ""
+  if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+    isSuccess.value = false
+    statusMessage.value = 'Please fill in your name, email and message.'
+    return
+  }
 
+  isSubmitting.value = true
+  statusMessage.value = ''
   try {
-    const res = await $fetch('/api/contact', {
-      method: 'POST',
-      body: form
-    })
-    
+    await $fetch('/api/contact', { method: 'POST', body: form })
     isSuccess.value = true
-    statusMessage.value = res.supabaseSaved 
-      ? 'Inquiry successfully saved to Supabase DB & notified!' 
-      : 'Inquiry transmitted successfully!'
-    
+    statusMessage.value = "Thanks! Your message has been sent. I'll reply soon."
     form.name = ''
     form.email = ''
     form.message = ''
-  } catch (error) {
+  } catch (error: any) {
     isSuccess.value = false
-    statusMessage.value = 'Failed to process inquiry. Please try again.'
+    statusMessage.value = error?.data?.statusMessage || error?.statusMessage
+      || `Something went wrong. Please email me at ${email}.`
   } finally {
     isSubmitting.value = false
   }

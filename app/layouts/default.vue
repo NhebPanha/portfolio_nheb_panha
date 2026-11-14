@@ -1,9 +1,12 @@
-<script setup lang="ts">
-import Header from '~/components/Header.vue'
-import Footer from '~/components/Footer.vue'
-</script>
 <template>
+  <a href="#about"
+     class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-primary focus:text-white focus:text-xs focus:font-bold">
+    Skip to content
+  </a>
   <Header />
-  <slot />
+  <div id="main">
+    <slot />
+  </div>
   <Footer />
+  <FloatingChat />
 </template>

@@ -1,10 +1,9 @@
 <template>
   <HeroSection />
   <About />
+  <WorkTimeline />
   <Portfolio />
   <Skills />
-  <TechStack />
-  <WorkTimeline />
   <Blog />
   <ExperienceContact />
 </template>
