@@ -90,7 +90,7 @@ import { useScrollAnimate } from '~/composables/useScrollAnimate'
 
 const { sectionRef: contactRef, isVisible: contactVisible } = useScrollAnimate(0.1)
 
-const email = 'samlot.development@gmail.com'
+const email = 'nhebpanha78@gmail.com'
 
 const form = reactive({
   name: '',

@@ -21,6 +21,6 @@ const year = new Date().getFullYear()
 const socialLinks = [
   { name: 'GitHub', href: 'https://github.com/nhebpanha', icon: 'mdi:github' },
   { name: 'Telegram', href: 'https://t.me/nhebpanha', icon: 'mdi:telegram' },
-  { name: 'Email', href: 'mailto:samlot.development@gmail.com', icon: 'mdi:email-outline' }
+  { name: 'Email', href: 'mailto:nhebpanha78@gmail.com', icon: 'mdi:email-outline' }
 ]
 </script>

@@ -3,10 +3,15 @@ const siteDescription =
   'Portfolio of Nheb Panha, a Flutter and full-stack developer in Phnom Penh, Cambodia, building mobile apps and web platforms with Flutter, Nuxt, Laravel and Supabase.'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-04',
+  compatibilityDate: '2025-07-15',
   modules: ['@nuxtjs/tailwindcss', '@nuxt/icon'],
   ssr: false,
   css: ['~/assets/css/main.css'],
+  // Cloudflare Workers with Static Assets (the `env.ASSETS` binding). The older `cloudflare`
+  // preset targets Workers Sites and imports `__STATIC_CONTENT_MANIFEST`, which fails to deploy.
+  nitro: {
+    preset: 'cloudflare_module',
+  },
   runtimeConfig: {
     // Server-only secrets. Never put these under `public`: everything in `public` ships to the browser.
     geminiApiKey: '',

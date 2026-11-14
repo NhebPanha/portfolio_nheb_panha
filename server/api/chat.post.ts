@@ -15,7 +15,7 @@ Key Profile Information about Nheb Panha:
   4. Precision Accounting Suite (Laravel, TypeScript, Tailwind)
   5. Smart HR & Payroll Engine (Nuxt 3, Laravel, MySQL)
   6. AgriTech Monitor IoT (Flutter, Node.js, Supabase)
-- Contact Info: Email: samlot.development@gmail.com, Location: Phnom Penh, Cambodia.
+- Contact Info: Email: nhebpanha78@gmail.com, Location: Phnom Penh, Cambodia.
 - Availability: Available for Freelance Projects and Full-time Software Engineering roles.
 
 Instructions:
@@ -83,7 +83,7 @@ export default defineEventHandler(async (event) => {
   // 2. Intelligent AI Context Fallback (if API Key is missing or failed)
   if (!finalResponse) {
     if (lowerPrompt.includes('availab') || lowerPrompt.includes('hire') || lowerPrompt.includes('freelance')) {
-      finalResponse = "Yes! Panha is currently open to freelance projects and full-time roles. The quickest way to reach him is the contact form on this page or email at samlot.development@gmail.com."
+      finalResponse = "Yes! Panha is currently open to freelance projects and full-time roles. The quickest way to reach him is the contact form on this page or email at nhebpanha78@gmail.com."
     } else if (lowerPrompt.includes('experience') || lowerPrompt.includes('career')) {
       finalResponse = "Panha has been building software since 2022, moving from junior mobile and web work to backend and database development, then full-stack Nuxt engineering and senior Flutter and Supabase work. See the Experience section for details."
     } else if (lowerPrompt.includes('supabase')) {
@@ -95,7 +95,7 @@ export default defineEventHandler(async (event) => {
     } else if (lowerPrompt.includes('about') || lowerPrompt.includes('who is') || lowerPrompt.includes('who are')) {
       finalResponse = "Nheb Panha is a Full-Stack Architect & Mobile App Specialist based in Phnom Penh, Cambodia. He combines accounting data precision with modern UI/UX design and clean software architecture."
     } else if (lowerPrompt.includes('contact') || lowerPrompt.includes('email') || lowerPrompt.includes('hire')) {
-      finalResponse = "You can contact Nheb Panha directly via email at samlot.development@gmail.com or through the Contact section on this page! He is currently open for freelance & full-time opportunities."
+      finalResponse = "You can contact Nheb Panha directly via email at nhebpanha78@gmail.com or through the Contact section on this page! He is currently open for freelance & full-time opportunities."
     } else if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi') || lowerPrompt.includes('hey')) {
       finalResponse = "Hello! I am Panha's AI Portfolio Assistant. Ask me about Panha's Flutter apps, Supabase integration, Nuxt 3 projects, or how to contact him!"
     } else {

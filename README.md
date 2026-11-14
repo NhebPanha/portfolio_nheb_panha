@@ -85,7 +85,7 @@ npm run dev
 
 ## 📫 Contact Me
 
-* 📧 Email: [nhebpanha78@gmail.com](nhebpanha78@gmail.com)
+* 📧 Email: [nhebpanha78@gmail.com](mailto:nhebpanha78@gmail.com)
 * 💼 LinkedIn: https://linkedin.com/in/nhebpanha
 * 🌍 Portfolio: https://nheb-panha.vercel.app/
 
