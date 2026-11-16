@@ -51,9 +51,15 @@ class _HomePageState extends State<HomePage> {
       Sec? current;
       for (final s in Sec.values) {
         final box = _keys[s]!.currentContext?.findRenderObject() as RenderBox?;
-        if (box != null && box.attached && box.localToGlobal(Offset.zero).dy <= 140) current = s;
+        if (box != null &&
+            box.attached &&
+            box.localToGlobal(Offset.zero).dy <= 140) {
+          current = s;
+        }
       }
-      if (_scroll.offset >= _scroll.position.maxScrollExtent - 40) current = Sec.contact;
+      if (_scroll.offset >= _scroll.position.maxScrollExtent - 40) {
+        current = Sec.contact;
+      }
       _active.value = current == Sec.hero ? null : current;
     });
   }
@@ -61,15 +67,23 @@ class _HomePageState extends State<HomePage> {
   void _goTo(Sec s) {
     final box = _keys[s]!.currentContext?.findRenderObject() as RenderBox?;
     if (box == null || !_scroll.hasClients) return;
-    final target = s == Sec.hero ? 0.0 : _scroll.offset + box.localToGlobal(Offset.zero).dy - _headerHeight + 1;
+    final target = s == Sec.hero
+        ? 0.0
+        : _scroll.offset +
+              box.localToGlobal(Offset.zero).dy -
+              _headerHeight +
+              1;
     _scroll.animateTo(
       target.clamp(0.0, _scroll.position.maxScrollExtent),
-      duration: Duration(milliseconds: MediaQuery.disableAnimationsOf(context) ? 1 : 700),
+      duration: Duration(
+        milliseconds: MediaQuery.disableAnimationsOf(context) ? 1 : 700,
+      ),
       curve: Curves.easeInOutCubic,
     );
   }
 
-  Widget _section(Sec s, Widget child) => KeyedSubtree(key: _keys[s], child: child);
+  Widget _section(Sec s, Widget child) =>
+      KeyedSubtree(key: _keys[s], child: child);
 
   @override
   Widget build(BuildContext context) {

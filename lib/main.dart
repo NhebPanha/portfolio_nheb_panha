@@ -30,14 +30,19 @@ class _PortfolioAppState extends State<PortfolioApp> {
     SharedPreferences.getInstance().then((prefs) {
       final saved = prefs.getString(_prefKey);
       if (!mounted || saved == null) return;
-      setState(() => _mode = saved == 'dark' ? ThemeMode.dark : ThemeMode.light);
+      setState(
+        () => _mode = saved == 'dark' ? ThemeMode.dark : ThemeMode.light,
+      );
     });
   }
 
   void _toggleTheme(Brightness current) {
     final next = current == Brightness.dark ? ThemeMode.light : ThemeMode.dark;
     setState(() => _mode = next);
-    SharedPreferences.getInstance().then((prefs) => prefs.setString(_prefKey, next == ThemeMode.dark ? 'dark' : 'light'));
+    SharedPreferences.getInstance().then(
+      (prefs) =>
+          prefs.setString(_prefKey, next == ThemeMode.dark ? 'dark' : 'light'),
+    );
   }
 
   @override
@@ -50,7 +55,9 @@ class _PortfolioAppState extends State<PortfolioApp> {
       themeMode: _mode,
       themeAnimationDuration: const Duration(milliseconds: 250),
       home: Builder(
-        builder: (context) => HomePage(onToggleTheme: () => _toggleTheme(Theme.of(context).brightness)),
+        builder: (context) => HomePage(
+          onToggleTheme: () => _toggleTheme(Theme.of(context).brightness),
+        ),
       ),
     );
   }

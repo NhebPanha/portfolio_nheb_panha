@@ -25,7 +25,10 @@ class _ChatLauncherState extends State<ChatLauncher> {
   final _scroll = ScrollController();
   final _focus = FocusNode();
   final List<(String role, String text)> _messages = [
-    ('model', 'Hi! I can answer questions about Panha’s experience, projects and skills.'),
+    (
+      'model',
+      'Hi! I can answer questions about Panha’s experience, projects and skills.',
+    ),
   ];
 
   @override
@@ -39,8 +42,11 @@ class _ChatLauncherState extends State<ChatLauncher> {
   void _toBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scroll.hasClients) {
-        _scroll.animateTo(_scroll.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 250), curve: Curves.easeOut);
+        _scroll.animateTo(
+          _scroll.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+        );
       }
     });
   }
@@ -58,7 +64,9 @@ class _ChatLauncherState extends State<ChatLauncher> {
     String reply;
     try {
       reply = await Api.chat(prompt, history);
-      if (reply.isEmpty) reply = 'Sorry, I didn’t catch that. Could you rephrase?';
+      if (reply.isEmpty) {
+        reply = 'Sorry, I didn’t catch that. Could you rephrase?';
+      }
     } catch (_) {
       reply = 'The assistant is unavailable right now. You can reach Panha through the contact form.';
     }
@@ -84,7 +92,10 @@ class _ChatLauncherState extends State<ChatLauncher> {
           transitionBuilder: (child, anim) => FadeTransition(
             opacity: anim,
             child: SlideTransition(
-              position: Tween(begin: const Offset(0, 0.04), end: Offset.zero).animate(anim),
+              position: Tween(
+                begin: const Offset(0, 0.04),
+                end: Offset.zero,
+              ).animate(anim),
               child: child,
             ),
           ),
@@ -100,7 +111,11 @@ class _ChatLauncherState extends State<ChatLauncher> {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: p.border),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withValues(alpha: 0.18), blurRadius: 30, offset: const Offset(0, 12)),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.18),
+                        blurRadius: 30,
+                        offset: const Offset(0, 12),
+                      ),
                     ],
                   ),
                   clipBehavior: Clip.antiAlias,
@@ -133,8 +148,12 @@ class _ChatLauncherState extends State<ChatLauncher> {
                     turns: Tween(begin: 0.75, end: 1.0).animate(anim),
                     child: FadeTransition(opacity: anim, child: child),
                   ),
-                  child: Icon(_open ? Icons.close : Icons.forum_outlined,
-                      key: ValueKey(_open), color: p.onAccent, size: 26),
+                  child: Icon(
+                    _open ? Icons.close : Icons.forum_outlined,
+                    key: ValueKey(_open),
+                    color: p.onAccent,
+                    size: 26,
+                  ),
                 ),
               ),
             ),
@@ -150,7 +169,9 @@ class _ChatLauncherState extends State<ChatLauncher> {
         // Header
         Container(
           padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: p.border))),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: p.border)),
+          ),
           child: Row(
             children: [
               Container(
@@ -160,20 +181,44 @@ class _ChatLauncherState extends State<ChatLauncher> {
                   color: p.accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.smart_toy_outlined, size: 20, color: p.accent),
+                child: Icon(
+                  Icons.smart_toy_outlined,
+                  size: 20,
+                  color: p.accent,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Ask about Panha', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: p.text)),
+                    Text(
+                      'Ask about Panha',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: p.text,
+                      ),
+                    ),
                     Row(
                       children: [
                         Container(
-                            width: 6, height: 6, decoration: BoxDecoration(color: p.success, shape: BoxShape.circle)),
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: p.success,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
                         const SizedBox(width: 6),
-                        Text('AI assistant · usually instant', style: TextStyle(fontSize: 12, color: p.muted)),
+                        Flexible(
+                          child: Text(
+                            'AI assistant · usually instant',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 12, color: p.muted),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -190,7 +235,9 @@ class _ChatLauncherState extends State<ChatLauncher> {
         // Quick questions
         Container(
           height: 44,
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: p.border))),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: p.border)),
+          ),
           child: ListView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -202,13 +249,23 @@ class _ChatLauncherState extends State<ChatLauncher> {
                     onTap: () => _send(entry.value),
                     borderRadius: BorderRadius.circular(999),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(999),
                         border: Border.all(color: p.border),
                       ),
                       alignment: Alignment.center,
-                      child: Text(entry.key, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: p.muted)),
+                      child: Text(
+                        entry.key,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: p.muted,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -234,7 +291,9 @@ class _ChatLauncherState extends State<ChatLauncher> {
         // Input
         Container(
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(border: Border(top: BorderSide(color: p.border))),
+          decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: p.border)),
+          ),
           child: TextField(
             controller: _input,
             focusNode: _focus,
@@ -261,7 +320,10 @@ class _ChatLauncherState extends State<ChatLauncher> {
                   ),
                 ),
               ),
-              suffixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 44),
+              suffixIconConstraints: const BoxConstraints(
+                minWidth: 44,
+                minHeight: 44,
+              ),
             ),
           ),
         ),
@@ -274,12 +336,20 @@ class _ChatLauncherState extends State<ChatLauncher> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Column(
-        crossAxisAlignment: user ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: user
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-            child: Text(user ? 'You' : 'Assistant',
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: p.muted)),
+            child: Text(
+              user ? 'You' : 'Assistant',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: p.muted,
+              ),
+            ),
           ),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 270),
@@ -299,10 +369,21 @@ class _ChatLauncherState extends State<ChatLauncher> {
                   ? SizedBox(
                       width: 28,
                       height: 14,
-                      child: Center(child: LinearProgressIndicator(color: p.muted, backgroundColor: p.border)),
+                      child: Center(
+                        child: LinearProgressIndicator(
+                          color: p.muted,
+                          backgroundColor: p.border,
+                        ),
+                      ),
                     )
-                  : SelectableText(text,
-                      style: TextStyle(fontSize: 13.5, height: 1.5, color: user ? p.onAccent : p.text)),
+                  : SelectableText(
+                      text,
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        height: 1.5,
+                        color: user ? p.onAccent : p.text,
+                      ),
+                    ),
             ),
           ),
         ],

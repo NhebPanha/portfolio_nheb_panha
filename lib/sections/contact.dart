@@ -47,13 +47,23 @@ class _ContactSectionState extends State<ContactSection> {
 
   Future<void> _submit() async {
     if (_sending) return;
-    final name = _name.text.trim(), mail = _email.text.trim(), message = _message.text.trim();
+    final name = _name.text.trim(),
+        mail = _email.text.trim(),
+        message = _message.text.trim();
     if (name.isEmpty || mail.isEmpty || message.isEmpty) {
-      setState(() => _status = (ok: false, text: 'Please fill in your name, email and message.'));
+      setState(
+        () => _status = (
+          ok: false,
+          text: 'Please fill in your name, email and message.',
+        ),
+      );
       return;
     }
     if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(mail)) {
-      setState(() => _status = (ok: false, text: 'Please enter a valid email address.'));
+      setState(
+        () =>
+            _status = (ok: false, text: 'Please enter a valid email address.'),
+      );
       return;
     }
     setState(() {
@@ -61,15 +71,30 @@ class _ContactSectionState extends State<ContactSection> {
       _status = null;
     });
     try {
-      await Api.sendContact(name: name, email: mail, type: _type, message: message);
+      await Api.sendContact(
+        name: name,
+        email: mail,
+        type: _type,
+        message: message,
+      );
       _name.clear();
       _email.clear();
       _message.clear();
-      setState(() => _status = (ok: true, text: "Thanks! Your message has been sent. I'll reply soon."));
+      setState(
+        () => _status = (
+          ok: true,
+          text: "Thanks! Your message has been sent. I'll reply soon.",
+        ),
+      );
     } on ApiException catch (e) {
       setState(() => _status = (ok: false, text: e.message));
     } catch (_) {
-      setState(() => _status = (ok: false, text: 'Something went wrong. Please email me at $email.'));
+      setState(
+        () => _status = (
+          ok: false,
+          text: 'Something went wrong. Please email me at $email.',
+        ),
+      );
     } finally {
       if (mounted) setState(() => _sending = false);
     }
@@ -79,7 +104,8 @@ class _ContactSectionState extends State<ContactSection> {
   Widget build(BuildContext context) {
     final p = context.pal;
 
-    Widget infoRow(IconData icon, Widget content, {Widget? trailing}) => Padding(
+    Widget infoRow(IconData icon, Widget content, {Widget? trailing}) =>
+        Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: AppCard(
             padding: const EdgeInsets.all(16),
@@ -94,7 +120,8 @@ class _ContactSectionState extends State<ContactSection> {
           ),
         );
 
-    TextStyle linkStyle() => TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: p.text);
+    TextStyle linkStyle() =>
+        TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: p.text);
 
     final info = Reveal(
       child: Column(
@@ -103,15 +130,18 @@ class _ContactSectionState extends State<ContactSection> {
           const SectionHeading(
             eyebrow: 'Contact',
             title: "Let's work together",
-            lead:
-                "Have a mobile app, web platform or backend project in mind? Send me a message and I'll get back to you within one or two working days.",
+            lead: "Have a mobile app, web platform or backend project in mind? Send me a message and I'll get back to you within one or two working days.",
           ),
           const SizedBox(height: 40),
           infoRow(
             Icons.mail_outline,
             InkWell(
               onTap: () => openUrl('mailto:$email'),
-              child: Text(email, overflow: TextOverflow.ellipsis, style: linkStyle()),
+              child: Text(
+                email,
+                overflow: TextOverflow.ellipsis,
+                style: linkStyle(),
+              ),
             ),
             trailing: AppButton(
               label: _copied ? 'Copied' : 'Copy',
@@ -130,23 +160,37 @@ class _ContactSectionState extends State<ContactSection> {
           ),
           infoRow(
             Icons.location_on_outlined,
-            Text.rich(TextSpan(children: [
-              TextSpan(text: location, style: linkStyle()),
-              TextSpan(text: '  (UTC+7)', style: TextStyle(fontSize: 14, color: p.muted)),
-            ])),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: location, style: linkStyle()),
+                  TextSpan(
+                    text: '  (UTC+7)',
+                    style: TextStyle(fontSize: 14, color: p.muted),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
 
     Widget field(String label, Widget input) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: p.text)),
-            const SizedBox(height: 6),
-            input,
-          ],
-        );
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: p.text,
+          ),
+        ),
+        const SizedBox(height: 6),
+        input,
+      ],
+    );
 
     final nameField = field(
       'Name',
@@ -181,9 +225,17 @@ class _ContactSectionState extends State<ContactSection> {
               if (Bp.sm(context))
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Expanded(child: nameField), const SizedBox(width: 20), Expanded(child: emailField)],
+                  children: [
+                    Expanded(child: nameField),
+                    const SizedBox(width: 20),
+                    Expanded(child: emailField),
+                  ],
                 )
-              else ...[nameField, const SizedBox(height: 20), emailField],
+              else ...[
+                nameField,
+                const SizedBox(height: 20),
+                emailField,
+              ],
               const SizedBox(height: 20),
               field(
                 'What can I help with?',
@@ -194,7 +246,8 @@ class _ContactSectionState extends State<ContactSection> {
                   borderRadius: BorderRadius.circular(8),
                   style: TextStyle(fontSize: 14, color: p.text),
                   items: [
-                    for (final (value, label) in _types) DropdownMenuItem(value: value, child: Text(label)),
+                    for (final (value, label) in _types)
+                      DropdownMenuItem(value: value, child: Text(label)),
                   ],
                   onChanged: (v) => setState(() => _type = v ?? _type),
                 ),
@@ -209,7 +262,8 @@ class _ContactSectionState extends State<ContactSection> {
                   maxLines: 10,
                   decoration: const InputDecoration(
                     counterText: '',
-                    hintText: 'A few lines about the project, timeline and budget.',
+                    hintText:
+                        'A few lines about the project, timeline and budget.',
                   ),
                 ),
               ),
@@ -218,19 +272,37 @@ class _ContactSectionState extends State<ContactSection> {
                 Semantics(
                   liveRegion: true,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     decoration: BoxDecoration(
-                      color: (_status!.ok ? p.success : Colors.red).withValues(alpha: 0.1),
+                      color: (_status!.ok ? p.success : Colors.red).withValues(
+                        alpha: 0.1,
+                      ),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: (_status!.ok ? p.success : Colors.red).withValues(alpha: 0.3)),
+                      border: Border.all(
+                        color: (_status!.ok ? p.success : Colors.red)
+                            .withValues(alpha: 0.3),
+                      ),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(_status!.ok ? Icons.check_circle_outline : Icons.error_outline,
-                            size: 18, color: _status!.ok ? p.success : Colors.red.shade400),
+                        Icon(
+                          _status!.ok
+                              ? Icons.check_circle_outline
+                              : Icons.error_outline,
+                          size: 18,
+                          color: _status!.ok ? p.success : Colors.red.shade400,
+                        ),
                         const SizedBox(width: 8),
-                        Expanded(child: Text(_status!.text, style: TextStyle(fontSize: 14, color: p.text))),
+                        Expanded(
+                          child: Text(
+                            _status!.text,
+                            style: TextStyle(fontSize: 14, color: p.text),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -262,7 +334,10 @@ class _ContactSectionState extends State<ContactSection> {
                 Expanded(flex: 7, child: form),
               ],
             )
-          : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [info, const SizedBox(height: 40), form]),
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [info, const SizedBox(height: 40), form],
+            ),
     );
   }
 }
@@ -295,15 +370,25 @@ class SiteFooter extends StatelessWidget {
           ),
       ],
     );
-    final copyright =
-        Text('© ${DateTime.now().year} $ownerName. All rights reserved.', style: TextStyle(fontSize: 14, color: p.muted));
+    final copyright = Text(
+      '© ${DateTime.now().year} $ownerName. All rights reserved.',
+      style: TextStyle(fontSize: 14, color: p.muted),
+    );
 
     return Container(
-      decoration: BoxDecoration(border: Border(top: BorderSide(color: p.border))),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: p.border)),
+      ),
       padding: const EdgeInsets.symmetric(vertical: 32),
       child: PageContainer(
         child: Bp.sm(context)
-            ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [copyright, links])
+            ? Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 24,
+                runSpacing: 12,
+                children: [copyright, links],
+              )
             : Column(children: [copyright, const SizedBox(height: 16), links]),
       ),
     );

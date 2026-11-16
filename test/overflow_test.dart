@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:panha_portfolio/data.dart';
+import 'package:panha_portfolio/home.dart';
 import 'package:panha_portfolio/main.dart';
+import 'package:panha_portfolio/sections/content.dart';
+import 'package:panha_portfolio/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Renders the whole portfolio at common screen sizes (and with the menu, dialogs and chat open)
@@ -19,74 +22,84 @@ void main() {
   ];
 
   setUpAll(() {
-    GoogleFonts.config.allowRuntimeFetching = false; // no network in tests; fall back to default font
+    useWebFonts = false; // no network in tests; use the default font
     SharedPreferences.setMockInitialValues({});
   });
 
   for (final size in sizes) {
     for (final dark in [false, true]) {
-      testWidgets('no overflow at ${size.width.toInt()}x${size.height.toInt()} ${dark ? 'dark' : 'light'}',
-          (tester) async {
-        final overflows = <String>[];
-        final previous = FlutterError.onError;
-        FlutterError.onError = (details) {
-          final text = details.exceptionAsString();
-          if (text.contains('overflowed') || text.contains('OVERFLOW')) {
-            overflows.add(text.split('\n').first);
+      testWidgets(
+        'no overflow at ${size.width.toInt()}x${size.height.toInt()} ${dark ? 'dark' : 'light'}',
+        (tester) async {
+          final overflows = <String>[];
+          final previous = FlutterError.onError;
+          FlutterError.onError = (details) {
+            final text = details.exceptionAsString();
+            if (text.contains('overflowed') || text.contains('OVERFLOW')) {
+              // Include where in lib/ the overflowing widget was created.
+              final where =
+                  RegExp(r'lib/[\w/]+\.dart:\d+')
+                      .firstMatch(details.toString())
+                      ?.group(0) ??
+                  '?';
+              overflows.add('${text.split('\n').first}  ($where)');
+            } else {
+              previous?.call(details);
+            }
+          };
+
+          tester.view.physicalSize = size;
+          tester.view.devicePixelRatio = 1;
+          tester.platformDispatcher.platformBrightnessTestValue = dark
+              ? Brightness.dark
+              : Brightness.light;
+          addTearDown(tester.view.reset);
+          addTearDown(
+            tester.platformDispatcher.clearPlatformBrightnessTestValue,
+          );
+
+          await tester.pumpWidget(const PortfolioApp());
+          await tester.pump(const Duration(seconds: 2));
+
+          // Mobile/tablet menu.
+          final menu = find.byTooltip('Toggle navigation menu');
+          if (menu.evaluate().isNotEmpty) {
+            await tester.tap(menu);
+            await tester.pump(const Duration(milliseconds: 400));
+            await tester.tap(menu);
+            await tester.pump(const Duration(milliseconds: 400));
           }
-          // Font-loading errors (no network in tests) are ignored.
-        };
-        addTearDown(() => FlutterError.onError = previous);
 
-        tester.view.physicalSize = size;
-        tester.view.devicePixelRatio = 1;
-        tester.platformDispatcher.platformBrightnessTestValue = dark ? Brightness.dark : Brightness.light;
-        addTearDown(tester.view.reset);
-        addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
+          final pageContext = tester.element(find.byType(HomePage));
 
-        await tester.pumpWidget(const PortfolioApp());
-        await tester.pump(const Duration(seconds: 2));
+          // Every project details dialog.
+          for (final project in projects) {
+            showProjectDialog(pageContext, project);
+            await tester.pump(const Duration(milliseconds: 400));
+            Navigator.of(pageContext).pop();
+            await tester.pump(const Duration(milliseconds: 400));
+          }
 
-        // Mobile/tablet menu.
-        final menu = find.byTooltip('Toggle navigation menu');
-        if (menu.evaluate().isNotEmpty) {
-          await tester.tap(menu);
+          // Every article in the reader dialog.
+          for (final post in posts) {
+            showPostDialog(pageContext, post);
+            await tester.pump(const Duration(milliseconds: 400));
+            Navigator.of(pageContext).pop();
+            await tester.pump(const Duration(milliseconds: 400));
+          }
+
+          // Chat panel.
+          await tester.tap(find.byIcon(Icons.forum_outlined));
           await tester.pump(const Duration(milliseconds: 400));
-          await tester.tap(menu);
-          await tester.pump(const Duration(milliseconds: 400));
-        }
+          expect(find.text('Ask about Panha'), findsOneWidget);
 
-        // Project details dialog.
-        final details = find.text('View details');
-        if (details.evaluate().isNotEmpty) {
-          await tester.ensureVisible(details.first);
-          await tester.pump(const Duration(milliseconds: 100));
-          await tester.tap(details.first, warnIfMissed: false);
-          await tester.pump(const Duration(milliseconds: 400));
-          await tester.tap(find.byTooltip('Close').last, warnIfMissed: false);
-          await tester.pump(const Duration(milliseconds: 400));
-        }
+          // Drain timers (reveal delays etc.).
+          await tester.pump(const Duration(seconds: 3));
 
-        // Article reader dialog.
-        final read = find.text('Read');
-        if (read.evaluate().isNotEmpty) {
-          await tester.ensureVisible(read.first);
-          await tester.pump(const Duration(milliseconds: 100));
-          await tester.tap(read.first, warnIfMissed: false);
-          await tester.pump(const Duration(milliseconds: 400));
-          await tester.tap(find.byTooltip('Close').last, warnIfMissed: false);
-          await tester.pump(const Duration(milliseconds: 400));
-        }
-
-        // Chat panel.
-        await tester.tap(find.bySemanticsLabel('Open chat assistant'), warnIfMissed: false);
-        await tester.pump(const Duration(milliseconds: 400));
-
-        // Drain timers (reveal delays, copy-button reset, etc.).
-        await tester.pump(const Duration(seconds: 3));
-
-        expect(overflows, isEmpty, reason: overflows.toSet().join('\n'));
-      });
+          FlutterError.onError = previous;
+          expect(overflows, isEmpty, reason: overflows.toSet().join('\n'));
+        },
+      );
     }
   }
 }

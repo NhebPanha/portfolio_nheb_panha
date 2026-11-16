@@ -4,19 +4,27 @@ import 'package:url_launcher/url_launcher.dart';
 import '../theme.dart';
 
 Future<void> openUrl(String url) async {
-  await launchUrl(Uri.parse(url), webOnlyWindowName: url.startsWith('mailto:') ? '_self' : '_blank');
+  await launchUrl(
+    Uri.parse(url),
+    webOnlyWindowName: url.startsWith('mailto:') ? '_self' : '_blank',
+  );
 }
 
 /// Gives descendants (e.g. [Reveal]) access to the page's scroll controller.
 class ScrollScope extends InheritedWidget {
-  const ScrollScope({super.key, required this.controller, required super.child});
+  const ScrollScope({
+    super.key,
+    required this.controller,
+    required super.child,
+  });
   final ScrollController controller;
 
   static ScrollController? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<ScrollScope>()?.controller;
 
   @override
-  bool updateShouldNotify(ScrollScope oldWidget) => oldWidget.controller != controller;
+  bool updateShouldNotify(ScrollScope oldWidget) =>
+      oldWidget.controller != controller;
 }
 
 /// Centered, max-width page column with responsive side padding.
@@ -67,13 +75,23 @@ class Eyebrow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        text.toUpperCase(),
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 1.7, color: context.pal.accent),
-      );
+    text.toUpperCase(),
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 1.7,
+      color: context.pal.accent,
+    ),
+  );
 }
 
 class SectionHeading extends StatelessWidget {
-  const SectionHeading({super.key, required this.eyebrow, required this.title, this.lead});
+  const SectionHeading({
+    super.key,
+    required this.eyebrow,
+    required this.title,
+    this.lead,
+  });
   final String eyebrow;
   final String title;
   final String? lead;
@@ -103,7 +121,14 @@ class SectionHeading extends StatelessWidget {
           ),
           if (lead != null) ...[
             const SizedBox(height: 16),
-            Text(lead!, style: TextStyle(fontSize: Bp.md(context) ? 18 : 16, height: 1.6, color: p.muted)),
+            Text(
+              lead!,
+              style: TextStyle(
+                fontSize: Bp.md(context) ? 18 : 16,
+                height: 1.6,
+                color: p.muted,
+              ),
+            ),
           ],
         ],
       ),
@@ -144,16 +169,26 @@ class _AppCardState extends State<AppCard> {
       decoration: BoxDecoration(
         color: widget.color ?? p.bg,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _hovered && interactive ? p.accent.withValues(alpha: 0.45) : p.border),
+        border: Border.all(
+          color: _hovered && interactive
+              ? p.accent.withValues(alpha: 0.45)
+              : p.border,
+        ),
       ),
       child: widget.child,
     );
     if (!interactive) return card;
     return MouseRegion(
-      cursor: widget.onTap != null ? SystemMouseCursors.click : MouseCursor.defer,
+      cursor: widget.onTap != null
+          ? SystemMouseCursors.click
+          : MouseCursor.defer,
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
-      child: GestureDetector(onTap: widget.onTap, behavior: HitTestBehavior.opaque, child: card),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        behavior: HitTestBehavior.opaque,
+        child: card,
+      ),
     );
   }
 }
@@ -173,7 +208,14 @@ class TagChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: p.border),
       ),
-      child: Text(text, style: TextStyle(fontSize: large ? 13 : 12, fontWeight: FontWeight.w500, color: p.muted)),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: large ? 13 : 12,
+          fontWeight: FontWeight.w500,
+          color: p.muted,
+        ),
+      ),
     );
   }
 }
@@ -218,7 +260,9 @@ class _AppButtonState extends State<AppButton> {
     final p = context.pal;
     final primary = widget.kind == ButtonKind.primary;
     final enabled = widget.onPressed != null && !widget.loading;
-    final bg = primary ? (_hovered ? p.accentStrong : p.accent) : (_hovered ? p.surface : p.bg);
+    final bg = primary
+        ? (_hovered ? p.accentStrong : p.accent)
+        : (_hovered ? p.surface : p.bg);
     final fg = primary ? p.onAccent : p.text;
 
     final content = Row(
@@ -226,14 +270,25 @@ class _AppButtonState extends State<AppButton> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (widget.loading) ...[
-          SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: fg)),
+          SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(strokeWidth: 2, color: fg),
+          ),
           const SizedBox(width: 8),
         ] else if (widget.leadingIcon != null) ...[
           Icon(widget.leadingIcon, size: 18, color: fg),
           if (widget.label.isNotEmpty) const SizedBox(width: 8),
         ],
         if (widget.label.isNotEmpty)
-          Text(widget.label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: fg)),
+          Text(
+            widget.label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: fg,
+            ),
+          ),
         if (widget.icon != null) ...[
           const SizedBox(width: 8),
           AnimatedSlide(
@@ -250,7 +305,9 @@ class _AppButtonState extends State<AppButton> {
       label: widget.semanticLabel,
       enabled: enabled,
       child: MouseRegion(
-        cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.forbidden,
+        cursor: enabled
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.forbidden,
         onEnter: (_) => setState(() => _hovered = true),
         onExit: (_) => setState(() => _hovered = false),
         child: GestureDetector(
@@ -261,7 +318,9 @@ class _AppButtonState extends State<AppButton> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: EdgeInsets.symmetric(
-                horizontal: widget.label.isEmpty ? 12 : (widget.dense ? 16 : 20),
+                horizontal: widget.label.isEmpty
+                    ? 12
+                    : (widget.dense ? 16 : 20),
                 vertical: widget.dense ? 8 : 12,
               ),
               decoration: BoxDecoration(
@@ -280,7 +339,13 @@ class _AppButtonState extends State<AppButton> {
 
 /// Small icon-only square button (theme toggle, menu, close).
 class IconSquare extends StatelessWidget {
-  const IconSquare({super.key, required this.icon, required this.onTap, required this.tooltip, this.bordered = true});
+  const IconSquare({
+    super.key,
+    required this.icon,
+    required this.onTap,
+    required this.tooltip,
+    this.bordered = true,
+  });
   final IconData icon;
   final VoidCallback onTap;
   final String tooltip;
@@ -373,9 +438,14 @@ class Reveal extends StatefulWidget {
 }
 
 class _RevealState extends State<Reveal> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 650));
-  late final Animation<double> _curve = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 650),
+  );
+  late final Animation<double> _curve = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeOutCubic,
+  );
   ScrollController? _scroll;
   bool _started = false;
 
@@ -419,7 +489,10 @@ class _RevealState extends State<Reveal> with SingleTickerProviderStateMixin {
       opacity: _curve,
       child: AnimatedBuilder(
         animation: _curve,
-        builder: (context, child) => Transform.translate(offset: Offset(0, 14 * (1 - _curve.value)), child: child),
+        builder: (context, child) => Transform.translate(
+          offset: Offset(0, 14 * (1 - _curve.value)),
+          child: child,
+        ),
         child: widget.child,
       ),
     );
@@ -428,7 +501,12 @@ class _RevealState extends State<Reveal> with SingleTickerProviderStateMixin {
 
 /// Grid whose rows share the height of their tallest item, so cards line up.
 class ResponsiveGrid extends StatelessWidget {
-  const ResponsiveGrid({super.key, required this.columns, required this.children, this.gap = 20});
+  const ResponsiveGrid({
+    super.key,
+    required this.columns,
+    required this.children,
+    this.gap = 20,
+  });
   final int columns;
   final List<Widget> children;
   final double gap;
@@ -441,11 +519,25 @@ class ResponsiveGrid extends StatelessWidget {
       for (var c = 0; c < columns; c++) {
         if (c > 0) cells.add(SizedBox(width: gap));
         final index = i + c;
-        cells.add(Expanded(child: index < children.length ? children[index] : const SizedBox()));
+        cells.add(
+          Expanded(
+            child: index < children.length ? children[index] : const SizedBox(),
+          ),
+        );
       }
       if (rows.isNotEmpty) rows.add(SizedBox(height: gap));
-      rows.add(IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: cells)));
+      rows.add(
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: cells,
+          ),
+        ),
+      );
     }
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: rows);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: rows,
+    );
   }
 }

@@ -55,8 +55,14 @@ class _SiteHeaderState extends State<SiteHeader> {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 250),
           decoration: BoxDecoration(
-            color: solid ? p.bg.withValues(alpha: 0.94) : p.bg.withValues(alpha: 0),
-            border: Border(bottom: BorderSide(color: solid ? p.border : p.border.withValues(alpha: 0))),
+            color: solid
+                ? p.bg.withValues(alpha: 0.94)
+                : p.bg.withValues(alpha: 0),
+            border: Border(
+              bottom: BorderSide(
+                color: solid ? p.border : p.border.withValues(alpha: 0),
+              ),
+            ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -82,35 +88,64 @@ class _SiteHeaderState extends State<SiteHeader> {
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(color: p.border),
                                 ),
-                                child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
+                                child: Image.asset(
+                                  'assets/images/logo.png',
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                               const SizedBox(width: 10),
-                              Text(ownerName,
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: p.text)),
+                              Text(
+                                ownerName,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: p.text,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      const Spacer(),
+                      // Links take the space between logo and buttons and shrink only if they must.
                       if (wide)
-                        ValueListenableBuilder<Sec?>(
-                          valueListenable: widget.active,
-                          builder: (context, active, _) => Row(
-                            children: [
-                              for (final (sec, label) in navItems)
-                                _NavLink(label: label, active: active == sec, onTap: () => _go(sec)),
-                            ],
+                        Expanded(
+                          child: Center(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: ValueListenableBuilder<Sec?>(
+                                valueListenable: widget.active,
+                                builder: (context, active, _) => Row(
+                                  children: [
+                                    for (final (sec, label) in navItems)
+                                      _NavLink(
+                                        label: label,
+                                        active: active == sec,
+                                        onTap: () => _go(sec),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      const Spacer(),
+                        )
+                      else
+                        const Spacer(),
                       IconSquare(
-                        icon: isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
-                        tooltip: isDark ? 'Switch to light theme' : 'Switch to dark theme',
+                        icon: isDark
+                            ? Icons.light_mode_outlined
+                            : Icons.dark_mode_outlined,
+                        tooltip: isDark
+                            ? 'Switch to light theme'
+                            : 'Switch to dark theme',
                         onTap: widget.onToggleTheme,
                       ),
                       if (Bp.sm(context)) ...[
                         const SizedBox(width: 8),
-                        AppButton(label: 'Contact me', dense: true, onPressed: () => _go(Sec.contact)),
+                        AppButton(
+                          label: 'Contact me',
+                          dense: true,
+                          onPressed: () => _go(Sec.contact),
+                        ),
                       ],
                       if (!wide) ...[
                         const SizedBox(width: 8),
@@ -133,7 +168,9 @@ class _SiteHeaderState extends State<SiteHeader> {
                     ? const SizedBox(width: double.infinity)
                     : Container(
                         width: double.infinity,
-                        decoration: BoxDecoration(border: Border(top: BorderSide(color: p.border))),
+                        decoration: BoxDecoration(
+                          border: Border(top: BorderSide(color: p.border)),
+                        ),
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: PageContainer(
                           child: ValueListenableBuilder<Sec?>(
@@ -146,17 +183,28 @@ class _SiteHeaderState extends State<SiteHeader> {
                                     onTap: () => _go(sec),
                                     borderRadius: BorderRadius.circular(6),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                                      child: Text(label,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: active == sec ? p.accent : p.text,
-                                          )),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12,
+                                        horizontal: 8,
+                                      ),
+                                      child: Text(
+                                        label,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: active == sec
+                                              ? p.accent
+                                              : p.text,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 const SizedBox(height: 8),
-                                AppButton(label: 'Contact me', expand: true, onPressed: () => _go(Sec.contact)),
+                                AppButton(
+                                  label: 'Contact me',
+                                  expand: true,
+                                  onPressed: () => _go(Sec.contact),
+                                ),
                                 const SizedBox(height: 8),
                               ],
                             ),
@@ -173,7 +221,11 @@ class _SiteHeaderState extends State<SiteHeader> {
 }
 
 class _NavLink extends StatefulWidget {
-  const _NavLink({required this.label, required this.active, required this.onTap});
+  const _NavLink({
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
   final String label;
   final bool active;
   final VoidCallback onTap;

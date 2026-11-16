@@ -30,7 +30,16 @@ const aboutParagraphs = [
       'production, and I enjoy owning a feature from database schema to final pixel.',
 ];
 
-const coreStack = ['Flutter', 'Dart', 'Nuxt', 'Vue', 'Laravel', 'Supabase', 'PostgreSQL', 'TypeScript'];
+const coreStack = [
+  'Flutter',
+  'Dart',
+  'Nuxt',
+  'Vue',
+  'Laravel',
+  'Supabase',
+  'PostgreSQL',
+  'TypeScript',
+];
 
 class Service {
   const Service(this.icon, this.title, this.body);
@@ -40,14 +49,26 @@ class Service {
 }
 
 const services = [
-  Service(Icons.smartphone_outlined, 'Mobile apps',
-      'Cross-platform Flutter apps for iOS and Android with clean state management (BLoC, Riverpod) and offline support.'),
-  Service(Icons.web_outlined, 'Web applications',
-      'Fast, responsive Nuxt and Vue apps with TypeScript, accessible UI and a maintainable component structure.'),
-  Service(Icons.dns_outlined, 'Backends & APIs',
-      'REST APIs in Laravel and Node.js, authentication, background jobs and integrations such as payments and Telegram.'),
-  Service(Icons.storage_outlined, 'Data & databases',
-      'PostgreSQL and MySQL schema design, Supabase with row-level security, and reporting for finance-style data.'),
+  Service(
+    Icons.smartphone_outlined,
+    'Mobile apps',
+    'Cross-platform Flutter apps for iOS and Android with clean state management (BLoC, Riverpod) and offline support.',
+  ),
+  Service(
+    Icons.web_outlined,
+    'Web applications',
+    'Fast, responsive Nuxt and Vue apps with TypeScript, accessible UI and a maintainable component structure.',
+  ),
+  Service(
+    Icons.dns_outlined,
+    'Backends & APIs',
+    'REST APIs in Laravel and Node.js, authentication, background jobs and integrations such as payments and Telegram.',
+  ),
+  Service(
+    Icons.storage_outlined,
+    'Data & databases',
+    'PostgreSQL and MySQL schema design, Supabase with row-level security, and reporting for finance-style data.',
+  ),
 ];
 
 class Job {
@@ -73,8 +94,7 @@ const jobs = [
     company: 'Cross-Platform Mobile Ecosystems',
     location: 'Phnom Penh / Remote',
     type: 'Full-time',
-    summary:
-        'Building high-performance Flutter mobile applications with real-time Supabase PostgreSQL synchronisation, biometric security, BLoC state isolation and offline caching.',
+    summary: 'Building high-performance Flutter mobile applications with real-time Supabase PostgreSQL synchronisation, biometric security, BLoC state isolation and offline caching.',
     highlights: [
       'Engineered a FinTech mobile wallet handling real-time WebSocket transaction feeds.',
       'Designed row-level security (RLS) policies for Supabase PostgreSQL schemas.',
@@ -88,14 +108,20 @@ const jobs = [
     company: 'Enterprise SaaS Solutions',
     location: 'Phnom Penh',
     type: 'Full-time',
-    summary:
-        'Developed modular server-rendered web applications in Nuxt 3 and Vue 3, with a custom design system and payment gateway integrations.',
+    summary: 'Developed modular server-rendered web applications in Nuxt 3 and Vue 3, with a custom design system and payment gateway integrations.',
     highlights: [
       'Built responsive web portals serving over 50,000 monthly sessions with sub-second page loads.',
       'Integrated Pinia state management with persisted storage for reliable session retention.',
       'Created reusable design tokens and a dark/light theme system.',
     ],
-    tech: ['Nuxt 3', 'Vue 3', 'TypeScript', 'Tailwind CSS', 'Pinia', 'REST API'],
+    tech: [
+      'Nuxt 3',
+      'Vue 3',
+      'TypeScript',
+      'Tailwind CSS',
+      'Pinia',
+      'REST API',
+    ],
   ),
   Job(
     period: '2023 — 2024',
@@ -103,14 +129,20 @@ const jobs = [
     company: 'Cloud Infrastructure & API Services',
     location: 'Phnom Penh',
     type: 'Full-time',
-    summary:
-        'Built REST APIs in Laravel and Node.js with database indexing, background queue jobs and automated Telegram alerting.',
+    summary: 'Built REST APIs in Laravel and Node.js with database indexing, background queue jobs and automated Telegram alerting.',
     highlights: [
       'Built financial accounting API endpoints processing daily transactions within atomic database transactions.',
       'Optimised SQL queries and compound indexes, cutting database response latency by 40%.',
       'Integrated Telegram bot alerts for immediate production error reporting.',
     ],
-    tech: ['Laravel', 'Node.js', 'MySQL', 'PostgreSQL', 'Redis', 'Telegram API'],
+    tech: [
+      'Laravel',
+      'Node.js',
+      'MySQL',
+      'PostgreSQL',
+      'Redis',
+      'Telegram API',
+    ],
   ),
   Job(
     period: '2022 — 2023',
@@ -118,13 +150,19 @@ const jobs = [
     company: 'Digital Product Innovation Lab',
     location: 'Phnom Penh',
     type: 'Full-time',
-    summary:
-        'Created cross-platform UI components from high-fidelity Figma designs and set up continuous integration with GitHub Actions.',
+    summary: 'Created cross-platform UI components from high-fidelity Figma designs and set up continuous integration with GitHub Actions.',
     highlights: [
       'Built 15+ reusable Flutter UI widget packages following a shared design system.',
       'Automated multi-platform builds using GitHub Actions CI/CD pipelines.',
     ],
-    tech: ['Flutter', 'JavaScript', 'HTML/CSS', 'Git', 'GitHub Actions', 'Figma'],
+    tech: [
+      'Flutter',
+      'JavaScript',
+      'HTML/CSS',
+      'Git',
+      'GitHub Actions',
+      'Figma',
+    ],
   ),
 ];
 
@@ -149,24 +187,21 @@ const projects = [
   Project(
     title: 'RED ANT Express',
     category: 'E-Commerce',
-    description:
-        'Customer shopping app for the RED ANT Express e-commerce platform: browse products, add them to the cart, check out and track orders through to delivery.',
+    description: 'Customer shopping app for the RED ANT Express e-commerce platform: browse products, add them to the cart, check out and track orders through to delivery.',
     icon: Icons.shopping_bag_outlined,
     tags: ['Flutter', 'Dart'],
   ),
   Project(
     title: 'RED ANT Merchant',
     category: 'Merchant App',
-    description:
-        'Seller app for RED ANT Express that lets merchants manage their products and incoming orders, and prepare each order for delivery.',
+    description: 'Seller app for RED ANT Express that lets merchants manage their products and incoming orders, and prepare each order for delivery.',
     icon: Icons.storefront_outlined,
     tags: ['Flutter', 'Dart'],
   ),
   Project(
     title: 'RED ANT Driver',
     category: 'Delivery App',
-    description:
-        'Driver app for RED ANT Express for accepting delivery jobs, picking up orders from merchants and updating each order through to drop-off.',
+    description: 'Driver app for RED ANT Express for accepting delivery jobs, picking up orders from merchants and updating each order through to drop-off.',
     icon: Icons.delivery_dining_outlined,
     tags: ['Flutter', 'Dart'],
   ),
@@ -244,8 +279,7 @@ const posts = [
     category: 'Mobile Architecture',
     date: 'Jul 2025',
     readTime: '5 min read',
-    summary:
-        'A practical guide to implementing BLoC state isolation, Supabase Row-Level Security (RLS), and offline-first Hive caching in Flutter production apps.',
+    summary: 'A practical guide to implementing BLoC state isolation, Supabase Row-Level Security (RLS), and offline-first Hive caching in Flutter production apps.',
     content: '''Building real-time mobile applications requires a decoupled architecture that balances UI responsiveness, local data caching, and secure cloud synchronization.
 
 ### 1. State Management with BLoC Pattern
@@ -263,8 +297,7 @@ To maintain sub-100ms UI interactions, local key-value stores like Hive cache re
     category: 'Frontend Engineering',
     date: 'Jun 2025',
     readTime: '4 min read',
-    summary:
-        'How to craft fast Vue 3 applications using Nuxt 3 server-side rendering, dynamic dark mode themes, and performance-first CSS utilities.',
+    summary: 'How to craft fast Vue 3 applications using Nuxt 3 server-side rendering, dynamic dark mode themes, and performance-first CSS utilities.',
     content: '''Modern web interfaces must deliver immediate visual impact without sacrificing Lighthouse web vitals or page transition speeds.
 
 ### 1. Server-Side Rendering (SSR) Optimization
@@ -279,8 +312,7 @@ Instead of relying on heavy third-party UI libraries, a small set of CSS design 
     category: 'Backend Systems',
     date: 'May 2025',
     readTime: '6 min read',
-    summary:
-        'Database indexing strategies, background worker queues, and automated Telegram bot alerts for mission-critical API backends.',
+    summary: 'Database indexing strategies, background worker queues, and automated Telegram bot alerts for mission-critical API backends.',
     content: '''When handling high daily transaction volume, API backend performance hinges on SQL indexing precision and asynchronous background queues.
 
 ### 1. Database Indexing & Query Optimization

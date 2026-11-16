@@ -16,14 +16,24 @@ class AboutSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionHeading(eyebrow: 'About', title: 'Developer with an eye for detail and data'),
+          const SectionHeading(
+            eyebrow: 'About',
+            title: 'Developer with an eye for detail and data',
+          ),
           const SizedBox(height: 24),
           for (final para in aboutParagraphs) ...[
-            Text(para, style: TextStyle(fontSize: 16, height: 1.65, color: p.muted)),
+            Text(
+              para,
+              style: TextStyle(fontSize: 16, height: 1.65, color: p.muted),
+            ),
             const SizedBox(height: 16),
           ],
           const SizedBox(height: 16),
-          Wrap(spacing: 8, runSpacing: 8, children: [for (final t in coreStack) TagChip(t)]),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [for (final t in coreStack) TagChip(t)],
+          ),
         ],
       ),
     );
@@ -50,9 +60,19 @@ class AboutSection extends StatelessWidget {
                     child: Icon(s.icon, size: 22, color: p.accent),
                   ),
                   const SizedBox(height: 16),
-                  Text(s.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: p.text)),
+                  Text(
+                    s.title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: p.text,
+                    ),
+                  ),
                   const SizedBox(height: 8),
-                  Text(s.body, style: TextStyle(fontSize: 14, height: 1.6, color: p.muted)),
+                  Text(
+                    s.body,
+                    style: TextStyle(fontSize: 14, height: 1.6, color: p.muted),
+                  ),
                 ],
               ),
             ),
@@ -71,7 +91,10 @@ class AboutSection extends StatelessWidget {
                 Expanded(flex: 7, child: cards),
               ],
             )
-          : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [story, const SizedBox(height: 40), cards]),
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [story, const SizedBox(height: 40), cards],
+            ),
     );
   }
 }
@@ -98,7 +121,11 @@ class ExperienceSection extends StatelessWidget {
           for (final (i, job) in jobs.indexed)
             Reveal(
               delay: Duration(milliseconds: 90 * i),
-              child: _JobEntry(job: job, first: i == 0, last: i == jobs.length - 1),
+              child: _JobEntry(
+                job: job,
+                first: i == 0,
+                last: i == jobs.length - 1,
+              ),
             ),
         ],
       ),
@@ -129,16 +156,28 @@ class _JobEntry extends StatelessWidget {
             runSpacing: 6,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Text(job.role, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: p.text)),
+              Text(
+                job.role,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: p.text,
+                ),
+              ),
               TagChip(job.type),
             ],
           ),
           const SizedBox(height: 4),
           Text.rich(
-            TextSpan(children: [
-              TextSpan(text: job.company, style: TextStyle(fontWeight: FontWeight.w500, color: p.text)),
-              TextSpan(text: '  ·  ${job.location}'),
-            ]),
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: job.company,
+                  style: TextStyle(fontWeight: FontWeight.w500, color: p.text),
+                ),
+                TextSpan(text: '  ·  ${job.location}'),
+              ],
+            ),
             style: TextStyle(fontSize: 14, color: p.muted),
           ),
           const SizedBox(height: 16),
@@ -147,7 +186,10 @@ class _JobEntry extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(job.summary, style: TextStyle(fontSize: 15, height: 1.65, color: p.muted)),
+                Text(
+                  job.summary,
+                  style: TextStyle(fontSize: 15, height: 1.65, color: p.muted),
+                ),
                 const SizedBox(height: 16),
                 for (final h in job.highlights)
                   Padding(
@@ -158,9 +200,24 @@ class _JobEntry extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 9, right: 12),
                           child: Container(
-                              width: 4, height: 4, decoration: BoxDecoration(color: p.muted, shape: BoxShape.circle)),
+                            width: 4,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: p.muted,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
                         ),
-                        Expanded(child: Text(h, style: TextStyle(fontSize: 14, height: 1.6, color: p.muted))),
+                        Expanded(
+                          child: Text(
+                            h,
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.6,
+                              color: p.muted,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -168,7 +225,11 @@ class _JobEntry extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Wrap(spacing: 6, runSpacing: 6, children: [for (final t in job.tech) TagChip(t)]),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [for (final t in job.tech) TagChip(t)],
+          ),
         ],
       ),
     );
@@ -235,14 +296,22 @@ class _ProjectsSectionState extends State<ProjectsSection> {
   String _category = 'All';
   String _query = '';
 
-  List<String> get _categories => ['All', ...{for (final p in projects) p.category}];
+  List<String> get _categories => [
+    'All',
+    ...{for (final p in projects) p.category},
+  ];
 
   List<Project> get _filtered {
     final q = _query.trim().toLowerCase();
     return projects.where((p) {
       if (_category != 'All' && p.category != _category) return false;
       if (q.isEmpty) return true;
-      return [p.title, p.category, p.description, ...p.tags].any((t) => t.toLowerCase().contains(q));
+      return [
+        p.title,
+        p.category,
+        p.description,
+        ...p.tags,
+      ].any((t) => t.toLowerCase().contains(q));
     }).toList();
   }
 
@@ -277,9 +346,16 @@ class _ProjectsSectionState extends State<ProjectsSection> {
             child: Bp.md(context)
                 ? Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [const Expanded(child: heading), const SizedBox(width: 32), search],
+                    children: [
+                      const Expanded(child: heading),
+                      const SizedBox(width: 32),
+                      search,
+                    ],
                   )
-                : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [heading, const SizedBox(height: 24), search]),
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [heading, const SizedBox(height: 24), search],
+                  ),
           ),
           const SizedBox(height: 40),
           Wrap(
@@ -287,7 +363,11 @@ class _ProjectsSectionState extends State<ProjectsSection> {
             runSpacing: 8,
             children: [
               for (final c in _categories)
-                _FilterPill(label: c, selected: c == _category, onTap: () => setState(() => _category = c)),
+                _FilterPill(
+                  label: c,
+                  selected: c == _category,
+                  onTap: () => setState(() => _category = c),
+                ),
             ],
           ),
           const SizedBox(height: 32),
@@ -298,9 +378,19 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                 children: [
                   Icon(Icons.search_off, size: 36, color: p.muted),
                   const SizedBox(height: 12),
-                  Text('No projects found', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: p.text)),
+                  Text(
+                    'No projects found',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: p.text,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text('Try a different search or category.', style: TextStyle(fontSize: 14, color: p.muted)),
+                  Text(
+                    'Try a different search or category.',
+                    style: TextStyle(fontSize: 14, color: p.muted),
+                  ),
                 ],
               ),
             )
@@ -323,7 +413,11 @@ class _ProjectsSectionState extends State<ProjectsSection> {
 }
 
 class _FilterPill extends StatelessWidget {
-  const _FilterPill({required this.label, required this.selected, required this.onTap});
+  const _FilterPill({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -345,8 +439,14 @@ class _FilterPill extends StatelessWidget {
             borderRadius: BorderRadius.circular(999),
             border: Border.all(color: selected ? p.text : p.border),
           ),
-          child: Text(label,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: selected ? p.bg : p.muted)),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: selected ? p.bg : p.muted,
+            ),
+          ),
         ),
       ),
     );
@@ -372,14 +472,12 @@ class _ProjectCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             decoration: BoxDecoration(
               color: p.surface,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(15),
+              ),
               border: Border(bottom: BorderSide(color: p.border)),
             ),
-            child: Row(
-              children: [
-                _IconTile(icon: project.icon),
-              ],
-            ),
+            child: Row(children: [_IconTile(icon: project.icon)]),
           ),
           Expanded(
             child: Padding(
@@ -389,14 +487,27 @@ class _ProjectCard extends StatelessWidget {
                 children: [
                   Eyebrow(project.category),
                   const SizedBox(height: 8),
-                  Text(project.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: p.text)),
+                  Text(
+                    project.title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: p.text,
+                    ),
+                  ),
                   const SizedBox(height: 8),
-                  Text(project.description,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 14, height: 1.6, color: p.muted)),
+                  Text(
+                    project.description,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 14, height: 1.6, color: p.muted),
+                  ),
                   const SizedBox(height: 20),
-                  Wrap(spacing: 6, runSpacing: 6, children: [for (final t in project.tags) TagChip(t)]),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: [for (final t in project.tags) TagChip(t)],
+                  ),
                   const Spacer(),
                   const SizedBox(height: 24),
                   ArrowLink(label: 'View details', onTap: open),
@@ -454,19 +565,39 @@ Future<void> showProjectDialog(BuildContext context, Project project) {
                     children: [
                       Eyebrow(project.category),
                       const SizedBox(height: 4),
-                      Text(project.title,
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: p.text)),
+                      Text(
+                        project.title,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: p.text,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 24),
-            Text(project.description, style: TextStyle(fontSize: 15, height: 1.65, color: p.muted)),
+            Text(
+              project.description,
+              style: TextStyle(fontSize: 15, height: 1.65, color: p.muted),
+            ),
             const SizedBox(height: 24),
-            Text('Built with', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: p.text)),
+            Text(
+              'Built with',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: p.text,
+              ),
+            ),
             const SizedBox(height: 12),
-            Wrap(spacing: 8, runSpacing: 8, children: [for (final t in project.tags) TagChip(t, large: true)]),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [for (final t in project.tags) TagChip(t, large: true)],
+            ),
             if (project.demoUrl != null || project.sourceUrl != null) ...[
               const SizedBox(height: 24),
               Divider(color: p.border, height: 1),
@@ -477,15 +608,17 @@ Future<void> showProjectDialog(BuildContext context, Project project) {
                 children: [
                   if (project.demoUrl != null)
                     AppButton(
-                        label: 'Live demo',
-                        leadingIcon: Icons.open_in_new,
-                        onPressed: () => openUrl(project.demoUrl!)),
+                      label: 'Live demo',
+                      leadingIcon: Icons.open_in_new,
+                      onPressed: () => openUrl(project.demoUrl!),
+                    ),
                   if (project.sourceUrl != null)
                     AppButton(
-                        label: 'Source code',
-                        leadingIcon: Icons.code,
-                        kind: ButtonKind.secondary,
-                        onPressed: () => openUrl(project.sourceUrl!)),
+                      label: 'Source code',
+                      leadingIcon: Icons.code,
+                      kind: ButtonKind.secondary,
+                      onPressed: () => openUrl(project.sourceUrl!),
+                    ),
                 ],
               ),
             ],
@@ -498,7 +631,11 @@ Future<void> showProjectDialog(BuildContext context, Project project) {
 
 /// Shared dialog shell: bordered card, close button, scrolls when tall. Esc closes it.
 class _AppDialog extends StatelessWidget {
-  const _AppDialog({required this.child, required this.maxWidth, required this.title});
+  const _AppDialog({
+    required this.child,
+    required this.maxWidth,
+    required this.title,
+  });
   final Widget child;
   final double maxWidth;
   final String title;
@@ -510,13 +647,24 @@ class _AppDialog extends StatelessWidget {
       backgroundColor: p.bg,
       surfaceTintColor: Colors.transparent,
       insetPadding: const EdgeInsets.all(16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: p.border)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: p.border),
+      ),
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: MediaQuery.sizeOf(context).height * 0.9),
+        constraints: BoxConstraints(
+          maxWidth: maxWidth,
+          maxHeight: MediaQuery.sizeOf(context).height * 0.9,
+        ),
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(Bp.sm(context) ? 40 : 24, 32, Bp.sm(context) ? 40 : 24, 32),
+              padding: EdgeInsets.fromLTRB(
+                Bp.sm(context) ? 40 : 24,
+                32,
+                Bp.sm(context) ? 40 : 24,
+                32,
+              ),
               child: Semantics(label: title, child: child),
             ),
             Positioned(
@@ -547,12 +695,19 @@ class SkillsSection extends StatelessWidget {
     final columns = Bp.lg(context) ? 3 : (Bp.sm(context) ? 2 : 1);
 
     Widget header(IconData icon, String title) => Row(
-          children: [
-            Icon(icon, size: 22, color: p.accent),
-            const SizedBox(width: 12),
-            Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: p.text)),
-          ],
-        );
+      children: [
+        Icon(icon, size: 22, color: p.accent),
+        const SizedBox(width: 12),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: p.text,
+          ),
+        ),
+      ],
+    );
 
     final cards = <Widget>[
       for (final (i, g) in skillGroups.indexed)
@@ -572,14 +727,27 @@ class SkillsSection extends StatelessWidget {
                         Container(
                           width: 8,
                           height: 8,
-                          decoration: BoxDecoration(color: p.accent.withValues(alpha: 0.5), shape: BoxShape.circle),
+                          decoration: BoxDecoration(
+                            color: p.accent.withValues(alpha: 0.5),
+                            shape: BoxShape.circle,
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: Text(name,
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: p.text)),
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: p.text,
+                            ),
+                          ),
                         ),
-                        if (note != null) Text(note, style: TextStyle(fontSize: 12, color: p.muted)),
+                        if (note != null)
+                          Text(
+                            note,
+                            style: TextStyle(fontSize: 12, color: p.muted),
+                          ),
                       ],
                     ),
                   ),
@@ -606,7 +774,16 @@ class SkillsSection extends StatelessWidget {
                         child: Icon(Icons.check, size: 16, color: p.success),
                       ),
                       const SizedBox(width: 12),
-                      Expanded(child: Text(practice, style: TextStyle(fontSize: 14, height: 1.6, color: p.muted))),
+                      Expanded(
+                        child: Text(
+                          practice,
+                          style: TextStyle(
+                            fontSize: 14,
+                            height: 1.6,
+                            color: p.muted,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -665,26 +842,45 @@ class WritingSection extends StatelessWidget {
                 Reveal(
                   delay: Duration(milliseconds: 80 * i),
                   child: AppCard(
-                    onTap: () => _showPost(context, post),
+                    onTap: () => showPostDialog(context, post),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _PostMeta(post: post),
                         const SizedBox(height: 12),
-                        Text(post.title,
-                            style: TextStyle(fontSize: 18, height: 1.35, fontWeight: FontWeight.w600, color: p.text)),
+                        Text(
+                          post.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            height: 1.35,
+                            fontWeight: FontWeight.w600,
+                            color: p.text,
+                          ),
+                        ),
                         const SizedBox(height: 12),
-                        Text(post.summary,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 14, height: 1.6, color: p.muted)),
+                        Text(
+                          post.summary,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            height: 1.6,
+                            color: p.muted,
+                          ),
+                        ),
                         const Spacer(),
                         const SizedBox(height: 24),
                         Row(
                           children: [
-                            Text(post.readTime, style: TextStyle(fontSize: 14, color: p.muted)),
+                            Text(
+                              post.readTime,
+                              style: TextStyle(fontSize: 14, color: p.muted),
+                            ),
                             const Spacer(),
-                            ArrowLink(label: 'Read', onTap: () => _showPost(context, post)),
+                            ArrowLink(
+                              label: 'Read',
+                              onTap: () => showPostDialog(context, post),
+                            ),
                           ],
                         ),
                       ],
@@ -697,70 +893,98 @@ class WritingSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _showPost(BuildContext context, Post post) {
-    showDialog(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.6),
-      builder: (context) {
-        final p = context.pal;
-        return _AppDialog(
-          maxWidth: 672,
-          title: post.title,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _PostMeta(post: post, withReadTime: true),
-              const SizedBox(height: 12),
-              Text(post.title,
-                  style: TextStyle(
-                      fontSize: Bp.sm(context) ? 30 : 24, height: 1.2, fontWeight: FontWeight.w600, color: p.text)),
-              const SizedBox(height: 8),
-              Text('By $ownerName', style: TextStyle(fontSize: 14, color: p.muted)),
-              const SizedBox(height: 32),
-              Divider(color: p.border, height: 1),
-              const SizedBox(height: 32),
-              for (final block in post.content.split('\n\n')) ..._paragraph(block, p),
-              const SizedBox(height: 16),
-              Divider(color: p.border, height: 1),
-              const SizedBox(height: 24),
-              Wrap(spacing: 8, runSpacing: 8, children: [for (final t in post.tags) TagChip(t)]),
-            ],
-          ),
-        );
-      },
-    );
-  }
+Future<void> showPostDialog(BuildContext context, Post post) {
+  return showDialog(
+    context: context,
+    barrierColor: Colors.black.withValues(alpha: 0.6),
+    builder: (context) {
+      final p = context.pal;
+      return _AppDialog(
+        maxWidth: 672,
+        title: post.title,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _PostMeta(post: post, withReadTime: true),
+            const SizedBox(height: 12),
+            Text(
+              post.title,
+              style: TextStyle(
+                fontSize: Bp.sm(context) ? 30 : 24,
+                height: 1.2,
+                fontWeight: FontWeight.w600,
+                color: p.text,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'By $ownerName',
+              style: TextStyle(fontSize: 14, color: p.muted),
+            ),
+            const SizedBox(height: 32),
+            Divider(color: p.border, height: 1),
+            const SizedBox(height: 32),
+            for (final block in post.content.split('\n\n'))
+              ..._postParagraph(block, p),
+            const SizedBox(height: 16),
+            Divider(color: p.border, height: 1),
+            const SizedBox(height: 24),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [for (final t in post.tags) TagChip(t)],
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
 
-  /// A block may be "### Heading\nBody text"; split it into heading + paragraph.
-  List<Widget> _paragraph(String block, Palette p) {
-    final lines = block.split('\n');
-    final widgets = <Widget>[];
-    final buffer = <String>[];
-    void flush() {
-      if (buffer.isEmpty) return;
-      widgets.add(Padding(
+/// A block may be "### Heading\nBody text"; split it into heading + paragraph.
+List<Widget> _postParagraph(String block, Palette p) {
+  final lines = block.split('\n');
+  final widgets = <Widget>[];
+  final buffer = <String>[];
+  void flush() {
+    if (buffer.isEmpty) return;
+    widgets.add(
+      Padding(
         padding: const EdgeInsets.only(bottom: 16),
-        child: Text(buffer.join(' '), style: TextStyle(fontSize: 15, height: 1.75, color: p.muted)),
-      ));
-      buffer.clear();
-    }
-
-    for (final line in lines) {
-      if (line.startsWith('### ')) {
-        flush();
-        widgets.add(Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 12),
-          child: Text(line.substring(4), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: p.text)),
-        ));
-      } else {
-        buffer.add(line);
-      }
-    }
-    flush();
-    return widgets;
+        child: Text(
+          buffer.join(' '),
+          style: TextStyle(fontSize: 15, height: 1.75, color: p.muted),
+        ),
+      ),
+    );
+    buffer.clear();
   }
+
+  for (final line in lines) {
+    if (line.startsWith('### ')) {
+      flush();
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 12),
+          child: Text(
+            line.substring(4),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: p.text,
+            ),
+          ),
+        ),
+      );
+    } else {
+      buffer.add(line);
+    }
+  }
+  flush();
+  return widgets;
 }
 
 class _PostMeta extends StatelessWidget {
@@ -778,7 +1002,10 @@ class _PostMeta extends StatelessWidget {
         Eyebrow(post.category),
         dot,
         Text(post.date, style: TextStyle(fontSize: 12, color: p.muted)),
-        if (withReadTime) ...[dot, Text(post.readTime, style: TextStyle(fontSize: 12, color: p.muted))],
+        if (withReadTime) ...[
+          dot,
+          Text(post.readTime, style: TextStyle(fontSize: 12, color: p.muted)),
+        ],
       ],
     );
   }

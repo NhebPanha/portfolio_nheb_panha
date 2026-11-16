@@ -76,19 +76,26 @@ extension PaletteContext on BuildContext {
   Palette get pal => Theme.of(this).extension<Palette>()!;
 }
 
+/// Set to false in tests (no network), so fonts fall back to the default instead of downloading.
+bool useWebFonts = true;
+
 ThemeData buildTheme(Palette p, Brightness brightness) {
   final base = ThemeData(
     brightness: brightness,
     useMaterial3: true,
     // Inter everywhere (loaded by google_fonts on first use).
-    fontFamily: GoogleFonts.inter().fontFamily,
-    colorScheme: ColorScheme.fromSeed(seedColor: p.accent, brightness: brightness).copyWith(
-      primary: p.accent,
-      onPrimary: p.onAccent,
-      surface: p.bg,
-      onSurface: p.text,
-      outline: p.border,
-    ),
+    fontFamily: useWebFonts ? GoogleFonts.inter().fontFamily : null,
+    colorScheme:
+        ColorScheme.fromSeed(
+          seedColor: p.accent,
+          brightness: brightness,
+        ).copyWith(
+          primary: p.accent,
+          onPrimary: p.onAccent,
+          surface: p.bg,
+          onSurface: p.text,
+          outline: p.border,
+        ),
     scaffoldBackgroundColor: p.bg,
     dividerColor: p.border,
     splashFactory: NoSplash.splashFactory,
@@ -97,9 +104,9 @@ ThemeData buildTheme(Palette p, Brightness brightness) {
   );
 
   OutlineInputBorder border(Color c, [double w = 1]) => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: c, width: w),
-      );
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide(color: c, width: w),
+  );
 
   return base.copyWith(
     textTheme: base.textTheme.apply(bodyColor: p.text, displayColor: p.text),
@@ -120,7 +127,10 @@ ThemeData buildTheme(Palette p, Brightness brightness) {
       focusedErrorBorder: border(Colors.redAccent, 1.5),
     ),
     tooltipTheme: TooltipThemeData(
-      decoration: BoxDecoration(color: p.text, borderRadius: BorderRadius.circular(6)),
+      decoration: BoxDecoration(
+        color: p.text,
+        borderRadius: BorderRadius.circular(6),
+      ),
       textStyle: TextStyle(color: p.bg, fontSize: 12),
     ),
   );
@@ -133,4 +143,6 @@ class Bp {
   static bool lg(BuildContext c) => MediaQuery.sizeOf(c).width >= 1024;
 }
 
-TextStyle mono(double size, Color color) => GoogleFonts.jetBrainsMono(fontSize: size, color: color);
+TextStyle mono(double size, Color color) => useWebFonts
+    ? GoogleFonts.jetBrainsMono(fontSize: size, color: color)
+    : TextStyle(fontSize: size, color: color, fontFamily: 'monospace');

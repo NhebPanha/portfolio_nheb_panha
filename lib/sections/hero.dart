@@ -29,11 +29,20 @@ class HeroSection extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(width: 8, height: 8, decoration: BoxDecoration(color: p.success, shape: BoxShape.circle)),
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: p.success,
+                    shape: BoxShape.circle,
+                  ),
+                ),
                 const SizedBox(width: 8),
                 Flexible(
-                  child: Text('Available for freelance and full-time roles',
-                      style: TextStyle(fontSize: 14, color: p.muted)),
+                  child: Text(
+                    'Available for freelance and full-time roles',
+                    style: TextStyle(fontSize: 14, color: p.muted),
+                  ),
                 ),
               ],
             ),
@@ -59,16 +68,28 @@ class HeroSection extends StatelessWidget {
         const SizedBox(height: 12),
         Reveal(
           delay: step * 2,
-          child: Text(ownerRole,
-              style: TextStyle(fontSize: Bp.sm(context) ? 24 : 20, fontWeight: FontWeight.w500, color: p.muted)),
+          child: Text(
+            ownerRole,
+            style: TextStyle(
+              fontSize: Bp.sm(context) ? 24 : 20,
+              fontWeight: FontWeight.w500,
+              color: p.muted,
+            ),
+          ),
         ),
         const SizedBox(height: 24),
         Reveal(
           delay: step * 3,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 576),
-            child: Text(heroIntro,
-                style: TextStyle(fontSize: Bp.md(context) ? 18 : 16, height: 1.65, color: p.muted)),
+            child: Text(
+              heroIntro,
+              style: TextStyle(
+                fontSize: Bp.md(context) ? 18 : 16,
+                height: 1.65,
+                color: p.muted,
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 32),
@@ -78,8 +99,16 @@ class HeroSection extends StatelessWidget {
             spacing: 12,
             runSpacing: 12,
             children: [
-              AppButton(label: 'View my work', icon: Icons.arrow_forward, onPressed: () => onNavigate(Sec.projects)),
-              AppButton(label: 'Get in touch', kind: ButtonKind.secondary, onPressed: () => onNavigate(Sec.contact)),
+              AppButton(
+                label: 'View my work',
+                icon: Icons.arrow_forward,
+                onPressed: () => onNavigate(Sec.projects),
+              ),
+              AppButton(
+                label: 'Get in touch',
+                kind: ButtonKind.secondary,
+                onPressed: () => onNavigate(Sec.contact),
+              ),
               AppButton(
                 label: '',
                 leadingIcon: Icons.code,
@@ -97,7 +126,9 @@ class HeroSection extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 512),
             child: Container(
               padding: const EdgeInsets.only(top: 24),
-              decoration: BoxDecoration(border: Border(top: BorderSide(color: p.border))),
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: p.border)),
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -106,12 +137,24 @@ class HeroSection extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(fact.label.toUpperCase(),
-                              style: TextStyle(
-                                  fontSize: 11, letterSpacing: 1.1, fontWeight: FontWeight.w500, color: p.muted)),
+                          Text(
+                            fact.label.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 11,
+                              letterSpacing: 1.1,
+                              fontWeight: FontWeight.w500,
+                              color: p.muted,
+                            ),
+                          ),
                           const SizedBox(height: 4),
-                          Text(fact.value,
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: p.text)),
+                          Text(
+                            fact.value,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: p.text,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -129,7 +172,10 @@ class HeroSection extends StatelessWidget {
       children: [
         const Positioned.fill(child: _Backdrop()),
         Padding(
-          padding: EdgeInsets.only(top: Bp.md(context) ? 160 : 128, bottom: Bp.md(context) ? 112 : 80),
+          padding: EdgeInsets.only(
+            top: Bp.md(context) ? 160 : 128,
+            bottom: Bp.md(context) ? 112 : 80,
+          ),
           child: PageContainer(
             child: wide
                 ? Row(
@@ -137,12 +183,22 @@ class HeroSection extends StatelessWidget {
                     children: [
                       Expanded(flex: 7, child: intro),
                       const SizedBox(width: 40),
-                      Expanded(flex: 5, child: Align(alignment: Alignment.centerRight, child: portrait)),
+                      Expanded(
+                        flex: 5,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: portrait,
+                        ),
+                      ),
                     ],
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [intro, const SizedBox(height: 56), Center(child: portrait)],
+                    children: [
+                      intro,
+                      const SizedBox(height: 56),
+                      Center(child: portrait),
+                    ],
                   ),
           ),
         ),
@@ -183,7 +239,11 @@ class _Portrait extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: p.border),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withValues(alpha: 0.12), blurRadius: 30, offset: const Offset(0, 14)),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.12),
+                    blurRadius: 30,
+                    offset: const Offset(0, 14),
+                  ),
                 ],
               ),
               child: ClipRRect(
@@ -213,13 +273,20 @@ class _Portrait extends StatelessWidget {
               right: 20,
               bottom: -20,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: p.bg,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: p.border),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 16, offset: const Offset(0, 6)),
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
                   ],
                 ),
                 child: Row(
@@ -227,9 +294,15 @@ class _Portrait extends StatelessWidget {
                     Icon(Icons.location_on_outlined, size: 18, color: p.muted),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(location,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: p.text)),
+                      child: Text(
+                        location,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: p.text,
+                        ),
+                      ),
                     ),
                     Text('UTC+7', style: mono(12, p.muted)),
                   ],
@@ -252,7 +325,9 @@ class _Backdrop extends StatelessWidget {
     final p = context.pal;
     return IgnorePointer(
       child: RepaintBoundary(
-        child: CustomPaint(painter: _BackdropPainter(accent: p.accent, line: p.border)),
+        child: CustomPaint(
+          painter: _BackdropPainter(accent: p.accent, line: p.border),
+        ),
       ),
     );
   }
@@ -266,11 +341,17 @@ class _BackdropPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final wash = Paint()
-      ..shader = RadialGradient(
-        center: Alignment.topCenter,
-        radius: 0.9,
-        colors: [accent.withValues(alpha: 0.14), accent.withValues(alpha: 0)],
-      ).createShader(Rect.fromLTWH(0, -size.height * 0.2, size.width, size.height * 1.1));
+      ..shader =
+          RadialGradient(
+            center: Alignment.topCenter,
+            radius: 0.9,
+            colors: [
+              accent.withValues(alpha: 0.14),
+              accent.withValues(alpha: 0),
+            ],
+          ).createShader(
+            Rect.fromLTWH(0, -size.height * 0.2, size.width, size.height * 1.1),
+          );
     canvas.drawRect(Offset.zero & size, wash);
 
     const cell = 56.0;
@@ -287,7 +368,11 @@ class _BackdropPainter extends CustomPainter {
       }
     }
     for (double y = 0; y < size.height; y += cell) {
-      for (double x = (size.width / 2) % cell - cell; x < size.width; x += cell) {
+      for (
+        double x = (size.width / 2) % cell - cell;
+        x < size.width;
+        x += cell
+      ) {
         final d = (Offset(x + cell / 2, y) - center).distance / maxDist;
         if (d >= 1) continue;
         paint.color = line.withValues(alpha: 0.6 * (1 - d));
@@ -297,5 +382,6 @@ class _BackdropPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_BackdropPainter old) => old.accent != accent || old.line != line;
+  bool shouldRepaint(_BackdropPainter old) =>
+      old.accent != accent || old.line != line;
 }
