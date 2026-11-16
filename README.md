@@ -100,3 +100,18 @@ If you like this project, give it a ⭐ on GitHub!
 <!-- 🔻 Footer -->
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:2575fc,100:6a11cb&height=120&section=footer"/>
+
+---
+
+## 🧑‍💻 About this repository
+
+This portfolio is a **Flutter Web** app (`lib/`, `web/`, `assets/`) served by a small **Cloudflare Worker** (`api/index.ts`) that handles the contact form and AI chat, so secret keys never reach the browser.
+
+| Task | Command |
+| --- | --- |
+| Run the app in Chrome (UI only) | `flutter run -d chrome` |
+| Build the site | `npm run build` (installs Flutter if missing, outputs `build/web`) |
+| Run site + API locally | `npm run build && npm run dev` (secrets from `.env`, see `.env.example`) |
+| Deploy | `npm run deploy` (Cloudflare also deploys automatically on push to `main`) |
+
+Edit the content (projects, experience, skills, articles, contact details) in `lib/data.dart`.
