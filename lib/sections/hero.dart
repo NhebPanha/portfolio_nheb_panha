@@ -19,6 +19,7 @@ class HeroSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Reveal(
+          onLoad: true,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
@@ -50,6 +51,7 @@ class HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Reveal(
+          onLoad: true,
           delay: step,
           child: Semantics(
             header: true,
@@ -67,6 +69,7 @@ class HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Reveal(
+          onLoad: true,
           delay: step * 2,
           child: Text(
             ownerRole,
@@ -79,6 +82,7 @@ class HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Reveal(
+          onLoad: true,
           delay: step * 3,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 576),
@@ -94,6 +98,7 @@ class HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         Reveal(
+          onLoad: true,
           delay: step * 4,
           child: Wrap(
             spacing: 12,
@@ -121,6 +126,7 @@ class HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 48),
         Reveal(
+          onLoad: true,
           delay: step * 5,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 512),
@@ -166,7 +172,11 @@ class HeroSection extends StatelessWidget {
       ],
     );
 
-    final portrait = Reveal(delay: step * 2, child: const _Portrait());
+    final portrait = Reveal(
+      onLoad: true,
+      delay: step * 2,
+      child: const _Portrait(),
+    );
 
     return Stack(
       children: [

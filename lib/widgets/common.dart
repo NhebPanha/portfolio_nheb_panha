@@ -428,16 +428,26 @@ class _ArrowLinkState extends State<ArrowLink> {
 
 /// Fades and slides its child in the first time it scrolls into view.
 /// Uses only opacity + transform, and respects the OS "reduce motion" setting.
+///
+/// With [onLoad] the animation starts as soon as the widget is first laid out (used for the
+/// hero, which is always on screen when the page opens) instead of waiting for visibility.
 class Reveal extends StatefulWidget {
-  const Reveal({super.key, required this.child, this.delay = Duration.zero});
+  const Reveal({
+    super.key,
+    required this.child,
+    this.delay = Duration.zero,
+    this.onLoad = false,
+  });
   final Widget child;
   final Duration delay;
+  final bool onLoad;
 
   @override
   State<Reveal> createState() => _RevealState();
 }
 
-class _RevealState extends State<Reveal> with SingleTickerProviderStateMixin {
+class _RevealState extends State<Reveal>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 650),
@@ -448,6 +458,13 @@ class _RevealState extends State<Reveal> with SingleTickerProviderStateMixin {
   );
   ScrollController? _scroll;
   bool _started = false;
+  int _retries = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   @override
   void didChangeDependencies() {
@@ -458,25 +475,47 @@ class _RevealState extends State<Reveal> with SingleTickerProviderStateMixin {
       _scroll = scroll;
       if (!_started) _scroll?.addListener(_check);
     }
+    _checkAfterFrame();
+  }
+
+  // The window was resized (e.g. layout switched at a breakpoint): look again.
+  @override
+  void didChangeMetrics() => _checkAfterFrame();
+
+  void _checkAfterFrame() {
+    if (_started) return;
     WidgetsBinding.instance.addPostFrameCallback((_) => _check());
+    WidgetsBinding.instance.scheduleFrame();
+  }
+
+  void _start() {
+    _started = true;
+    _scroll?.removeListener(_check);
+    WidgetsBinding.instance.removeObserver(this);
+    Future.delayed(widget.delay, () {
+      if (mounted) _controller.forward();
+    });
   }
 
   void _check() {
     if (_started || !mounted) return;
     final box = context.findRenderObject();
-    if (box is! RenderBox || !box.attached || !box.hasSize) return;
-    final top = box.localToGlobal(Offset.zero).dy;
-    if (top < MediaQuery.sizeOf(context).height * 0.92) {
-      _started = true;
-      _scroll?.removeListener(_check);
-      Future.delayed(widget.delay, () {
-        if (mounted) _controller.forward();
-      });
+    final viewport =
+        View.of(context).physicalSize.height /
+        View.of(context).devicePixelRatio;
+    // Layout or window size not settled yet: try again next frame instead of giving up.
+    if (box is! RenderBox || !box.attached || !box.hasSize || viewport <= 0) {
+      if (_retries++ < 120) _checkAfterFrame();
+      return;
+    }
+    if (widget.onLoad || box.localToGlobal(Offset.zero).dy < viewport * 0.92) {
+      _start();
     }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _scroll?.removeListener(_check);
     _controller.dispose();
     super.dispose();
