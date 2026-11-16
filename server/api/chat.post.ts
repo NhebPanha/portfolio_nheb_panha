@@ -9,12 +9,10 @@ Key Profile Information about Nheb Panha:
 - Specialties: Flutter & Dart cross-platform mobile apps, Nuxt 3 (Vue 3) SSR web apps, Supabase real-time databases, Laravel REST APIs, Tailwind CSS.
 - Background: Accounting-Developer background giving him financial precision, clean data modeling capabilities, and strong UI/UX aesthetic design skills.
 - Key Projects:
-  1. FinTech Wallet & Payment Suite (Flutter, Laravel, PostgreSQL, Biometrics, Real-time Ledger)
-  2. Nexus Logistics & Fleet Engine (Nuxt 3, Supabase, Google Maps API, Real-time GPS Telemetry)
-  3. Aura E-Commerce Platform (Vue 3, Firebase, Stripe Checkout)
-  4. Precision Accounting Suite (Laravel, TypeScript, Tailwind)
-  5. Smart HR & Payroll Engine (Nuxt 3, Laravel, MySQL)
-  6. AgriTech Monitor IoT (Flutter, Node.js, Supabase)
+  1. RED ANT Express — e-commerce shopping app for customers (Flutter)
+  2. RED ANT Merchant — seller app for managing products and orders on RED ANT Express (Flutter)
+  3. RED ANT Driver — delivery driver app for RED ANT Express orders (Flutter)
+  4. E-Shop Native — native Android/iOS shopping app (Kotlin, Swift)
 - Contact Info: Email: nhebpanha78@gmail.com, Location: Phnom Penh, Cambodia.
 - Availability: Available for Freelance Projects and Full-time Software Engineering roles.
 
@@ -91,7 +89,7 @@ export default defineEventHandler(async (event) => {
     } else if (lowerPrompt.includes('skill') || lowerPrompt.includes('stack') || lowerPrompt.includes('tech')) {
       finalResponse = "Panha's core technology stack includes Flutter & Dart for cross-platform mobile apps, Nuxt 3 & Vue 3 for web apps, Supabase & PostgreSQL for cloud databases, and Laravel for backend APIs."
     } else if (lowerPrompt.includes('project') || lowerPrompt.includes('work') || lowerPrompt.includes('portfolio')) {
-      finalResponse = "Panha has engineered multiple high-precision ecosystems including FinTech Wallet, Nexus Logistics Fleet Engine, Aura E-Commerce, Precision Accounting, Smart HR Payroll, and AgriTech IoT Monitor."
+      finalResponse = "Panha's projects include the RED ANT Express e-commerce platform (a customer shopping app, a Merchant app for sellers and a Driver app for deliveries, all built with Flutter) and E-Shop Native, a native Android/iOS shopping app built with Kotlin and Swift."
     } else if (lowerPrompt.includes('about') || lowerPrompt.includes('who is') || lowerPrompt.includes('who are')) {
       finalResponse = "Nheb Panha is a Full-Stack Architect & Mobile App Specialist based in Phnom Penh, Cambodia. He combines accounting data precision with modern UI/UX design and clean software architecture."
     } else if (lowerPrompt.includes('contact') || lowerPrompt.includes('email') || lowerPrompt.includes('hire')) {

@@ -35,7 +35,7 @@
           <a href="#contact" class="btn-secondary" @click="(e) => scrollTo('#contact', e)">
             Get in touch
           </a>
-          <a href="https://github.com/nhebpanha" target="_blank" rel="noopener noreferrer"
+          <a href="https://github.com/panhanheb" target="_blank" rel="noopener noreferrer"
              class="btn-secondary !px-3" aria-label="GitHub profile">
             <Icon name="mdi:github" class="text-xl" />
           </a>

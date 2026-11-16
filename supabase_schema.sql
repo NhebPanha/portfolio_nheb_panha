@@ -68,65 +68,46 @@ WITH CHECK (true);
 INSERT INTO public.projects (title, category, description, icon, link, github_url, featured, tags)
 VALUES
 (
-    'FinTech Wallet & Payment Suite',
-    'Financial Ecosystem',
-    'High-performance cross-platform digital wallet solution featuring real-time transactions, biometric authentication, QR payment engine, and multi-currency ledger.',
-    'logos:flutter',
-    'https://github.com/nhebpanha',
-    'https://github.com/nhebpanha',
+    'RED ANT Express',
+    'E-Commerce',
+    'Customer shopping app for the RED ANT Express e-commerce platform: browse products, add them to the cart, check out and track orders through to delivery.',
+    'devicon:flutter',
+    '#',
+    '#',
     true,
-    '[{"name": "Flutter", "icon": "logos:flutter"}, {"name": "Laravel", "icon": "logos:laravel"}, {"name": "PostgreSQL", "icon": "logos:postgresql"}]'::jsonb
+    '[{"name":"Flutter","icon":"devicon:flutter"},{"name":"Dart","icon":"logos:dart"}]'::jsonb
 ),
 (
-    'Nexus Logistics & Fleet Engine',
-    'Delivery System',
-    'Enterprise real-time logistics platform with active GPS telemetry tracking, route optimization algorithms, driver dispatching, and dynamic delivery status.',
-    'logos:nuxt-icon',
-    'https://github.com/nhebpanha',
-    'https://github.com/nhebpanha',
+    'RED ANT Merchant',
+    'Merchant App',
+    'Seller app for RED ANT Express that lets merchants manage their products and incoming orders, and prepare each order for delivery.',
+    'devicon:flutter',
+    '#',
+    '#',
     true,
-    '[{"name": "Nuxt 3", "icon": "logos:nuxt-icon"}, {"name": "Supabase", "icon": "logos:supabase-icon"}, {"name": "Google Maps", "icon": "logos:google-maps"}]'::jsonb
+    '[{"name":"Flutter","icon":"devicon:flutter"},{"name":"Dart","icon":"logos:dart"}]'::jsonb
 ),
 (
-    'Aura E-Commerce Platform',
-    'Retail Platform',
-    'Modern headless retail experience with instant fuzzy filtering, Stripe checkout integration, real-time inventory management, and automated invoice printing.',
-    'logos:vue',
-    'https://github.com/nhebpanha',
-    'https://github.com/nhebpanha',
+    'RED ANT Driver',
+    'Delivery App',
+    'Driver app for RED ANT Express for accepting delivery jobs, picking up orders from merchants and updating each order through to drop-off.',
+    'devicon:flutter',
+    '#',
+    '#',
     true,
-    '[{"name": "Vue 3", "icon": "logos:vue"}, {"name": "Firebase", "icon": "logos:firebase"}, {"name": "Stripe", "icon": "logos:stripe"}]'::jsonb
+    '[{"name":"Flutter","icon":"devicon:flutter"},{"name":"Dart","icon":"logos:dart"}]'::jsonb
 ),
 (
-    'Precision Accounting Suite',
-    'Business Tool',
-    'Automated accounting software for SMEs focused on tax compliance, financial analytics reporting, automated bank feeds, and receipt scanning.',
-    'logos:laravel',
-    'https://github.com/nhebpanha',
-    'https://github.com/nhebpanha',
-    false,
-    '[{"name": "Laravel", "icon": "logos:laravel"}, {"name": "TypeScript", "icon": "logos:typescript-icon"}, {"name": "Tailwind", "icon": "logos:tailwindcss-icon"}]'::jsonb
-),
-(
-    'Smart HR & Payroll Engine',
-    'Enterprise Tool',
-    'Comprehensive human resource management system featuring automated monthly payroll, attendance check-ins, leave workflow approvals, and KPI dashboards.',
-    'logos:nuxt-icon',
-    'https://github.com/nhebpanha',
-    'https://github.com/nhebpanha',
-    false,
-    '[{"name": "Nuxt 3", "icon": "logos:nuxt-icon"}, {"name": "Laravel", "icon": "logos:laravel"}, {"name": "MySQL", "icon": "logos:mysql-icon"}]'::jsonb
-),
-(
-    'AgriTech Monitor IoT',
-    'IoT Platform',
-    'Real-time precision agriculture dashboard connecting soil moisture sensors, weather telemetry, automated irrigation triggers, and crop yield forecasting.',
-    'logos:flutter',
-    'https://github.com/nhebpanha',
-    'https://github.com/nhebpanha',
-    false,
-    '[{"name": "Flutter", "icon": "logos:flutter"}, {"name": "Node.js", "icon": "logos:nodejs-icon"}, {"name": "Supabase", "icon": "logos:supabase-icon"}]'::jsonb
+    'E-Shop Native',
+    'E-Commerce',
+    'Native mobile shopping app for Android and iOS covering product browsing, cart and checkout.',
+    'logos:kotlin-icon',
+    '#',
+    '#',
+    true,
+    '[{"name":"Kotlin","icon":"logos:kotlin-icon"},{"name":"Swift","icon":"logos:swift"}]'::jsonb
 );
+
 
 -- 4. Create Blog Posts Table
 CREATE TABLE IF NOT EXISTS public.blog_posts (

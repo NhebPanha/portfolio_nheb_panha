@@ -67,110 +67,58 @@ export interface TechItem {
   tags: string[]
 }
 
+// TODO: add store / demo / GitHub links (demo_url, github_url) when available.
 const FALLBACK_PROJECTS: ProjectItem[] = [
   {
     id: "p1",
-    title: "FinTech Wallet & Payment Suite",
-    category: "Financial Ecosystem",
-    description: "High-performance cross-platform digital wallet solution featuring real-time transactions, biometric authentication, QR payment engine, and multi-currency ledger.",
+    title: "RED ANT Express",
+    category: "E-Commerce",
+    description: "Customer shopping app for the RED ANT Express e-commerce platform: browse products, add them to the cart, check out and track orders through to delivery.",
     icon: "devicon:flutter",
-    link: "https://github.com/nhebpanha",
-    github_url: "https://github.com/nhebpanha",
-    demo_url: "https://github.com/nhebpanha",
-    status: "Released",
-    metrics: "15k+ Transactions / Day",
+    link: "#",
     featured: true,
     tags: [
       { name: "Flutter", icon: "devicon:flutter" },
-      { name: "Laravel", icon: "logos:laravel" },
-      { name: "PostgreSQL", icon: "logos:postgresql" }
+      { name: "Dart", icon: "logos:dart" }
     ]
   },
   {
     id: "p2",
-    title: "Nexus Logistics & Fleet Engine",
-    category: "Delivery System",
-    description: "Enterprise real-time logistics platform with active GPS telemetry tracking, route optimization algorithms, driver dispatching, and dynamic delivery status.",
-    icon: "logos:nuxt-icon",
-    link: "https://github.com/nhebpanha",
-    github_url: "https://github.com/nhebpanha",
-    demo_url: "https://github.com/nhebpanha",
-    status: "Production",
-    metrics: "50k+ Tracked Shipments",
+    title: "RED ANT Merchant",
+    category: "Merchant App",
+    description: "Seller app for RED ANT Express that lets merchants manage their products and incoming orders, and prepare each order for delivery.",
+    icon: "devicon:flutter",
+    link: "#",
     featured: true,
     tags: [
-      { name: "Nuxt 3", icon: "logos:nuxt-icon" },
-      { name: "Supabase", icon: "logos:supabase-icon" },
-      { name: "Google Maps", icon: "logos:google-maps" }
+      { name: "Flutter", icon: "devicon:flutter" },
+      { name: "Dart", icon: "logos:dart" }
     ]
   },
   {
     id: "p3",
-    title: "Aura E-Commerce Platform",
-    category: "Retail Platform",
-    description: "Modern headless retail experience with instant fuzzy filtering, Stripe checkout integration, real-time inventory management, and automated invoice printing.",
-    icon: "logos:vue",
-    link: "https://github.com/nhebpanha",
-    github_url: "https://github.com/nhebpanha",
-    demo_url: "https://github.com/nhebpanha",
-    status: "Released",
-    metrics: "99.9% Checkout Conversion",
+    title: "RED ANT Driver",
+    category: "Delivery App",
+    description: "Driver app for RED ANT Express for accepting delivery jobs, picking up orders from merchants and updating each order through to drop-off.",
+    icon: "devicon:flutter",
+    link: "#",
     featured: true,
     tags: [
-      { name: "Vue 3", icon: "logos:vue" },
-      { name: "Firebase", icon: "logos:firebase-icon" },
-      { name: "Stripe", icon: "simple-icons:stripe" }
+      { name: "Flutter", icon: "devicon:flutter" },
+      { name: "Dart", icon: "logos:dart" }
     ]
   },
   {
     id: "p4",
-    title: "Precision Accounting Suite",
-    category: "Business Tool",
-    description: "Automated accounting software for SMEs focused on tax compliance, financial analytics reporting, automated bank feeds, and receipt scanning.",
-    icon: "logos:laravel",
-    link: "https://github.com/nhebpanha",
-    github_url: "https://github.com/nhebpanha",
-    status: "Production",
-    metrics: "Sub-second Audit Queries",
-    featured: false,
+    title: "E-Shop Native",
+    category: "E-Commerce",
+    description: "Native mobile shopping app for Android and iOS covering product browsing, cart and checkout.",
+    icon: "logos:kotlin-icon",
+    link: "#",
+    featured: true,
     tags: [
-      { name: "Laravel", icon: "logos:laravel" },
-      { name: "TypeScript", icon: "logos:typescript-icon" },
-      { name: "Tailwind", icon: "logos:tailwindcss-icon" }
-    ]
-  },
-  {
-    id: "p5",
-    title: "Smart HR & Payroll Engine",
-    category: "Enterprise Tool",
-    description: "Comprehensive human resource management system featuring automated monthly payroll, attendance check-ins, leave workflow approvals, and KPI dashboards.",
-    icon: "logos:nuxt-icon",
-    link: "https://github.com/nhebpanha",
-    github_url: "https://github.com/nhebpanha",
-    status: "Production",
-    metrics: "Automated Payroll Batching",
-    featured: false,
-    tags: [
-      { name: "Nuxt 3", icon: "logos:nuxt-icon" },
-      { name: "Laravel", icon: "logos:laravel" },
-      { name: "MySQL", icon: "logos:mysql-icon" }
-    ]
-  },
-  {
-    id: "p6",
-    title: "AgriTech Monitor IoT",
-    category: "IoT Platform",
-    description: "Real-time precision agriculture dashboard connecting soil moisture sensors, weather telemetry, automated irrigation triggers, and crop yield forecasting.",
-    icon: "devicon:flutter",
-    link: "https://github.com/nhebpanha",
-    github_url: "https://github.com/nhebpanha",
-    status: "Released",
-    metrics: "24/7 Sensor Telemetry",
-    featured: false,
-    tags: [
-      { name: "Flutter", icon: "devicon:flutter" },
-      { name: "Node.js", icon: "logos:nodejs-icon" },
-      { name: "Supabase", icon: "logos:supabase-icon" }
+      { name: "Kotlin", icon: "logos:kotlin-icon" },
+      { name: "Swift", icon: "logos:swift" }
     ]
   }
 ]
@@ -299,10 +247,10 @@ export const useSupabase = () => {
         description: item.description,
         icon: item.icon || 'devicon:flutter',
         link: item.link || '#',
-        github_url: item.github_url || '#',
-        demo_url: item.demo_url || item.link || '#',
-        status: item.status || (item.featured ? 'Released' : 'Production'),
-        metrics: item.metrics || 'Production System',
+        github_url: item.github_url || undefined,
+        demo_url: item.demo_url || undefined,
+        status: item.status || undefined,
+        metrics: item.metrics || undefined,
         featured: item.featured ?? true,
         tags: Array.isArray(item.tags) ? item.tags : (typeof item.tags === 'string' ? JSON.parse(item.tags) : [])
       }))

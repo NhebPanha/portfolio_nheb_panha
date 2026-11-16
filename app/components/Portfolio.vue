@@ -5,7 +5,7 @@
         <SectionHeading
           eyebrow="Projects"
           title="Selected work"
-          lead="Mobile apps, web platforms and business tools I've designed and built."
+          lead="Mobile apps I've designed and built, including the customer, merchant and driver apps behind the RED ANT Express e-commerce platform."
         />
 
         <label class="relative block w-full md:w-72">
@@ -30,7 +30,7 @@
       </div>
 
       <!-- Grid -->
-      <div v-if="filteredProjects.length" class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div v-if="filteredProjects.length" class="mt-8 grid gap-5 md:grid-cols-2">
         <article
           v-for="(project, index) in filteredProjects"
           :key="project.id || index"
